@@ -203,6 +203,10 @@ body {
   line-height: 1;
 }
 
+.github-btn {
+  margin-left: 1.25rem;
+}
+
 /* Buttons */
 .btn {
   display: inline-flex;

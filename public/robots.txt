@@ -12,4 +12,4 @@ Allow: /
 Crawl-delay: 1
 
 # Sitemap location
-Sitemap: https://doggy8088.github.io/mgit/sitemap.xml
+Sitemap: https://mgit.gh.miniasp.com/sitemap.xml

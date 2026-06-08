@@ -1,0 +1,50 @@
+#!/bin/bash
+
+# ANSI Color Codes
+CYAN='\033[0;36m'
+YELLOW='\033[1;33m'
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+BOLD='\033[1m'
+NC='\033[0m' # No Color
+
+# Default git command if none is provided
+if [ $# -eq 0 ]; then
+    GIT_CMD=("status" "-s")
+else
+    GIT_CMD=("$@")
+fi
+
+# Find all direct subdirectories (excluding hidden ones)
+git_subdirs=()
+for dir in */; do
+    # Remove trailing slash for cleaner display
+    dir="${dir%/}"
+    
+    # Check if directory contains .git (either as a folder or file for submodules)
+    if [ -d "$dir/.git" ] || [ -f "$dir/.git" ]; then
+        git_subdirs+=("$dir")
+    fi
+done
+
+if [ ${#git_subdirs[@]} -gt 0 ]; then
+    echo -e "${CYAN}Running git operation: ${BOLD}git ${GIT_CMD[*]}${NC}"
+    echo ""
+    for dir in "${git_subdirs[@]}"; do
+        # Determine current branch safely
+        branch=$(git --no-pager -C "$dir" symbolic-ref --short HEAD 2>/dev/null || git --no-pager -C "$dir" rev-parse --short HEAD 2>/dev/null || echo "detached HEAD")
+        
+        # Print a clear, beautiful colored header
+        echo -e "${CYAN}================================================================================${NC}"
+        echo -e "${CYAN}📂 Folder: ${BOLD}${YELLOW}${dir}${NC} ${CYAN}│ Branch: ${BOLD}${GREEN}${branch}${NC}"
+        echo -e "${CYAN}================================================================================${NC}"
+        
+        # Execute the git command inside the target directory
+        git --no-pager -C "$dir" "${GIT_CMD[@]}"
+        
+        # Add an extra newline for spacing between directories
+        echo ""
+    done
+elif [ -d ".git" ] || [ -f ".git" ]; then
+    exec git "${GIT_CMD[@]}"
+fi

@@ -1,0 +1,15 @@
+# Allow all search engines and crawlers to index the site
+User-agent: *
+Allow: /
+
+# Specifically optimize and allow Facebook Crawler
+User-agent: facebookexternalhit
+Allow: /
+Crawl-delay: 1
+
+User-agent: Facebot
+Allow: /
+Crawl-delay: 1
+
+# Sitemap location
+Sitemap: https://doggy8088.github.io/mgit/sitemap.xml

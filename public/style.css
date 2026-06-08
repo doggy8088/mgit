@@ -156,6 +156,7 @@ body {
 .nav-links {
   display: flex;
   gap: 2rem;
+  margin-left: auto;
 }
 
 .nav-links a {
@@ -172,8 +173,7 @@ body {
 
 /* Language Switcher Selector */
 .lang-selector {
-  margin-left: auto;
-  margin-right: 1.25rem;
+  margin-left: 2rem;
 }
 
 .lang-btn {
@@ -910,6 +910,14 @@ body {
   
   .nav-links {
     display: none; /* simple responsive header for landing page */
+  }
+  
+  .lang-selector {
+    margin-left: auto;
+  }
+  
+  .github-btn {
+    margin-left: 1rem;
   }
   
   .hero-section {

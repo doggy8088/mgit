@@ -48,11 +48,20 @@
         <span>mgit</span>
       </a>
       <nav class="nav-links">
-        <a href="#features">Features</a>
-        <a href="#interactive-demo">Interactive Demo</a>
-        <a href="#installation">Installation</a>
-        <a href="#faq">FAQ</a>
+        <a href="#features" data-i18n="nav-features">Features</a>
+        <a href="#interactive-demo" data-i18n="nav-demo">Interactive Demo</a>
+        <a href="#installation" data-i18n="nav-install">Installation</a>
+        <a href="#faq" data-i18n="nav-faq">FAQ</a>
       </nav>
+      
+      <!-- Language Switch Selector -->
+      <div class="lang-selector">
+        <button class="lang-btn" id="lang-switch-btn" aria-label="Switch Language">
+          <span class="flag-icon" id="lang-flag">🇺🇸</span>
+          <span class="lang-label" id="lang-text">EN</span>
+        </button>
+      </div>
+
       <a href="https://github.com/doggy8088/mgit" class="btn btn-secondary github-btn" target="_blank" rel="noopener" id="github-header-link">
         <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
           <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
@@ -70,9 +79,9 @@
     
     <div class="container hero-container">
       <div class="hero-content">
-        <span class="badge">v1.0.0 Stable</span>
-        <h1>Run Git commands across all subdirectories <span class="gradient-text">simultaneously</span></h1>
-        <p class="hero-lead">
+        <span class="badge" data-i18n="hero-badge">v1.0.0 Stable</span>
+        <h1 data-i18n="hero-title">Run Git commands across all subdirectories <span class="gradient-text">simultaneously</span></h1>
+        <p class="hero-lead" data-i18n="hero-lead">
           An ultra-fast, zero-dependency Bash/Zsh and PowerShell command-line utility for managing multi-repository workspaces. Discovery, branch detection, and executions in one single tap.
         </p>
 
@@ -95,12 +104,12 @@
         </div>
 
         <div class="hero-actions">
-          <a href="#interactive-demo" class="btn btn-primary" id="try-live-btn">Try Interactive Demo</a>
+          <a href="#interactive-demo" class="btn btn-primary" id="try-live-btn" data-i18n="hero-btn-demo">Try Interactive Demo</a>
           <a href="https://github.com/doggy8088/mgit" class="btn btn-outline" target="_blank" rel="noopener" id="star-github-btn">
             <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
               <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
             </svg>
-            <span>Star on GitHub</span>
+            <span data-i18n="hero-btn-star">Star on GitHub</span>
           </a>
         </div>
       </div>
@@ -145,9 +154,9 @@
   <section id="features" class="features-section">
     <div class="container">
       <div class="section-header">
-        <span class="section-tagline">Why mgit?</span>
-        <h2>Powerful Multirepo Control, Simplified</h2>
-        <p class="section-description">Say goodbye to complex loops or scripts. mgit is designed to feel like native git but built to scale across all repositories in your workspace.</p>
+        <span class="section-tagline" data-i18n="features-tagline">Why mgit?</span>
+        <h2 data-i18n="features-title">Powerful Multirepo Control, Simplified</h2>
+        <p class="section-description" data-i18n="features-desc">Say goodbye to complex loops or scripts. mgit is designed to feel like native git but built to scale across all repositories in your workspace.</p>
       </div>
 
       <div class="features-grid">
@@ -160,8 +169,8 @@
               <line x1="8" y1="11" x2="14" y2="11"></line>
             </svg>
           </div>
-          <h3>Auto-Discovery</h3>
-          <p>Scans the current directory automatically to isolate folders containing a Git repository. It ignores non-git directories completely, saving you from accidental failures.</p>
+          <h3 data-i18n="feat-1-title">Auto-Discovery</h3>
+          <p data-i18n="feat-1-desc">Scans the current directory automatically to isolate folders containing a Git repository. It ignores non-git directories completely, saving you from accidental failures.</p>
         </div>
 
         <div class="feature-card">
@@ -172,8 +181,8 @@
               <line x1="12" y1="22.08" x2="12" y2="12"></line>
             </svg>
           </div>
-          <h3>Branch-Aware Headers</h3>
-          <p>Every repository output is prefixed with a beautiful, color-coded header showing the target directory name and its active branch. Instantly verify where your changes are.</p>
+          <h3 data-i18n="feat-2-title">Branch-Aware Headers</h3>
+          <p data-i18n="feat-2-desc">Every repository output is prefixed with a beautiful, color-coded header showing the target directory name and its active branch. Instantly verify where your changes are.</p>
         </div>
 
         <div class="feature-card">
@@ -182,8 +191,8 @@
               <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
             </svg>
           </div>
-          <h3>Native Performance</h3>
-          <p>Implemented directly in pure Bash/Zsh and PowerShell. It starts instantly and executes commands directly in parallel sequences with zero overhead or heavy runtimes.</p>
+          <h3 data-i18n="feat-3-title">Native Performance</h3>
+          <p data-i18n="feat-3-desc">Implemented directly in pure Bash/Zsh and PowerShell. It starts instantly and executes commands directly in parallel sequences with zero overhead or heavy runtimes.</p>
         </div>
       </div>
     </div>
@@ -193,28 +202,28 @@
   <section id="interactive-demo" class="demo-section">
     <div class="container">
       <div class="section-header">
-        <span class="section-tagline">Interactive Sandbox</span>
-        <h2>Try mgit Online in Seconds</h2>
-        <p class="section-description">Choose a common Git workflow below and watch how mgit discover repos, prints statuses, pulls commits, and switches branches in real-time.</p>
+        <span class="section-tagline" data-i18n="demo-tagline">Interactive Sandbox</span>
+        <h2 data-i18n="demo-title">Try mgit Online in Seconds</h2>
+        <p class="section-description" data-i18n="demo-desc">Choose a common Git workflow below and watch how mgit discover repos, prints statuses, pulls commits, and switches branches in real-time.</p>
       </div>
 
       <div class="demo-wrapper">
         <div class="demo-controls">
           <button class="demo-tab active" data-cmd="mgit" id="demo-btn-status">
             <span class="demo-cmd-name">mgit</span>
-            <span class="demo-cmd-desc">Check short status (default)</span>
+            <span class="demo-cmd-desc" data-i18n="demo-btn-1-desc">Check short status (default)</span>
           </button>
           <button class="demo-tab" data-cmd="mgit pull" id="demo-btn-pull">
             <span class="demo-cmd-name">mgit pull</span>
-            <span class="demo-cmd-desc">Update all repositories</span>
+            <span class="demo-cmd-desc" data-i18n="demo-btn-2-desc">Update all repositories</span>
           </button>
           <button class="demo-tab" data-cmd="mgit checkout main" id="demo-btn-checkout">
             <span class="demo-cmd-name">mgit checkout main</span>
-            <span class="demo-cmd-desc">Switch branch globally</span>
+            <span class="demo-cmd-desc" data-i18n="demo-btn-3-desc">Switch branch globally</span>
           </button>
           <button class="demo-tab" data-cmd="mgit log -n 1" id="demo-btn-log">
             <span class="demo-cmd-name">mgit log -n 1</span>
-            <span class="demo-cmd-desc">Show latest commit details</span>
+            <span class="demo-cmd-desc" data-i18n="demo-btn-4-desc">Show latest commit details</span>
           </button>
         </div>
 
@@ -239,15 +248,15 @@
   <section id="installation" class="docs-section">
     <div class="container">
       <div class="section-header">
-        <span class="section-tagline">Get Started</span>
-        <h2>Installation & Setup</h2>
-        <p class="section-description">mgit supports macOS, Linux, and Windows. Choose the method that best fits your environment.</p>
+        <span class="section-tagline" data-i18n="docs-tagline">Get Started</span>
+        <h2 data-i18n="docs-title">Installation & Setup</h2>
+        <p class="section-description" data-i18n="docs-desc">mgit supports macOS, Linux, and Windows. Choose the method that best fits your environment.</p>
       </div>
 
       <div class="docs-grid">
         <div class="docs-card">
-          <h3>One-Line Automated Install</h3>
-          <p>The easiest way to install mgit is to download and run the script automatically.</p>
+          <h3 data-i18n="docs-card-1-title">One-Line Automated Install</h3>
+          <p data-i18n="docs-card-1-desc">The easiest way to install mgit is to download and run the script automatically.</p>
           
           <h4 class="platform-title">macOS / Linux (Bash/Zsh)</h4>
           <div class="code-block-container">
@@ -263,8 +272,8 @@
         </div>
 
         <div class="docs-card">
-          <h3>Manual Installation</h3>
-          <p>Clone the repository and run the local installation script to place it in your system binaries directory.</p>
+          <h3 data-i18n="docs-card-2-title">Manual Installation</h3>
+          <p data-i18n="docs-card-2-desc">Clone the repository and run the local installation script to place it in your system binaries directory.</p>
           
           <h4 class="platform-title">Unix Shell (Bash/Zsh)</h4>
           <div class="code-block-container">
@@ -286,24 +295,24 @@ cd mgit
 
       <!-- Quick Usage Card -->
       <div class="usage-card">
-        <h3>How to use</h3>
-        <p>Navigate to any directory containing subfolders that are Git repositories, and run your command:</p>
+        <h3 data-i18n="usage-title">How to use</h3>
+        <p data-i18n="usage-desc">Navigate to any directory containing subfolders that are Git repositories, and run your command:</p>
         <div class="usage-grid">
           <div class="usage-item">
             <div class="usage-cmd">mgit</div>
-            <div class="usage-desc">List short status (<code>git status -s</code>) for all repositories.</div>
+            <div class="usage-desc" data-i18n="usage-item-1-desc">List short status (<code>git status -s</code>) for all repositories.</div>
           </div>
           <div class="usage-item">
             <div class="usage-cmd">mgit pull</div>
-            <div class="usage-desc">Performs a <code>git pull</code> inside every subrepository.</div>
+            <div class="usage-desc" data-i18n="usage-item-2-desc">Performs a <code>git pull</code> inside every subrepository.</div>
           </div>
           <div class="usage-item">
             <div class="usage-cmd">mgit log -n 1</div>
-            <div class="usage-desc">Displays the single latest commit across all repositories.</div>
+            <div class="usage-desc" data-i18n="usage-item-3-desc">Displays the single latest commit across all repositories.</div>
           </div>
           <div class="usage-item">
             <div class="usage-cmd">mgit checkout main</div>
-            <div class="usage-desc">Switches the active branch to <code>main</code> across all repos.</div>
+            <div class="usage-desc" data-i18n="usage-item-4-desc">Switches the active branch to <code>main</code> across all repos.</div>
           </div>
         </div>
       </div>
@@ -314,36 +323,36 @@ cd mgit
   <section id="faq" class="faq-section">
     <div class="container">
       <div class="section-header">
-        <span class="section-tagline">Questions</span>
-        <h2>Frequently Asked Questions</h2>
-        <p class="section-description">Clear answers to help you configure and troubleshoot mgit in your development flow.</p>
+        <span class="section-tagline" data-i18n="faq-tagline">Questions</span>
+        <h2 data-i18n="faq-title">Frequently Asked Questions</h2>
+        <p class="section-description" data-i18n="faq-desc">Clear answers to help you configure and troubleshoot mgit in your development flow.</p>
       </div>
 
       <div class="faq-list">
         <details class="faq-item" id="faq-1">
-          <summary>What terminal shells are officially supported?</summary>
-          <div class="faq-answer">
+          <summary data-i18n="faq-1-summary">What terminal shells are officially supported?</summary>
+          <div class="faq-answer" data-i18n="faq-1-answer">
             <p>On macOS and Linux, the standard Bash and Zsh shells are fully supported out of the box. For Windows systems, <code>mgit.ps1</code> is compatible with PowerShell 5.1+ as well as PowerShell Core (<code>pwsh</code>).</p>
           </div>
         </details>
 
         <details class="faq-item" id="faq-2">
-          <summary>Does it scan repositories nested inside folders recursively?</summary>
-          <div class="faq-answer">
+          <summary data-i18n="faq-2-summary">Does it scan repositories nested inside folders recursively?</summary>
+          <div class="faq-answer" data-i18n="faq-2-answer">
             <p>No, mgit is designed to only scan the <strong>first layer</strong> of subdirectories. This makes execution extremely fast and prevents nested node_modules or system build folders from causing infinite execution loops.</p>
           </div>
         </details>
 
         <details class="faq-item" id="faq-3">
-          <summary>Does mgit support Git Submodules?</summary>
-          <div class="faq-answer">
+          <summary data-i18n="faq-3-summary">Does mgit support Git Submodules?</summary>
+          <div class="faq-answer" data-i18n="faq-3-answer">
             <p>Yes. mgit checks for the existence of a <code>.git</code> entry in the subdirectory, whether it is a folder (standard Git repo) or a file (as used by Git submodules or workspaces). In either case, it executes correctly.</p>
           </div>
         </details>
 
         <details class="faq-item" id="faq-4">
-          <summary>What if I run mgit in a directory that is itself a Git repository?</summary>
-          <div class="faq-answer">
+          <summary data-i18n="faq-4-summary">What if I run mgit in a directory that is itself a Git repository?</summary>
+          <div class="faq-answer" data-i18n="faq-4-answer">
             <p>If there are no subdirectories containing Git repositories, but the current directory itself contains a <code>.git</code> repository, mgit will fallback to executing the command on the current repository directly. It acts as an transparent wrapper.</p>
           </div>
         </details>
@@ -364,10 +373,10 @@ cd mgit
           </svg>
           <span>mgit</span>
         </div>
-        <p>A simple yet powerful Git command-line companion.</p>
+        <p data-i18n="footer-desc">A simple yet powerful Git command-line companion.</p>
       </div>
       <div class="footer-bottom">
-        <p>&copy; 2026 <a href="https://www.facebook.com/will.fans/" target="_blank" rel="noopener" style="color: var(--accent-cyan); text-decoration: none; font-weight: 500;">Will 保哥的技術交流中心</a>. Open source under the MIT License.</p>
+        <p>&copy; 2026 <a href="https://www.facebook.com/will.fans/" target="_blank" rel="noopener" style="color: var(--accent-cyan); text-decoration: none; font-weight: 500;">Will 保哥的技術交流中心</a><span data-i18n="footer-bottom-text">. Open source under the MIT License.</span></p>
         <div class="footer-links">
           <a href="https://github.com/doggy8088/mgit" target="_blank" rel="noopener">GitHub Project</a>
           <a href="https://github.com/doggy8088/mgit/blob/main/LICENSE" target="_blank" rel="noopener">License</a>
@@ -378,6 +387,154 @@ cd mgit
 
   <!-- Interactive Terminal & Copy Logic -->
   <script>
+    // Language translations dictionary
+    const i18n = {
+      en: {
+        "nav-features": "Features",
+        "nav-demo": "Interactive Demo",
+        "nav-install": "Installation",
+        "nav-faq": "FAQ",
+        "hero-badge": "v1.0.0 Stable",
+        "hero-title": 'Run Git commands across all subdirectories <span class="gradient-text">simultaneously</span>',
+        "hero-lead": "An ultra-fast, zero-dependency Bash/Zsh and PowerShell command-line utility for managing multi-repository workspaces. Discovery, branch detection, and executions in one single tap.",
+        "hero-btn-demo": "Try Interactive Demo",
+        "hero-btn-star": "Star on GitHub",
+        "features-tagline": "Why mgit?",
+        "features-title": "Powerful Multirepo Control, Simplified",
+        "features-desc": "Say goodbye to complex loops or scripts. mgit is designed to feel like native git but built to scale across all repositories in your workspace.",
+        "feat-1-title": "Auto-Discovery",
+        "feat-1-desc": "Scans the current directory automatically to isolate folders containing a Git repository. It ignores non-git directories completely, saving you from accidental failures.",
+        "feat-2-title": "Branch-Aware Headers",
+        "feat-2-desc": "Every repository output is prefixed with a beautiful, color-coded header showing the target directory name and its active branch. Instantly verify where your changes are.",
+        "feat-3-title": "Native Performance",
+        "feat-3-desc": "Implemented directly in pure Bash/Zsh and PowerShell. It starts instantly and executes commands directly in parallel sequences with zero overhead or heavy runtimes.",
+        "demo-tagline": "Interactive Sandbox",
+        "demo-title": "Try mgit Online in Seconds",
+        "demo-desc": "Choose a common Git workflow below and watch how mgit discover repos, prints statuses, pulls commits, and switches branches in real-time.",
+        "demo-btn-1-desc": "Check short status (default)",
+        "demo-btn-2-desc": "Update all repositories",
+        "demo-btn-3-desc": "Switch branch globally",
+        "demo-btn-4-desc": "Show latest commit details",
+        "docs-tagline": "Get Started",
+        "docs-title": "Installation & Setup",
+        "docs-desc": "mgit supports macOS, Linux, and Windows. Choose the method that best fits your environment.",
+        "docs-card-1-title": "One-Line Automated Install",
+        "docs-card-1-desc": "The easiest way to install mgit is to download and run the script automatically.",
+        "docs-card-2-title": "Manual Installation",
+        "docs-card-2-desc": "Clone the repository and run the local installation script to place it in your system binaries directory.",
+        "usage-title": "How to use",
+        "usage-desc": "Navigate to any directory containing subfolders that are Git repositories, and run your command:",
+        "usage-item-1-desc": "List short status (<code>git status -s</code>) for all repositories.",
+        "usage-item-2-desc": "Performs a <code>git pull</code> inside every subrepository.",
+        "usage-item-3-desc": "Displays the single latest commit across all repositories.",
+        "usage-item-4-desc": "Switches the active branch to <code>main</code> across all repos.",
+        "faq-tagline": "Questions",
+        "faq-title": "Frequently Asked Questions",
+        "faq-desc": "Clear answers to help you configure and troubleshoot mgit in your development flow.",
+        "faq-1-summary": "What terminal shells are officially supported?",
+        "faq-1-answer": "<p>On macOS and Linux, the standard Bash and Zsh shells are fully supported out of the box. For Windows systems, <code>mgit.ps1</code> is compatible with PowerShell 5.1+ as well as PowerShell Core (<code>pwsh</code>).</p>",
+        "faq-2-summary": "Does it scan repositories nested inside folders recursively?",
+        "faq-2-answer": "<p>No, mgit is designed to only scan the <strong>first layer</strong> of subdirectories. This makes execution extremely fast and prevents nested node_modules or system build folders from causing infinite execution loops.</p>",
+        "faq-3-summary": "Does mgit support Git Submodules?",
+        "faq-3-answer": "<p>Yes. mgit checks for the existence of a <code>.git</code> entry in the subdirectory, whether it is a folder (standard Git repo) or a file (as used by Git submodules or workspaces). In either case, it executes correctly.</p>",
+        "faq-4-summary": "What if I run mgit in a directory that is itself a Git repository?",
+        "faq-4-answer": "<p>If there are no subdirectories containing Git repositories, but the current directory itself contains a <code>.git</code> repository, mgit will fallback to executing the command on the current repository directly. It acts as an transparent wrapper.</p>",
+        "footer-desc": "A simple yet powerful Git command-line companion.",
+        "footer-bottom-text": ". Open source under the MIT License."
+      },
+      tw: {
+        "nav-features": "功能特點",
+        "nav-demo": "互動沙盒",
+        "nav-install": "安裝教學",
+        "nav-faq": "常見問題",
+        "hero-badge": "v1.0.0 穩定版",
+        "hero-title": '在所有子目錄中 <span class="gradient-text">同時執行</span> Git 指令',
+        "hero-lead": "一個極速、零依賴的 Bash/Zsh 與 PowerShell 命令列工具，專為管理多儲存庫工作區而設計。一鍵自動探索、偵測分支並執行。",
+        "hero-btn-demo": "嘗試互動沙盒",
+        "hero-btn-star": "前往 GitHub 按 Star",
+        "features-tagline": "為什麼選擇 mgit？",
+        "features-title": "強大且簡單的多儲存庫控制",
+        "features-desc": "告別複雜的迴圈或腳本。mgit 專為帶來原生 Git 操作手感而生，完美管理您工作區內的所有儲存庫。",
+        "feat-1-title": "自動探索",
+        "feat-1-desc": "自動掃描當前目錄，精準篩選包含 Git 儲存庫的資料夾。完全忽略非 Git 目錄，避免執行失敗。",
+        "feat-2-title": "分支狀態標頭",
+        "feat-2-desc": "每個儲存庫的執行結果均附帶美觀的彩色標頭，並排顯示目錄名稱與當前分支，立即確認變更位置。",
+        "feat-3-title": "原生效能",
+        "feat-3-desc": "直接以純 Bash/Zsh 與 PowerShell 實作。啟動零延遲，並列順序執行指令，無任何外部依賴或厚重運行環境。",
+        "demo-tagline": "互動沙盒",
+        "demo-title": "立即線上體驗 mgit",
+        "demo-desc": "在下方選擇常用的 Git 工作流程，即時觀看 mgit 掃描、取得狀態、同步提交與全域切換分支的動態效果。",
+        "demo-btn-1-desc": "檢查簡短狀態 (預設行為)",
+        "demo-btn-2-desc": "更新所有 Git 儲存庫",
+        "demo-btn-3-desc": "全域切換至 main 分支",
+        "demo-btn-4-desc": "顯示每個儲存庫的最新提交",
+        "docs-tagline": "開始使用",
+        "docs-title": "安裝與設定",
+        "docs-desc": "mgit 支援 macOS、Linux 與 Windows。請選擇最適合您開發環境的安裝方式。",
+        "docs-card-1-title": "單行自動安裝 (One-Line Install)",
+        "docs-card-1-desc": "最簡單的安裝方式，直接在終端機執行指令即可自動完成下載與設定。",
+        "docs-card-2-title": "手動複製安裝",
+        "docs-card-2-desc": "複製專案儲存庫，並執行本機安裝腳本將 mgit 置入您的系統執行檔目錄中。",
+        "usage-title": "使用方式說明",
+        "usage-desc": "進入任何包含多個 Git 子儲存庫的專案目錄，直接於終端機執行：",
+        "usage-item-1-desc": "列出所有子儲存庫的簡短狀態 (<code>git status -s</code>)。",
+        "usage-item-2-desc": "在所有子儲存庫內執行 <code>git pull</code>。",
+        "usage-item-3-desc": "顯示所有子儲存庫內最後一筆提交的詳細資訊。",
+        "usage-item-4-desc": "全域切換所有子儲存庫的當前分支至 <code>main</code>。",
+        "faq-tagline": "常見問題",
+        "faq-title": "常見問題與解答",
+        "faq-desc": "為您解惑 mgit 在開發流程中的各類常見設定與使用情境。",
+        "faq-1-summary": "官方正式支援哪些終端機 Shell？",
+        "faq-1-answer": "<p>在 macOS 與 Linux 上，預設的 Bash 與 Zsh 均能完美相容並支援。針對 Windows 系統，專案內附的 <code>mgit.ps1</code> 可在 PowerShell 5.1+ 以及 PowerShell Core (<code>pwsh</code>) 中順暢執行。</p>",
+        "faq-2-summary": "它會遞迴掃描子資料夾底下的深層儲存庫嗎？",
+        "faq-2-answer": "<p>不會，mgit 設計上僅會掃描「第一層」直接子目錄。此設計可確保極佳的執行速度，並避免深層 node_modules 或建置目錄引起無限遞迴執行。</p>",
+        "faq-3-summary": "mgit 支援 Git Submodules (子模組) 嗎？",
+        "faq-3-answer": "<p>支援。mgit 透過偵測子目錄內是否存在 <code>.git</code> 實體 (不論是資料夾或檔案) 來判定，因此不論是一般儲存庫、工作區或 Git 子模組皆能正常執行。</p>",
+        "faq-4-summary": "如果我在本身就是 Git 儲存庫的目錄中直接執行會怎樣？",
+        "faq-4-answer": "<p>若當前目錄沒有其他包含 Git 儲存庫的子資料夾，但當前目錄本身是一個 <code>.git</code> 儲存庫，mgit 會自動降級並直接在當前目錄執行該 Git 指令，扮演透明的包裝層角色。</p>",
+        "footer-desc": "一個簡單實用的 Git 命令列效率工具伴侶。",
+        "footer-bottom-text": ". 基於 MIT 授權條款開源。"
+      }
+    };
+
+    // Language switcher logic
+    const langFlag = document.getElementById("lang-flag");
+    const langText = document.getElementById("lang-text");
+    const langBtn = document.getElementById("lang-switch-btn");
+    let currentLang = localStorage.getItem("mgit-lang") || "en";
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem("mgit-lang", lang);
+      
+      // Update toggle button visuals
+      if (lang === "en") {
+        langFlag.textContent = "🇺🇸";
+        langText.textContent = "EN";
+      } else {
+        langFlag.textContent = "🇹🇼";
+        langText.textContent = "TW";
+      }
+
+      // Translate all data-i18n elements
+      document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.getAttribute("data-i18n");
+        if (i18n[lang] && i18n[lang][key]) {
+          el.innerHTML = i18n[lang][key];
+        }
+      });
+    }
+
+    langBtn.addEventListener("click", () => {
+      const nextLang = currentLang === "en" ? "tw" : "en";
+      setLanguage(nextLang);
+    });
+
+    // Run language setup on load
+    document.addEventListener("DOMContentLoaded", () => {
+      setLanguage(currentLang);
+    });
+
     // Copy commands logic
     const BASH_CMD = "curl -fsSL https://raw.githubusercontent.com/doggy8088/mgit/main/install.sh | bash";
     const PWSH_CMD = "irm https://raw.githubusercontent.com/doggy8088/mgit/main/install.ps1 | iex";

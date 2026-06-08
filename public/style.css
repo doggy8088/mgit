@@ -170,6 +170,39 @@ body {
   color: var(--text-primary);
 }
 
+/* Language Switcher Selector */
+.lang-selector {
+  margin-left: auto;
+  margin-right: 1.25rem;
+}
+
+.lang-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  padding: 0.5rem 0.85rem;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.lang-btn:hover {
+  border-color: var(--border-focus);
+  color: var(--text-primary);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.flag-icon {
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
 /* Buttons */
 .btn {
   display: inline-flex;

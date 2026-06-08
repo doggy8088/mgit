@@ -501,7 +501,11 @@ cd mgit
     const langFlag = document.getElementById("lang-flag");
     const langText = document.getElementById("lang-text");
     const langBtn = document.getElementById("lang-switch-btn");
-    let currentLang = localStorage.getItem("mgit-lang") || "en";
+    let currentLang = localStorage.getItem("mgit-lang");
+    if (!currentLang) {
+      const browserLang = navigator.language || navigator.userLanguage;
+      currentLang = (browserLang && browserLang.toLowerCase().startsWith("zh")) ? "tw" : "en";
+    }
 
     function setLanguage(lang) {
       currentLang = lang;

@@ -63,6 +63,17 @@ body {
 }
 
 /* Background Glows */
+.glow-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: -1;
+}
+
 .glow-bg {
   position: absolute;
   width: 500px;
@@ -70,7 +81,6 @@ body {
   border-radius: 50%;
   filter: blur(120px);
   pointer-events: none;
-  z-index: -1;
   opacity: 0.25;
 }
 
@@ -364,6 +374,8 @@ body {
   white-space: nowrap;
   overflow-x: auto;
   scrollbar-width: none; /* Firefox */
+  flex: 1;
+  min-width: 0;
 }
 
 .install-cmd::-webkit-scrollbar {
@@ -462,6 +474,7 @@ body {
   line-height: 1.5;
   height: 380px;
   overflow-y: auto;
+  overflow-x: hidden;
   color: #c9d1d9;
 }
 
@@ -905,9 +918,21 @@ body {
   .docs-grid {
     grid-template-columns: 1fr;
   }
+
+  .hero-content, .hero-visual, .demo-controls, .demo-terminal, .docs-card, .usage-card {
+    min-width: 0;
+  }
+
+  .parallax-element {
+    display: none;
+  }
 }
 
 @media (max-width: 768px) {
+  .container {
+    padding: 0 1.5rem;
+  }
+
   .site-header {
     padding: 0.75rem 0;
   }
@@ -936,6 +961,20 @@ body {
     font-size: 2rem;
   }
   
+  .feature-card, .docs-card, .usage-card {
+    padding: 1.75rem 1.5rem;
+  }
+  
+  .demo-controls {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+  
+  .demo-tab {
+    padding: 0.85rem 1rem;
+  }
+  
   .usage-grid {
     grid-template-columns: 1fr;
   }
@@ -946,3 +985,70 @@ body {
     align-items: flex-start;
   }
 }
+
+@media (max-width: 576px) {
+  .hero-actions {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.75rem;
+  }
+  
+  .hero-actions .btn {
+    width: 100%;
+  }
+  
+  .terminal-body {
+    font-size: 0.75rem;
+    padding: 0.75rem;
+    height: 320px;
+  }
+  
+  .demo-terminal {
+    height: 380px;
+  }
+  
+  .demo-terminal .terminal-body {
+    height: 320px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 1rem;
+  }
+
+  .logo span {
+    font-size: 1.25rem;
+  }
+  
+  .lang-btn {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+  }
+  
+  .github-btn span {
+    display: none;
+  }
+  
+  .github-btn {
+    padding: 0.5rem 0.75rem;
+    margin-left: 0.5rem;
+  }
+  
+  .hero-content h1 {
+    font-size: 1.85rem;
+  }
+  
+  .demo-controls {
+    grid-template-columns: 1fr;
+  }
+  
+  .terminal-body {
+    font-size: 0.65rem;
+  }
+
+  .terminal-title {
+    display: none;
+  }
+}
+

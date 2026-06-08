@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>mgit — Run Git Commands Across Multiple Repositories Simultaneously</title>
+  <meta name="description" content="A lightweight, zero-dependency Bash/Zsh and PowerShell tool to automatically run git commands across all subdirectories with git repositories.">
+  <meta name="keywords" content="mgit, git tool, multi-repo git, monorepo, git status, git command automation, bash, zsh, powershell, git utility">
+  <meta name="author" content="Will 保哥的技術交流中心">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://doggy8088.github.io/mgit/">
+  <meta property="og:title" content="mgit — Run Git Commands Across Multiple Repositories Simultaneously">
+  <meta property="og:description" content="A lightweight, zero-dependency Bash/Zsh and PowerShell tool to automatically run git commands across all subdirectories with git repositories.">
+  <meta property="og:image" content="https://doggy8088.github.io/mgit/assets/og-image.png">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://doggy8088.github.io/mgit/">
+  <meta property="twitter:title" content="mgit — Run Git Commands Across Multiple Repositories Simultaneously">
+  <meta property="twitter:description" content="A lightweight, zero-dependency Bash/Zsh and PowerShell tool to automatically run git commands across all subdirectories with git repositories.">
+  <meta property="twitter:image" content="https://doggy8088.github.io/mgit/assets/og-image.png">
+  
+  <!-- Modern Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Background Glows -->
+  <div class="glow-bg glow-1" aria-hidden="true"></div>
+  <div class="glow-bg glow-2" aria-hidden="true"></div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-container">
+      <a href="#" class="logo" id="logo-link">
+        <svg class="git-icon" viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="6" y1="3" x2="6" y2="15"></line>
+          <circle cx="18" cy="6" r="3"></circle>
+          <circle cx="6" cy="18" r="3"></circle>
+          <path d="M18 9a9 9 0 0 1-9 9"></path>
+        </svg>
+        <span>mgit</span>
+      </a>
+      <nav class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#interactive-demo">Interactive Demo</a>
+        <a href="#installation">Installation</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <a href="https://github.com/doggy8088/mgit" class="btn btn-secondary github-btn" target="_blank" rel="noopener" id="github-header-link">
+        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+        </svg>
+        <span>GitHub</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <!-- Floating Parallax Shapes -->
+    <div class="parallax-element parallax-shape-2" aria-hidden="true"></div>
+    <div class="parallax-element parallax-shape-3" aria-hidden="true"></div>
+    
+    <div class="container hero-container">
+      <div class="hero-content">
+        <span class="badge">v1.0.0 Stable</span>
+        <h1>Run Git commands across all subdirectories <span class="gradient-text">simultaneously</span></h1>
+        <p class="hero-lead">
+          An ultra-fast, zero-dependency Bash/Zsh and PowerShell command-line utility for managing multi-repository workspaces. Discovery, branch detection, and executions in one single tap.
+        </p>
+
+        <!-- Install Command Copy Widget -->
+        <div class="install-widget">
+          <div class="install-tabs">
+            <button class="install-tab active" data-shell="bash" id="tab-bash">Bash / Zsh</button>
+            <button class="install-tab" data-shell="pwsh" id="tab-pwsh">PowerShell</button>
+          </div>
+          <div class="install-cmd-box">
+            <code class="install-cmd" id="install-cmd-text">curl -fsSL https://raw.githubusercontent.com/doggy8088/mgit/main/install.sh | bash</code>
+            <button class="copy-btn" id="copy-install-btn" aria-label="Copy installation command">
+              <svg class="copy-icon" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              <span class="tooltip" id="copy-tooltip">Copy</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="hero-actions">
+          <a href="#interactive-demo" class="btn btn-primary" id="try-live-btn">Try Interactive Demo</a>
+          <a href="https://github.com/doggy8088/mgit" class="btn btn-outline" target="_blank" rel="noopener" id="star-github-btn">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+            </svg>
+            <span>Star on GitHub</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Hero Visual: Terminal Mockup -->
+      <div class="hero-visual">
+        <div class="terminal-window shadow-xl">
+          <div class="terminal-header">
+            <div class="terminal-dots">
+              <span class="dot red"></span>
+              <span class="dot yellow"></span>
+              <span class="dot green"></span>
+            </div>
+            <div class="terminal-title">mgit status -s</div>
+          </div>
+          <div class="terminal-body font-mono">
+            <div class="terminal-line"><span class="terminal-prompt">$</span> mgit</div>
+            <div class="terminal-line text-cyan">Running git operation: <span class="text-bold">git status -s</span></div>
+            <div class="terminal-line"></div>
+            <div class="terminal-line text-cyan">================================================================================</div>
+            <div class="terminal-line">📂 Folder: <span class="text-yellow text-bold">auth-service</span> │ Branch: <span class="text-green text-bold">main</span></div>
+            <div class="terminal-line text-cyan">================================================================================</div>
+            <div class="terminal-line text-red"> M src/auth.ts</div>
+            <div class="terminal-line text-red">?? tests/auth.test.ts</div>
+            <div class="terminal-line"></div>
+            <div class="terminal-line text-cyan">================================================================================</div>
+            <div class="terminal-line">📂 Folder: <span class="text-yellow text-bold">payment-gateway</span> │ Branch: <span class="text-green text-bold">feature/apple-pay</span></div>
+            <div class="terminal-line text-cyan">================================================================================</div>
+            <div class="terminal-line text-green">A  src/applepay.ts</div>
+            <div class="terminal-line"></div>
+            <div class="terminal-line text-cyan">================================================================================</div>
+            <div class="terminal-line">📂 Folder: <span class="text-yellow text-bold">web-dashboard</span> │ Branch: <span class="text-green text-bold">main</span></div>
+            <div class="terminal-line text-cyan">================================================================================</div>
+            <div class="terminal-line text-dim"># clean workspace (no output)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="features-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tagline">Why mgit?</span>
+        <h2>Powerful Multirepo Control, Simplified</h2>
+        <p class="section-description">Say goodbye to complex loops or scripts. mgit is designed to feel like native git but built to scale across all repositories in your workspace.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              <line x1="11" y1="8" x2="11" y2="14"></line>
+              <line x1="8" y1="11" x2="14" y2="11"></line>
+            </svg>
+          </div>
+          <h3>Auto-Discovery</h3>
+          <p>Scans the current directory automatically to isolate folders containing a Git repository. It ignores non-git directories completely, saving you from accidental failures.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+              <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+              <line x1="12" y1="22.08" x2="12" y2="12"></line>
+            </svg>
+          </div>
+          <h3>Branch-Aware Headers</h3>
+          <p>Every repository output is prefixed with a beautiful, color-coded header showing the target directory name and its active branch. Instantly verify where your changes are.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+            </svg>
+          </div>
+          <h3>Native Performance</h3>
+          <p>Implemented directly in pure Bash/Zsh and PowerShell. It starts instantly and executes commands directly in parallel sequences with zero overhead or heavy runtimes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Simulator Section -->
+  <section id="interactive-demo" class="demo-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tagline">Interactive Sandbox</span>
+        <h2>Try mgit Online in Seconds</h2>
+        <p class="section-description">Choose a common Git workflow below and watch how mgit discover repos, prints statuses, pulls commits, and switches branches in real-time.</p>
+      </div>
+
+      <div class="demo-wrapper">
+        <div class="demo-controls">
+          <button class="demo-tab active" data-cmd="mgit" id="demo-btn-status">
+            <span class="demo-cmd-name">mgit</span>
+            <span class="demo-cmd-desc">Check short status (default)</span>
+          </button>
+          <button class="demo-tab" data-cmd="mgit pull" id="demo-btn-pull">
+            <span class="demo-cmd-name">mgit pull</span>
+            <span class="demo-cmd-desc">Update all repositories</span>
+          </button>
+          <button class="demo-tab" data-cmd="mgit checkout main" id="demo-btn-checkout">
+            <span class="demo-cmd-name">mgit checkout main</span>
+            <span class="demo-cmd-desc">Switch branch globally</span>
+          </button>
+          <button class="demo-tab" data-cmd="mgit log -n 1" id="demo-btn-log">
+            <span class="demo-cmd-name">mgit log -n 1</span>
+            <span class="demo-cmd-desc">Show latest commit details</span>
+          </button>
+        </div>
+
+        <div class="terminal-window shadow-xl demo-terminal">
+          <div class="terminal-header">
+            <div class="terminal-dots">
+              <span class="dot red"></span>
+              <span class="dot yellow"></span>
+              <span class="dot green"></span>
+            </div>
+            <div class="terminal-title" id="demo-terminal-title">bash</div>
+          </div>
+          <div class="terminal-body font-mono" id="demo-terminal-content">
+            <!-- Terminal dynamic content goes here -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Detailed Guide (Installation & Usage) -->
+  <section id="installation" class="docs-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tagline">Get Started</span>
+        <h2>Installation & Setup</h2>
+        <p class="section-description">mgit supports macOS, Linux, and Windows. Choose the method that best fits your environment.</p>
+      </div>
+
+      <div class="docs-grid">
+        <div class="docs-card">
+          <h3>One-Line Automated Install</h3>
+          <p>The easiest way to install mgit is to download and run the script automatically.</p>
+          
+          <h4 class="platform-title">macOS / Linux (Bash/Zsh)</h4>
+          <div class="code-block-container">
+            <pre><code>curl -fsSL https://raw.githubusercontent.com/doggy8088/mgit/main/install.sh | bash</code></pre>
+            <button class="copy-btn-small" data-clipboard="curl -fsSL https://raw.githubusercontent.com/doggy8088/mgit/main/install.sh | bash" aria-label="Copy script">Copy</button>
+          </div>
+
+          <h4 class="platform-title">Windows (PowerShell)</h4>
+          <div class="code-block-container">
+            <pre><code>irm https://raw.githubusercontent.com/doggy8088/mgit/main/install.ps1 | iex</code></pre>
+            <button class="copy-btn-small" data-clipboard="irm https://raw.githubusercontent.com/doggy8088/mgit/main/install.ps1 | iex" aria-label="Copy script">Copy</button>
+          </div>
+        </div>
+
+        <div class="docs-card">
+          <h3>Manual Installation</h3>
+          <p>Clone the repository and run the local installation script to place it in your system binaries directory.</p>
+          
+          <h4 class="platform-title">Unix Shell (Bash/Zsh)</h4>
+          <div class="code-block-container">
+            <pre><code>git clone https://github.com/doggy8088/mgit.git
+cd mgit
+./install.sh</code></pre>
+            <button class="copy-btn-small" data-clipboard="git clone https://github.com/doggy8088/mgit.git && cd mgit && ./install.sh" aria-label="Copy script">Copy</button>
+          </div>
+
+          <h4 class="platform-title">Windows PowerShell</h4>
+          <div class="code-block-container">
+            <pre><code>git clone https://github.com/doggy8088/mgit.git
+cd mgit
+.\install.ps1</code></pre>
+            <button class="copy-btn-small" data-clipboard="git clone https://github.com/doggy8088/mgit.git && cd mgit && .\install.ps1" aria-label="Copy script">Copy</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Usage Card -->
+      <div class="usage-card">
+        <h3>How to use</h3>
+        <p>Navigate to any directory containing subfolders that are Git repositories, and run your command:</p>
+        <div class="usage-grid">
+          <div class="usage-item">
+            <div class="usage-cmd">mgit</div>
+            <div class="usage-desc">List short status (<code>git status -s</code>) for all repositories.</div>
+          </div>
+          <div class="usage-item">
+            <div class="usage-cmd">mgit pull</div>
+            <div class="usage-desc">Performs a <code>git pull</code> inside every subrepository.</div>
+          </div>
+          <div class="usage-item">
+            <div class="usage-cmd">mgit log -n 1</div>
+            <div class="usage-desc">Displays the single latest commit across all repositories.</div>
+          </div>
+          <div class="usage-item">
+            <div class="usage-cmd">mgit checkout main</div>
+            <div class="usage-desc">Switches the active branch to <code>main</code> across all repos.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section id="faq" class="faq-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tagline">Questions</span>
+        <h2>Frequently Asked Questions</h2>
+        <p class="section-description">Clear answers to help you configure and troubleshoot mgit in your development flow.</p>
+      </div>
+
+      <div class="faq-list">
+        <details class="faq-item" id="faq-1">
+          <summary>What terminal shells are officially supported?</summary>
+          <div class="faq-answer">
+            <p>On macOS and Linux, the standard Bash and Zsh shells are fully supported out of the box. For Windows systems, <code>mgit.ps1</code> is compatible with PowerShell 5.1+ as well as PowerShell Core (<code>pwsh</code>).</p>
+          </div>
+        </details>
+
+        <details class="faq-item" id="faq-2">
+          <summary>Does it scan repositories nested inside folders recursively?</summary>
+          <div class="faq-answer">
+            <p>No, mgit is designed to only scan the <strong>first layer</strong> of subdirectories. This makes execution extremely fast and prevents nested node_modules or system build folders from causing infinite execution loops.</p>
+          </div>
+        </details>
+
+        <details class="faq-item" id="faq-3">
+          <summary>Does mgit support Git Submodules?</summary>
+          <div class="faq-answer">
+            <p>Yes. mgit checks for the existence of a <code>.git</code> entry in the subdirectory, whether it is a folder (standard Git repo) or a file (as used by Git submodules or workspaces). In either case, it executes correctly.</p>
+          </div>
+        </details>
+
+        <details class="faq-item" id="faq-4">
+          <summary>What if I run mgit in a directory that is itself a Git repository?</summary>
+          <div class="faq-answer">
+            <p>If there are no subdirectories containing Git repositories, but the current directory itself contains a <code>.git</code> repository, mgit will fallback to executing the command on the current repository directly. It acts as an transparent wrapper.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-container">
+      <div class="footer-brand">
+        <div class="logo">
+          <svg class="git-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="6" y1="3" x2="6" y2="15"></line>
+            <circle cx="18" cy="6" r="3"></circle>
+            <circle cx="6" cy="18" r="3"></circle>
+            <path d="M18 9a9 9 0 0 1-9 9"></path>
+          </svg>
+          <span>mgit</span>
+        </div>
+        <p>A simple yet powerful Git command-line companion.</p>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 <a href="https://www.facebook.com/will.fans/" target="_blank" rel="noopener" style="color: var(--accent-cyan); text-decoration: none; font-weight: 500;">Will 保哥的技術交流中心</a>. Open source under the MIT License.</p>
+        <div class="footer-links">
+          <a href="https://github.com/doggy8088/mgit" target="_blank" rel="noopener">GitHub Project</a>
+          <a href="https://github.com/doggy8088/mgit/blob/main/LICENSE" target="_blank" rel="noopener">License</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Interactive Terminal & Copy Logic -->
+  <script>
+    // Copy commands logic
+    const BASH_CMD = "curl -fsSL https://raw.githubusercontent.com/doggy8088/mgit/main/install.sh | bash";
+    const PWSH_CMD = "irm https://raw.githubusercontent.com/doggy8088/mgit/main/install.ps1 | iex";
+
+    const tabBash = document.getElementById("tab-bash");
+    const tabPwsh = document.getElementById("tab-pwsh");
+    const cmdText = document.getElementById("install-cmd-text");
+    const copyBtn = document.getElementById("copy-install-btn");
+    const tooltip = document.getElementById("copy-tooltip");
+
+    let currentShell = "bash";
+
+    tabBash.addEventListener("click", () => {
+      tabBash.classList.add("active");
+      tabPwsh.classList.remove("active");
+      cmdText.textContent = BASH_CMD;
+      currentShell = "bash";
+    });
+
+    tabPwsh.addEventListener("click", () => {
+      tabPwsh.classList.add("active");
+      tabBash.classList.remove("active");
+      cmdText.textContent = PWSH_CMD;
+      currentShell = "pwsh";
+    });
+
+    copyBtn.addEventListener("click", () => {
+      const textToCopy = cmdText.textContent;
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        tooltip.textContent = "Copied!";
+        tooltip.classList.add("visible");
+        setTimeout(() => {
+          tooltip.classList.remove("visible");
+          tooltip.textContent = "Copy";
+        }, 1500);
+      });
+    });
+
+    // Code copy buttons inside docs
+    document.querySelectorAll(".copy-btn-small").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const text = btn.getAttribute("data-clipboard");
+        navigator.clipboard.writeText(text).then(() => {
+          const original = btn.textContent;
+          btn.textContent = "Copied!";
+          btn.classList.add("copied");
+          setTimeout(() => {
+            btn.textContent = original;
+            btn.classList.remove("copied");
+          }, 1500);
+        });
+      });
+    });
+
+    // Simulated terminal workflows
+    const workflows = {
+      "mgit": [
+        { text: "$ mgit", delay: 300, class: "terminal-prompt-line" },
+        { text: "Running git operation: <span class='text-bold text-cyan'>git status -s</span>", delay: 400 },
+        { text: "", delay: 100 },
+        { text: "<span class='text-cyan'>================================================================================</span>", delay: 100 },
+        { text: "📂 Folder: <span class='text-yellow text-bold'>auth-service</span> │ Branch: <span class='text-green text-bold'>main</span>", delay: 150 },
+        { text: "<span class='text-cyan'>================================================================================</span>", delay: 50 },
+        { text: " <span class='text-red'>M</span> src/auth.ts", delay: 200 },
+        { text: " <span class='text-red'>??</span> tests/auth.test.ts", delay: 100 },
+        { text: "", delay: 50 },
+        { text: "<span class='text-cyan'>================================================================================</span>", delay: 50 },
+        { text: "📂 Folder: <span class='text-yellow text-bold'>payment-gateway</span> │ Branch: <span class='text-green text-bold'>feature/apple-pay</span>", delay: 150 },
+        { text: "<span class='text-cyan'>================================================================================</span>", delay: 50 },
+        { text: " <span class='text-green'>A</span> src/applepay.ts", delay: 250 },
+        { text: "", delay: 50 },
+        { text: "<span class='text-cyan'>================================================================================</span>", delay: 50 },
+        { text: "📂 Folder: <span class='text-yellow text-bold'>web-dashboard</span> │ Branch: <span class='text-green text-bold'>main</span>", delay: 150 },
+        { text: "<span class='text-cyan'>================================================================================</span>", delay: 50 },
+        { text: " <span class='text-dim'># clean workspace (no output)</span>", delay: 200 }
+      ],
+      "mgit pull": [
+        { text: "$ mgit pull", delay: 300, class: "terminal-prompt-line" },
+        { text: "Running git operation: <span class='text-bold text-cyan'>git pull</span>", delay: 400 },
+        { text: "", delay: 100 },
+        { text: "<span class='text-cyan'>================================================================================</span>", delay: 100 },
+        { text: "📂 Folder: <span class='text-yellow text-bold'>auth-service</span> │ Branch: <span class='text-green text-bold'>main</span>", delay: 150 },
+        { text: "<span class='text-cyan'>================================================================================</span>", delay: 50 },
+        { text: "Already up to date.", delay: 300 },
+        { text: "", delay: 50 },
+        { text: "<span class='text-cyan'>================================================================================</span>", delay: 50 },
+        { text: "📂 Folder: <span class='text-yellow text-bold'>payment-gateway</span> │ Branch: <span class='text-green text-bold'>feature/apple-pay</span>", delay: 150 },
+        { text: "<span class='text-cyan'>================================================================================</span>", delay: 50 },
+        { text: "Updating 7c49f82..a9d3e8e", delay: 150 },
+        { text: "Fast-forward", delay: 100 },
+        { text: " src/applepay.ts | 4 ++--", delay: 100 },
+        { text: " 1 file changed, 2 insertions(+), 2 deletions(-)", delay: 100 },
+        { text: "", delay: 50 },
+        { text: "<span class='text-cyan'>================================================================================</span>", delay: 50 },
+        { text: "📂 Folder: <span class='text-yellow text-bold'>web-dashboard</span> │ Branch: <span class='text-green text-bold'>main</span>", delay: 150 },
+        { text: "<span class='text-cyan'>================================================================================</span>", delay: 50 },
+        { text: "Already up to date.", delay: 200 }
+      ],
+      "mgit checkout main": [
+        { text: "$ mgit checkout main", delay: 300, class: "terminal-prompt-line" },
+        { text: "Running git operation: <span class='text-bold text-cyan'>git checkout main</span>", delay: 400 },
+        { text: "", delay: 100 },
+        { text: "<span class='text-cyan'>================================================================================</span>", delay: 100 },
+        { text: "📂 Folder: <span class='text-yellow text-bold'>auth-service</span> │ Branch: <span class='text-green text-bold'>main</span>", delay: 150 },
+        { text: "<span class='text-cyan'>================================================================================</span>", delay: 50 },
+        { text: "Already on 'main'", delay: 150 },
+        { text: "", delay: 50 },
+        { text: "<span class='text-cyan'>================================================================================</span>", delay: 50 },
+        { text: "📂 Folder: <span class='text-yellow text-bold'>payment-gateway</span> │ Branch: <span class='text-green text-bold'>feature/apple-pay</span>", delay: 150 },
+        { text: "<span class='text-cyan'>================================================================================</span>", delay: 50 },
+        { text: "Switched to branch 'main'", delay: 250 },
+        { text: "Your branch is up to date with 'origin/main'.", delay: 50 },
+        { text: "", delay: 50 },
+        { text: "<span class='text-cyan'>================================================================================</span>", delay: 50 },
+        { text: "📂 Folder: <span class='text-yellow text-bold'>web-dashboard</span> │ Branch: <span class='text-green text-bold'>main</span>", delay: 150 },
+        { text: "<span class='text-cyan'>================================================================================</span>", delay: 50 },
+        { text: "Already on 'main'", delay: 150 }
+      ],
+      "mgit log -n 1": [
+        { text: "$ mgit log -n 1", delay: 300, class: "terminal-prompt-line" },
+        { text: "Running git operation: <span class='text-bold text-cyan'>git log -n 1</span>", delay: 400 },
+        { text: "", delay: 100 },
+        { text: "<span class='text-cyan'>================================================================================</span>", delay: 100 },
+        { text: "📂 Folder: <span class='text-yellow text-bold'>auth-service</span> │ Branch: <span class='text-green text-bold'>main</span>", delay: 150 },
+        { text: "<span class='text-cyan'>================================================================================</span>", delay: 50 },
+        { text: "<span class='text-yellow'>commit f2a9042b5c68f9a2e37452d3a2fb0a18413998b4</span>", delay: 100 },
+        { text: "Author: Alex Rivera &lt;alex@example.com&gt;", delay: 50 },
+        { text: "Date:   Mon Jun 8 10:14:02 2026 +0800", delay: 50 },
+        { text: "", delay: 50 },
+        { text: "    fix: resolve OAuth token refresh token expiration bug", delay: 100 },
+        { text: "", delay: 50 },
+        { text: "<span class='text-cyan'>================================================================================</span>", delay: 50 },
+        { text: "📂 Folder: <span class='text-yellow text-bold'>payment-gateway</span> │ Branch: <span class='text-green text-bold'>main</span>", delay: 150 },
+        { text: "<span class='text-cyan'>================================================================================</span>", delay: 50 },
+        { text: "<span class='text-yellow'>commit d498eb10f2c81729b71ca4d63b20891d4e0ff9d2</span>", delay: 100 },
+        { text: "Author: Sam Chen &lt;sam@example.com&gt;", delay: 50 },
+        { text: "Date:   Sun Jun 7 18:32:15 2026 +0800", delay: 50 },
+        { text: "", delay: 50 },
+        { text: "    feat: implement Stripe checkout session redirect flow", delay: 100 },
+        { text: "", delay: 50 },
+        { text: "<span class='text-cyan'>================================================================================</span>", delay: 50 },
+        { text: "📂 Folder: <span class='text-yellow text-bold'>web-dashboard</span> │ Branch: <span class='text-green text-bold'>main</span>", delay: 150 },
+        { text: "<span class='text-cyan'>================================================================================</span>", delay: 50 },
+        { text: "<span class='text-yellow'>commit a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0</span>", delay: 100 },
+        { text: "Author: Jesse Lin &lt;jesse@example.com&gt;", delay: 50 },
+        { text: "Date:   Fri Jun 5 14:05:47 2026 +0800", delay: 50 },
+        { text: "", delay: 50 },
+        { text: "    refactor: optimize dashboard grid layouts and chart responsiveness", delay: 100 }
+      ]
+    };
+
+    const terminalContent = document.getElementById("demo-terminal-content");
+    const terminalTitle = document.getElementById("demo-terminal-title");
+    const tabs = document.querySelectorAll(".demo-tab");
+    let activeTimeout = null;
+
+    async function runTerminalSimulation(cmd) {
+      if (activeTimeout) {
+        clearTimeout(activeTimeout);
+      }
+      terminalContent.innerHTML = "";
+      terminalTitle.textContent = cmd;
+
+      const lines = workflows[cmd];
+      if (!lines) return;
+
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        await new Promise(resolve => {
+          activeTimeout = setTimeout(() => {
+            const lineEl = document.createElement("div");
+            lineEl.className = "terminal-line " + (line.class || "");
+            
+            // Simulating prompt writing
+            if (line.class === "terminal-prompt-line") {
+              lineEl.innerHTML = `<span class="terminal-prompt">$</span> <span class="typing"></span>`;
+              terminalContent.appendChild(lineEl);
+              
+              const textToType = line.text.replace("$ ", "");
+              let charIndex = 0;
+              const typingEl = lineEl.querySelector(".typing");
+              
+              function typeChar() {
+                if (charIndex < textToType.length) {
+                  typingEl.textContent += textToType[charIndex];
+                  charIndex++;
+                  activeTimeout = setTimeout(typeChar, 40);
+                } else {
+                  typingEl.classList.remove("typing");
+                  resolve();
+                }
+              }
+              typeChar();
+            } else {
+              lineEl.innerHTML = line.text;
+              terminalContent.appendChild(lineEl);
+              
+              // Scroll to bottom of terminal content
+              terminalContent.scrollTop = terminalContent.scrollHeight;
+              resolve();
+            }
+          }, line.delay);
+        });
+      }
+    }
+
+    tabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        tabs.forEach(t => t.classList.remove("active"));
+        tab.classList.add("active");
+        const cmd = tab.getAttribute("data-cmd");
+        runTerminalSimulation(cmd);
+      });
+    });
+
+    // Run first simulation on load
+    runTerminalSimulation("mgit");
+
+    // 1. 3D Card Tilt Effect
+    function initTilt(selector, targetInnerSelector) {
+      const elements = document.querySelectorAll(selector);
+      elements.forEach(element => {
+        const target = targetInnerSelector ? element.querySelector(targetInnerSelector) : element;
+        if (!target) return;
+        
+        element.addEventListener("mousemove", (e) => {
+          const rect = element.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          
+          const xc = rect.width / 2;
+          const yc = rect.height / 2;
+          
+          // Calculate angle based on position (-10 to 10 degrees)
+          const angleX = (yc - y) / (yc / 10);
+          const angleY = (x - xc) / (xc / 10);
+          
+          target.style.transform = `perspective(1000px) rotateX(${angleX}deg) rotateY(${angleY}deg) scale3d(1.02, 1.02, 1.02)`;
+        });
+
+        element.addEventListener("mouseleave", () => {
+          target.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+        });
+      });
+    }
+
+    // Initialize 3D Tilt on the feature cards
+    initTilt(".feature-card");
+
+    // 2. Parallax Scroll Effect
+    window.addEventListener("scroll", () => {
+      const scrolled = window.scrollY;
+      const glow1 = document.querySelector(".glow-1");
+      const glow2 = document.querySelector(".glow-2");
+      const shape1 = document.querySelector(".parallax-shape-1");
+      const shape2 = document.querySelector(".parallax-shape-2");
+      const shape3 = document.querySelector(".parallax-shape-3");
+      const heroContent = document.querySelector(".hero-content");
+      const heroVisual = document.querySelector(".hero-visual");
+      
+      if (glow1) glow1.style.transform = `translateY(${scrolled * 0.2}px)`;
+      if (glow2) glow2.style.transform = `translateY(${scrolled * -0.1}px)`;
+      if (shape1) shape1.style.transform = `translateY(${scrolled * 0.4}px) rotate(${scrolled * 0.08}deg)`;
+      if (shape2) shape2.style.transform = `translateY(${scrolled * -0.25}px)`;
+      if (shape3) shape3.style.transform = `translateY(${scrolled * 0.15}px) rotate(${scrolled * -0.05}deg)`;
+      
+      // Gentle parallax separation between the text column and terminal mockup
+      if (window.innerWidth > 992) {
+        if (heroContent) heroContent.style.transform = `translateY(${scrolled * 0.06}px)`;
+        if (heroVisual) heroVisual.style.transform = `translateY(${scrolled * 0.12}px)`;
+      } else {
+        if (heroContent) heroContent.style.transform = "none";
+        if (heroVisual) heroVisual.style.transform = "none";
+      }
+    });
+
+    // 3. Scroll Reveal Animation Observer
+    const revealElements = document.querySelectorAll(".feature-card, .section-header, .demo-wrapper, .docs-card, .usage-card, .faq-item");
+    
+    // Inject scroll reveal transition styles
+    const revealStyle = document.createElement("style");
+    revealStyle.textContent = `
+      .reveal-element {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .reveal-element.revealed {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    `;
+    document.head.appendChild(revealStyle);
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("revealed");
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.15,
+      rootMargin: "0px 0px -50px 0px"
+    });
+
+    revealElements.forEach(el => {
+      el.classList.add("reveal-element");
+      revealObserver.observe(el);
+    });
+  </script>
+</body>
+</html>
+

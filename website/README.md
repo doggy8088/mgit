@@ -1,6 +1,6 @@
 # mgit website
 
-`mgit` 的產品網站：首頁（Persuade）加上記錄本七章（Read），zh-TW 為主、`en/` 是完整鏡像。
+`mgit` 的產品網站：首頁（Persuade）加上記錄本八章（Read），zh-TW 為主、`en/` 是完整鏡像。
 **瀏覽網站不需要任何建置步驟**：倉庫裡的 HTML／CSS／JS 就是成品，開檔案或丟上任何靜態主機都能跑。
 
 `build/` 是**產生器**（作者工具，不是執行期相依）：文案、表格、錄製輸出與兩個語言版本都在
@@ -30,7 +30,7 @@ open website/index.html
 index.html          zh-TW 首頁
 en/index.html       EN 首頁
 docs/index.html     記錄本首頁（七章索引）
-docs/*.html         記錄本七章（install／options／output／discovery／exit-codes／platforms／changes）
+docs/*.html         記錄本八章（use-cases／install／options／output／discovery／exit-codes／platforms／changes）
 en/docs/*.html      EN 版本
 assets/site.css     設計系統：記錄紙、多色筆墨、儀器面板刻字、打孔白窗、刻字規格板
 assets/recorder.js  由頁面自帶的 run record 畫筆跡（含筆的慣性、掃描馬車、重播）、複製鈕

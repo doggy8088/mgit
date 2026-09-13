@@ -226,9 +226,9 @@ def main():
             + esc("記錄本" if zh else "Logbook")
             + '</h1><p class="band__intro">'
             + esc(
-                "七章：每個選項、每個結束代碼、每個平台差異。"
+                "八章：為什麼用它、怎麼裝、每個選項、每個結束代碼、每個平台差異。"
                 if zh
-                else "Seven chapters: every option, every exit code, every platform difference."
+                else "Eight chapters: why, how to install, every option, every exit code, every platform difference."
             )
             + "</p></div></div>"
             '<nav class="logbook">'

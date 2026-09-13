@@ -16,6 +16,11 @@ README 另外記錄了自動化會用到的行為（結束代碼彙總、摘要�
 
 ## Product Purpose
 
+**經典用法（使用者的初衷）**：應用程式、共用套件、範例、部署腳本、文件站各自是一個 repo，散在同一個
+工作目錄底下，彼此用相對路徑互相參考，卻沒有用 `git submodule` 綁在一起。mgit 就是為此而寫：
+**一個指令，管理多個子資料夾下的 git repo**（`mgit`、`mgit pull`、`mgit log -n 1`…）。
+它不改變任何 repo 的內容，也不處理版本關係——需要精確鎖定版本用 submodule，需要單一 CI 與發佈用 monorepo。
+
 `mgit` 把「對每個儲存庫做同一件事」變成一個指令：不帶參數等同在每個子目錄的儲存庫執行 `git status -s`，`mgit pull`、`mgit fetch --all --prune`、`mgit log -n 1` 則把 git 指令原封不動套用到全部儲存庫。
 
 存在的理由：把多 repo 工作台上重複的 shell 迴圈、以及 Bash／PowerShell 兩份腳本各自為政的不一致收斂成單一、可預期、可驗證的工具。

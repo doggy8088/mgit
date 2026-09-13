@@ -472,6 +472,14 @@ button {
   margin-top: var(--s1);
 }
 
+.paperhead__case {
+  margin-top: var(--s2);
+  max-width: 62ch;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
 .instrument__note {
   margin-top: var(--s3);
   max-width: 84ch;

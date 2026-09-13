@@ -15,6 +15,7 @@ from common import (
     CHAPTERS,
     SVG_ARROW,
     SVG_REPLAY,
+    cmdline,
     esc,
     logbook_rows,
     plate,
@@ -205,6 +206,14 @@ def build(lang, captures):
         )
         + "</p>"
         + window(INSTALL_SH, lang, label="macOS · Linux")
+        + '<p class="paperhead__case">'
+        + (
+            "經典用法：散在同一個工作目錄、彼此互相參考的多個 repo——不用 <code>git submodule</code> 也能一起管。"
+            if zh
+            else "The classic case: several repositories scattered in one working directory, referring to each "
+            "other, with no <code>git submodule</code> in sight."
+        )
+        + "</p>"
         + "</div>"
         + instrument(
             lang,
@@ -225,6 +234,50 @@ def build(lang, captures):
             if zh
             else "A real session: <code>mgit pull</code> recorded in <code>/tmp/mgit-mixed</code> (six "
             "repositories); the spike on CH 05 is the one that failed."
+        )
+        + "</p></div></section>"
+    )
+
+    # --------------------------------------------------------- classic case
+    case_commands = (
+        [
+            ("mgit --list", "先看清楚會動到哪些 repo"),
+            ("mgit", "每個 repo 的狀態一次看完"),
+            ("mgit pull", "一次全部更新"),
+            ("mgit log --oneline -n 1", "一次看每個 repo 的最新一筆"),
+        ]
+        if zh
+        else [
+            ("mgit --list", "see which repositories will be touched"),
+            ("mgit", "every repository's status at once"),
+            ("mgit pull", "update them all in one run"),
+            ("mgit log --oneline -n 1", "the latest commit of each"),
+        ]
+    )
+    parts.append(
+        '<section class="band" aria-labelledby="case-title"><div class="shell">'
+        '<div class="band__head"><div>'
+        '<h2 class="band__title" id="case-title">'
+        + esc("經典用法：散落各處的 repo，一個目錄一起管" if zh else "The classic case: scattered repositories, one directory")
+        + '</h2><p class="band__intro">'
+        + (
+            "應用程式、共用套件、範例、部署腳本各自是一個 repo，彼此用相對路徑互相參考，卻沒有用 "
+            "<code>git submodule</code> 綁在一起——把它們 clone 成同一個父目錄下的子資料夾，就可以一個指令一起管。"
+            if zh
+            else "The app, a shared package, examples, deploy scripts: each its own repository, referring to each "
+            "other by relative path, with no <code>git submodule</code> wiring them together. Clone them as "
+            "sibling folders and one command drives them all."
+        )
+        + "</p></div></div>"
+        + "".join(cmdline(command, lang, label=note) for command, note in case_commands)
+        + '<p class="band__footnote">'
+        + (
+            "mgit 不會在 repo 裡放任何檔案，也不改變 repo 之間的關係：它只是把同一個指令送到每個子目錄。"
+            "要精確鎖定版本請用 submodule；要單一 CI 與發佈，那是 monorepo 的問題。"
+            if zh
+            else "mgit puts no files inside a repository and changes no relationship between them: it only sends the "
+            "same command to every child directory. Pin versions with submodules; unify CI and releases with a "
+            "monorepo."
         )
         + "</p></div></section>"
     )
@@ -509,9 +562,9 @@ def build(lang, captures):
         + esc("記錄本" if zh else "The logbook")
         + '</h2><p class="band__intro">'
         + (
-            "七章：每個選項、每個結束代碼、每個平台差異。"
+            "八章：為什麼用它、怎麼裝、每個選項、每個結束代碼、每個平台差異。"
             if zh
-            else "Seven chapters: every option, every exit code, every platform difference."
+            else "Eight chapters: why, how to install, every option, every exit code, every platform difference."
         )
         + '</p></div></div><nav class="logbook">'
         + logbook_rows(lang, "docs/")

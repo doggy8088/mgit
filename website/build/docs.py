@@ -139,6 +139,79 @@ def chapter(slug, lang, captures):
     zh = lang == "zh"
     body = []
 
+    if slug == "use-cases":
+        body.append(("h2", "為什麼會有 mgit" if zh else "Why mgit exists"))
+        body.append(
+            (
+                "p",
+                "專案一多，repo 就會散在同一個工作目錄底下：應用程式、共用套件、範例、部署腳本、文件站"
+                "各自是一個 repo，彼此要用相對路徑互相參考，卻沒有用 <code>git submodule</code> 綁在一起。"
+                "mgit 就是為了這個情境寫的：<b>一個指令，管理多個子資料夾下的 git repo</b>。"
+                if zh
+                else "Once a project grows, repositories end up scattered across one working directory: the app, "
+                "a shared package, examples, deploy scripts, a docs site — each its own repository, referring "
+                "to each other by relative path, with no <code>git submodule</code> wiring them together. mgit "
+                "was written for exactly that: <b>one command to manage the git repositories under several "
+                "child folders</b>.",
+            )
+        )
+        body.append(("h2", "典型的一天" if zh else "A typical day"))
+        body.append(
+            (
+                "ul",
+                [
+                    "<code>mgit --list</code>：先看清楚這個目錄下會被動到哪些 repo。"
+                    if zh
+                    else "<code>mgit --list</code>: see which repositories under this directory will be touched.",
+                    "<code>mgit</code>：每個 repo 的狀態一次看完（不帶參數＝<code>git status -s</code>）。"
+                    if zh
+                    else "<code>mgit</code>: every repository's status at once (no arguments = <code>git status -s</code>).",
+                    "<code>mgit pull</code>：一次把全部更新，失敗的會列在摘要裡。"
+                    if zh
+                    else "<code>mgit pull</code>: update them all in one run; failures are listed in the summary.",
+                    "<code>mgit log --oneline -n 1</code>：一次看每個 repo 的最新一筆。"
+                    if zh
+                    else "<code>mgit log --oneline -n 1</code>: the latest commit of each repository.",
+                    "<code>mgit --fail-fast pull</code>：有衝突就停下來處理，不要一路錯到底。"
+                    if zh
+                    else "<code>mgit --fail-fast pull</code>: stop at the first conflict instead of ploughing on.",
+                ],
+            )
+        )
+        body.append(("runlog", ("mgit pull", "exit 128 · 5 succeeded, 1 failed" if not zh else "exit 128 · 5 成功 1 失敗", captures["run_pull"])))
+        body.append(("h2", "與 submodule、monorepo 的差別" if zh else "How it differs from submodules and from a monorepo"))
+        rows = (
+            [
+                ("<code>git submodule</code>", "父專案記錄每個子模組的 commit；要更新就得 commit 父專案", "要在父專案放 <code>.gitmodules</code>，子 repo 也要有 remote", "需要精確鎖定版本、可重現的建置"),
+                ("單一 monorepo", "一個 repo、一條歷史", "要把所有東西搬進去（歷史、權限、CI、發佈節奏一起改）", "團隊與流程已經統一"),
+                ("mgit", "沒有關係，每個 repo 各自獨立", "不用：mgit 不會在 repo 裡放任何檔案", "repo 散在一個工作目錄、需要一起操作"),
+            ]
+            if zh
+            else [
+                ("<code>git submodule</code>", "The parent records each submodule's commit; updating means committing the parent", "Needs <code>.gitmodules</code> in the parent and a remote in each child", "Pinned versions and reproducible builds"),
+                ("One monorepo", "One repository, one history", "Everything moves in: history, permissions, CI and release rhythm change together", "The team and its process are already unified"),
+                ("mgit", "No relationship at all; every repository stays independent", "None: mgit puts no files inside a repository", "Repositories scattered in one working directory that must move together"),
+            ]
+        )
+        body.append(("table", (["做法" if zh else "Approach", "版本由誰管" if zh else "Who owns the version", "要動到 repo 內容嗎" if zh else "Does it touch the repositories", "什麼時候適合" if zh else "When it fits"], list(rows))))
+        body.append(("h2", "什麼時候不適合" if zh else "When it is the wrong tool"))
+        body.append(
+            (
+                "ul",
+                [
+                    "需要精確鎖定每個相依的版本、建置要可重現 → 用 <code>git submodule</code> 或 vendoring。"
+                    if zh
+                    else "You need pinned dependency versions and reproducible builds → use <code>git submodule</code> or vendoring.",
+                    "需要單一的 CI、單一的發佈與權限 → 那其實是 monorepo 的問題，先把 repo 合併。"
+                    if zh
+                    else "You need one CI, one release, one permission model → that is a monorepo problem; merge the repositories first.",
+                    "mgit 不改變任何 repo 的內容，也不解決版本關係：它只是把同一個指令送到每個子目錄。"
+                    if zh
+                    else "mgit changes nothing inside the repositories and resolves no version relationship: it only sends the same command to every child directory.",
+                ],
+            )
+        )
+
     if slug == "install":
         body.append(("h2", "三條路" if zh else "Three paths"))
         body.append(

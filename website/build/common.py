@@ -19,8 +19,16 @@ INSTALL_PS = "irm https://raw.githubusercontent.com/doggy8088/mgit/main/install.
 
 CHAPTERS = [
     (
-        "install",
+        "use-cases",
         "CH 01",
+        "使用情境",
+        "When to use it",
+        "為什麼會有 mgit：散落各處、彼此互相參考、又沒有用 submodule 的 repo",
+        "Why mgit exists: repositories that reference each other and are not wired together with submodules",
+    ),
+    (
+        "install",
+        "CH 02",
         "安裝",
         "Install",
         "三種安裝方式、驗證檢查碼，以及從原始碼建置",
@@ -28,7 +36,7 @@ CHAPTERS = [
     ),
     (
         "options",
-        "CH 02",
+        "CH 03",
         "選項",
         "Options",
         "十三個選項、解析規則與常用範例",
@@ -36,7 +44,7 @@ CHAPTERS = [
     ),
     (
         "output",
-        "CH 03",
+        "CH 04",
         "輸出與行為",
         "Output and behavior",
         "標題格式、安靜的儲存庫、摘要與顏色政策",
@@ -44,7 +52,7 @@ CHAPTERS = [
     ),
     (
         "discovery",
-        "CH 04",
+        "CH 05",
         "它怎麼找儲存庫",
         "Repository discovery",
         "深度、worktree、submodule、symlink 與跨平台一致的排序",
@@ -52,7 +60,7 @@ CHAPTERS = [
     ),
     (
         "exit-codes",
-        "CH 05",
+        "CH 06",
         "結束代碼與環境變數",
         "Exit codes and environment",
         "成敗如何回報，環境如何覆寫預設值",
@@ -60,7 +68,7 @@ CHAPTERS = [
     ),
     (
         "platforms",
-        "CH 06",
+        "CH 07",
         "跨平台行為",
         "Cross-platform behavior",
         "Windows 主控台、locale、SIGPIPE 與 git 的尋找方式",
@@ -68,7 +76,7 @@ CHAPTERS = [
     ),
     (
         "changes",
-        "CH 07",
+        "CH 08",
         "版本、發行與 npm",
         "Versions, releases and npm",
         "與 1.0 的差異、標籤驅動的發行流程與 npm 套件",

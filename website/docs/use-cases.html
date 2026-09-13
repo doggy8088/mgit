@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>使用情境 — mgit 2.0.2</title>
+<meta name="description" content="為什麼會有 mgit：散落各處、彼此互相參考、又沒有用 submodule 的 repo">
+<link rel="stylesheet" href="../assets/site.css">
+<meta name="color-scheme" content="light">
+</head>
+<body class="paper-log">
+<a class="skip" href="#main">跳至主要內容</a>
+<header class="head"><div class="shell head__inner">
+<a class="wordmark" href="../index.html">
+<span class="wordmark__mark">mgit</span>
+<span class="wordmark__spec">v2.0.2 · MIT · 8 targets</span>
+</a>
+<nav class="head__links">
+<a href="../docs/">記錄本</a>
+<a href="https://github.com/doggy8088/mgit">GitHub</a>
+<a href="https://github.com/doggy8088/mgit/releases">發行檔</a>
+<a href="https://www.npmjs.com/package/@willh/mgit">npm</a>
+</nav>
+<span class="lang" role="group" aria-label="語言">
+<a href="../index.html" aria-current="true">中文</a>
+<a href="../en/docs/use-cases.html">EN</a>
+</span>
+</div></header>
+<main id="main">
+<div class="shell doc"><nav class="docnav" aria-label="章節"><p class="docnav__title"><span>記錄本 · mgit 2.0.2</span></p><div class="docnav__list"><a class="docnav__item" href="use-cases.html" aria-current="page"><span class="docnav__ch">CH 01</span><span>使用情境</span></a><a class="docnav__item" href="install.html"><span class="docnav__ch">CH 02</span><span>安裝</span></a><a class="docnav__item" href="options.html"><span class="docnav__ch">CH 03</span><span>選項</span></a><a class="docnav__item" href="output.html"><span class="docnav__ch">CH 04</span><span>輸出與行為</span></a><a class="docnav__item" href="discovery.html"><span class="docnav__ch">CH 05</span><span>它怎麼找儲存庫</span></a><a class="docnav__item" href="exit-codes.html"><span class="docnav__ch">CH 06</span><span>結束代碼與環境變數</span></a><a class="docnav__item" href="platforms.html"><span class="docnav__ch">CH 07</span><span>跨平台行為</span></a><a class="docnav__item" href="changes.html"><span class="docnav__ch">CH 08</span><span>版本、發行與 npm</span></a></div></nav><article class="docmain"><header class="docmain__head"><h1 class="docmain__title">使用情境</h1><p class="docmain__intro">為什麼會有 mgit：散落各處、彼此互相參考、又沒有用 submodule 的 repo</p></header><nav class="toc" aria-label="本章內容"><p class="toc__title">本章內容</p><div class="toc__list"><a class="toc__item" data-level="2" href="#sec-1"><span>為什麼會有 mgit</span></a><a class="toc__item" data-level="2" href="#sec-2"><span>典型的一天</span></a><a class="toc__item" data-level="2" href="#sec-3"><span>與 submodule、monorepo 的差別</span></a><a class="toc__item" data-level="2" href="#sec-4"><span>什麼時候不適合</span></a></div></nav><div class="prose"><h2 id="sec-1">為什麼會有 mgit</h2>
+<p>專案一多，repo 就會散在同一個工作目錄底下：應用程式、共用套件、範例、部署腳本、文件站各自是一個 repo，彼此要用相對路徑互相參考，卻沒有用 <code>git submodule</code> 綁在一起。mgit 就是為了這個情境寫的：<b>一個指令，管理多個子資料夾下的 git repo</b>。</p>
+<h2 id="sec-2">典型的一天</h2>
+<ul><li><code>mgit --list</code>：先看清楚這個目錄下會被動到哪些 repo。</li><li><code>mgit</code>：每個 repo 的狀態一次看完（不帶參數＝<code>git status -s</code>）。</li><li><code>mgit pull</code>：一次把全部更新，失敗的會列在摘要裡。</li><li><code>mgit log --oneline -n 1</code>：一次看每個 repo 的最新一筆。</li><li><code>mgit --fail-fast pull</code>：有衝突就停下來處理，不要一路錯到底。</li></ul>
+<div class="runlog"><div class="runlog__bar"><span>mgit pull</span><span>exit 128 · 5 成功 1 失敗</span></div><div class="runlog__body"><span class="rule">================================================================================</span>
+<span class="folder">📂 Folder: api-gateway │ Branch: main</span>
+<span class="rule">================================================================================</span>
+<span class="">Already up to date.</span>
+<span class="quiet"> </span>
+<span class="rule">================================================================================</span>
+<span class="folder">📂 Folder: billing-worker │ Branch: main</span>
+<span class="rule">================================================================================</span>
+<span class="">Already up to date.</span>
+<span class="quiet"> </span>
+<span class="rule">================================================================================</span>
+<span class="folder">📂 Folder: docs-site │ Branch: main</span>
+<span class="rule">================================================================================</span>
+<span class="">Already up to date.</span>
+<span class="quiet"> </span>
+<span class="rule">================================================================================</span>
+<span class="folder">📂 Folder: infra-scripts │ Branch: main</span>
+<span class="rule">================================================================================</span>
+<span class="">Already up to date.</span>
+<span class="quiet"> </span>
+<span class="rule">================================================================================</span>
+<span class="folder">📂 Folder: web-console │ Branch: main</span>
+<span class="rule">================================================================================</span>
+<span class="err">error: cannot pull with rebase: You have unstaged changes.</span>
+<span class="err">error: Please commit or stash them.</span>
+<span class="quiet"> </span>
+<span class="rule">================================================================================</span>
+<span class="folder">📂 Folder: web-console-hotfix │ Branch: hotfix</span>
+<span class="rule">================================================================================</span>
+<span class="">Already up to date.</span>
+<span class="quiet"> </span>
+<span class="rule">────────────────────────────────────────────────────────────────────────────────</span>
+<span class="sum">mgit: 6 repositories, 5 succeeded, 1 failed</span>
+<span class="err">  ✗ web-console (exit code 128)</span></div><p class="runlog__hint">← 可橫向捲動</p></div>
+<h2 id="sec-3">與 submodule、monorepo 的差別</h2>
+<table class="table"><thead><tr><th>做法</th><th>版本由誰管</th><th>要動到 repo 內容嗎</th><th>什麼時候適合</th></tr></thead><tbody><tr><td><code>git submodule</code></td><td>父專案記錄每個子模組的 commit；要更新就得 commit 父專案</td><td>要在父專案放 <code>.gitmodules</code>，子 repo 也要有 remote</td><td>需要精確鎖定版本、可重現的建置</td></tr><tr><td>單一 monorepo</td><td>一個 repo、一條歷史</td><td>要把所有東西搬進去（歷史、權限、CI、發佈節奏一起改）</td><td>團隊與流程已經統一</td></tr><tr><td>mgit</td><td>沒有關係，每個 repo 各自獨立</td><td>不用：mgit 不會在 repo 裡放任何檔案</td><td>repo 散在一個工作目錄、需要一起操作</td></tr></tbody></table>
+<h2 id="sec-4">什麼時候不適合</h2>
+<ul><li>需要精確鎖定每個相依的版本、建置要可重現 → 用 <code>git submodule</code> 或 vendoring。</li><li>需要單一的 CI、單一的發佈與權限 → 那其實是 monorepo 的問題，先把 repo 合併。</li><li>mgit 不改變任何 repo 的內容，也不解決版本關係：它只是把同一個指令送到每個子目錄。</li></ul></div><nav class="pager"><a class="pager__next" href="install.html"><span>下一章 · CH 02</span>安裝</a></nav></article></div>
+</main>
+<footer class="foot"><div class="shell foot__inner">
+<dl class="foot__group"><dt>發行</dt>
+<dd><a href="https://github.com/doggy8088/mgit/releases">Release 2.0.2</a></dd>
+<dd><a href="https://github.com/doggy8088/mgit/blob/main/CHANGELOG.md">CHANGELOG.md</a></dd>
+</dl>
+<dl class="foot__group"><dt>安裝</dt>
+<dd><a href="https://github.com/doggy8088/mgit/blob/main/install.sh">install.sh</a></dd>
+<dd><a href="https://github.com/doggy8088/mgit/blob/main/install.ps1">install.ps1</a></dd>
+</dl>
+<dl class="foot__group"><dt>套件</dt>
+<dd><a href="https://www.npmjs.com/package/@willh/mgit">@willh/mgit</a></dd>
+<dd><a href="https://github.com/doggy8088/mgit/blob/main/npm/PUBLISHING.md">npm/PUBLISHING.md</a></dd>
+</dl>
+</div>
+<div class="shell foot__colophon"><span>© 2026 Will 保哥 · MIT 授權 · 示範資料是 2.0.2 版二進位在示範工作台錄下來的真實 session</span><span><a href="https://github.com/doggy8088/mgit/blob/main/LICENSE">MIT</a></span></div>
+</footer>
+<script src="../assets/recorder.js" defer></script>
+</body>
+</html>

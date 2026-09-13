@@ -6,6 +6,7 @@
 <title>使用情境 — mgit 2.0.2</title>
 <meta name="description" content="為什麼會有 mgit：散落各處、彼此互相參考、又沒有用 submodule 的 repo">
 <link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
 <meta name="color-scheme" content="light">
 </head>
 <body class="paper-log">
@@ -30,7 +31,7 @@
 <p>專案一多，repo 就會散在同一個工作目錄底下：應用程式、共用套件、範例、部署腳本、文件站各自是一個 repo，彼此要用相對路徑互相參考，卻沒有用 <code>git submodule</code> 綁在一起。mgit 就是為了這個情境寫的：<b>一個指令，管理多個子資料夾下的 git repo</b>。</p>
 <h2 id="sec-2">典型的一天</h2>
 <ul><li><code>mgit --list</code>：先看清楚這個目錄下會被動到哪些 repo。</li><li><code>mgit</code>：每個 repo 的狀態一次看完（不帶參數＝<code>git status -s</code>）。</li><li><code>mgit pull</code>：一次把全部更新，失敗的會列在摘要裡。</li><li><code>mgit log --oneline -n 1</code>：一次看每個 repo 的最新一筆。</li><li><code>mgit --fail-fast pull</code>：有衝突就停下來處理，不要一路錯到底。</li></ul>
-<div class="runlog"><div class="runlog__bar"><span>mgit pull</span><span>exit 128 · 5 成功 1 失敗</span></div><div class="runlog__body"><span class="rule">================================================================================</span>
+<div class="runlog"><div class="runlog__bar"><span>mgit pull</span><span>exit 128 · 5 成功 1 失敗</span></div><div class="runlog__body" tabindex="0" role="group" aria-label="mgit pull 的輸出"><span class="rule">================================================================================</span>
 <span class="folder">📂 Folder: api-gateway │ Branch: main</span>
 <span class="rule">================================================================================</span>
 <span class="">Already up to date.</span>

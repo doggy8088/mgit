@@ -4,8 +4,8 @@
    The strips are drawn from recorded sessions of the real binary. Two runs
    were captured on 2026-09-14 in a demo workspace holding six repositories:
 
-     run a: mgit --summary   →  exit 0,   6 repositories, 6 succeeded
-     run b: mgit pull        →  exit 128, 6 repositories, 0 succeeded, 6 failed
+     mgit --summary      →  exit 0,   6 repositories, 6 succeeded
+     mgit pull           →  exit 128, 6 repositories, 0 succeeded, 6 failed
 
    Nothing here is invented: channel names, branches, change counts, failure
    lines and exit codes are the recorded values.
@@ -379,10 +379,33 @@
     });
   }
 
+  /* A run log is real terminal output: when its longest line is wider than the
+     printed frame, the reader gets the hint and the container is focusable, so
+     the rest of the evidence is reachable without a mouse. */
+  function initRunlogs() {
+    var logs = [].slice.call(document.querySelectorAll(".runlog"));
+    if (!logs.length) return;
+    function check() {
+      logs.forEach(function (log) {
+        var body = log.querySelector(".runlog__body");
+        if (!body) return;
+        var overflows = body.scrollWidth - body.clientWidth > 2;
+        log.setAttribute("data-scrollable", overflows ? "true" : "false");
+      });
+    }
+    check();
+    var timer = null;
+    window.addEventListener("resize", function () {
+      if (timer) window.clearTimeout(timer);
+      timer = window.setTimeout(check, 150);
+    });
+  }
+
   function init() {
     initStrips();
     initLegendLinks();
     initSwitches();
+    initRunlogs();
   }
 
   if (document.readyState === "loading") {

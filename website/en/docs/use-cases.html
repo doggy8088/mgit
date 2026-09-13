@@ -6,6 +6,7 @@
 <title>When to use it — mgit 2.0.2</title>
 <meta name="description" content="Why mgit exists: repositories that reference each other and are not wired together with submodules">
 <link rel="stylesheet" href="../../assets/site.css">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
 <meta name="color-scheme" content="light">
 </head>
 <body class="paper-log">
@@ -30,7 +31,7 @@
 <p>Once a project grows, repositories end up scattered across one working directory: the app, a shared package, examples, deploy scripts, a docs site — each its own repository, referring to each other by relative path, with no <code>git submodule</code> wiring them together. mgit was written for exactly that: <b>one command to manage the git repositories under several child folders</b>.</p>
 <h2 id="sec-2">A typical day</h2>
 <ul><li><code>mgit --list</code>: see which repositories under this directory will be touched.</li><li><code>mgit</code>: every repository's status at once (no arguments = <code>git status -s</code>).</li><li><code>mgit pull</code>: update them all in one run; failures are listed in the summary.</li><li><code>mgit log --oneline -n 1</code>: the latest commit of each repository.</li><li><code>mgit --fail-fast pull</code>: stop at the first conflict instead of ploughing on.</li></ul>
-<div class="runlog"><div class="runlog__bar"><span>mgit pull</span><span>exit 128 · 5 succeeded, 1 failed</span></div><div class="runlog__body"><span class="rule">================================================================================</span>
+<div class="runlog"><div class="runlog__bar"><span>mgit pull</span><span>exit 128 · 5 succeeded, 1 failed</span></div><div class="runlog__body" tabindex="0" role="group" aria-label="mgit pull output"><span class="rule">================================================================================</span>
 <span class="folder">📂 Folder: api-gateway │ Branch: main</span>
 <span class="rule">================================================================================</span>
 <span class="">Already up to date.</span>

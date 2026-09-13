@@ -274,12 +274,18 @@ def runlog(title, meta, raw_text, lang="zh"):
         + esc("← 可橫向捲動" if lang == "zh" else "← scrolls sideways")
         + "</p>"
     )
+    # The body is real output and can be wider than the frame: it stays
+    # scrollable and focusable, and the hint is shown by the recorder whenever
+    # the container actually overflows.
+    body_label = title + (" 的輸出" if lang == "zh" else " output")
     return (
         '<div class="runlog"><div class="runlog__bar"><span>'
         + esc(title)
         + "</span><span>"
         + esc(meta)
-        + '</span></div><div class="runlog__body">'
+        + '</span></div><div class="runlog__body" tabindex="0" role="group" aria-label="'
+        + esc(body_label)
+        + '">'
         + "\n".join(lines)
         + "</div>"
         + hint
@@ -426,6 +432,9 @@ def page(*, lang, root, title, description, body, counterpart, canonical, body_c
         + '<link rel="stylesheet" href="'
         + root
         + 'assets/site.css">\n'
+        '<link rel="icon" href="'
+        + root
+        + 'assets/favicon.svg" type="image/svg+xml">\n'
         '<meta name="color-scheme" content="light">\n'
         "</head>\n<body"
         + (' class="' + body_class + '"' if body_class else "")

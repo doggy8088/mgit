@@ -6,6 +6,7 @@
 <title>Repository discovery — mgit 2.0.2</title>
 <meta name="description" content="Depth, worktrees, submodules, symlinks and one ordering on every OS">
 <link rel="stylesheet" href="../../assets/site.css">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
 <meta name="color-scheme" content="light">
 </head>
 <body class="paper-log">
@@ -30,7 +31,7 @@
 <ul><li>The walk starts in the current directory (level 1 by default; <code>--depth</code> goes deeper).</li><li>A <code>.git</code> directory or a <code>.git</code> file both count, so <code>git worktree</code> and submodules are recognised.</li><li>The walk stops at a repository, so nothing vendored or nested inside it is counted twice.</li><li>Symlinks are followed under the name you see, and each real directory is visited once, so link loops terminate.</li><li>Results are sorted by name, ignoring case, identically on macOS, Linux and Windows.</li><li>If nothing is found but the <b>current directory</b> is itself a repository, git runs right there.</li></ul>
 <h2 id="sec-2">See what will be touched first</h2>
 <div class="cmdline"><span class="cmdline__text">mgit --list</span><span class="cmdline__note">--list</span><button type="button" class="switch switch--ghost" data-copy="mgit --list" data-label-copied="Copied" data-label-failed="Copy manually"><span data-copy-label aria-live="polite">Copy</span></button></div>
-<div class="runlog"><div class="runlog__bar"><span>mgit --list</span><span>/tmp/mgit-mixed</span></div><div class="runlog__body"><span class="">/private/tmp/mgit-mixed/api-gateway</span>
+<div class="runlog"><div class="runlog__bar"><span>mgit --list</span><span>/tmp/mgit-mixed</span></div><div class="runlog__body" tabindex="0" role="group" aria-label="mgit --list output"><span class="">/private/tmp/mgit-mixed/api-gateway</span>
 <span class="">/private/tmp/mgit-mixed/billing-worker</span>
 <span class="">/private/tmp/mgit-mixed/docs-site</span>
 <span class="">/private/tmp/mgit-mixed/infra-scripts</span>
@@ -38,7 +39,7 @@
 <span class="">/private/tmp/mgit-mixed/web-console-hotfix</span></div><p class="runlog__hint">← scrolls sideways</p></div>
 <h2 id="sec-3">Depth</h2>
 <p>In the demo workspace <code>--depth 1</code> found 6 repositories and <code>--depth 2</code> found 7: the extra one is <code>legacy-auth</code>, buried under <code>vendor/</code>.</p>
-<div class="runlog"><div class="runlog__bar"><span>mgit --depth 2 --summary</span><span>7 repositories</span></div><div class="runlog__body"><span class="rule">================================================================================</span>
+<div class="runlog"><div class="runlog__bar"><span>mgit --depth 2 --summary</span><span>7 repositories</span></div><div class="runlog__body" tabindex="0" role="group" aria-label="mgit --depth 2 --summary output"><span class="rule">================================================================================</span>
 <span class="folder">📂 Folder: web-console-hotfix │ Branch: hotfix</span>
 <span class="rule">================================================================================</span>
 <span class="quiet"> </span>

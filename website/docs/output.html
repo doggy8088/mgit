@@ -6,6 +6,7 @@
 <title>輸出與行為 — mgit 2.0.2</title>
 <meta name="description" content="標題格式、安靜的儲存庫、摘要與顏色政策">
 <link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
 <meta name="color-scheme" content="light">
 </head>
 <body class="paper-log">
@@ -28,7 +29,7 @@
 <main id="main">
 <div class="shell doc"><nav class="docnav" aria-label="章節"><p class="docnav__title"><span>文件 · mgit 2.0.2</span></p><div class="docnav__list"><a class="docnav__item" href="use-cases.html"><span class="docnav__ch">01</span><span>使用情境</span></a><a class="docnav__item" href="install.html"><span class="docnav__ch">02</span><span>安裝</span></a><a class="docnav__item" href="options.html"><span class="docnav__ch">03</span><span>選項</span></a><a class="docnav__item" href="output.html" aria-current="page"><span class="docnav__ch">04</span><span>輸出與行為</span></a><a class="docnav__item" href="discovery.html"><span class="docnav__ch">05</span><span>它怎麼找儲存庫</span></a><a class="docnav__item" href="exit-codes.html"><span class="docnav__ch">06</span><span>結束代碼與環境變數</span></a><a class="docnav__item" href="platforms.html"><span class="docnav__ch">07</span><span>跨平台行為</span></a><a class="docnav__item" href="changes.html"><span class="docnav__ch">08</span><span>版本、發行與 npm</span></a></div></nav><article class="docmain"><header class="docmain__head"><h1 class="docmain__title">輸出與行為</h1><p class="docmain__intro">標題格式、安靜的儲存庫、摘要與顏色政策</p></header><nav class="toc" aria-label="本章內容"><p class="toc__title">本章內容</p><div class="toc__list"><a class="toc__item" data-level="2" href="#sec-1"><span>每個儲存庫一段</span></a><a class="toc__item" data-level="2" href="#sec-2"><span>失敗的那一次</span></a><a class="toc__item" data-level="2" href="#sec-3"><span>摘要與標準輸出</span></a><a class="toc__item" data-level="2" href="#sec-4"><span>顏色與符號</span></a></div></nav><div class="prose"><h2 id="sec-1">每個儲存庫一段</h2>
 <p>80 個 <code>=</code> 加一行 <code>📂 Folder: … │ Branch: …</code>，接著是 git 自己的輸出；乾淨的 repo 就只有標題。</p>
-<div class="runlog"><div class="runlog__bar"><span>mgit --summary</span><span>exit 0 · 6 succeeded</span></div><div class="runlog__body"><span class="rule">================================================================================</span>
+<div class="runlog"><div class="runlog__bar"><span>mgit --summary</span><span>exit 0 · 6 succeeded</span></div><div class="runlog__body" tabindex="0" role="group" aria-label="mgit --summary 的輸出"><span class="rule">================================================================================</span>
 <span class="folder">📂 Folder: api-gateway │ Branch: main</span>
 <span class="rule">================================================================================</span>
 <span class="quiet"> </span>
@@ -57,7 +58,7 @@
 <span class="sum">mgit: 6 repositories, 6 succeeded</span></div><p class="runlog__hint">← 可橫向捲動</p></div>
 <h2 id="sec-2">失敗的那一次</h2>
 <p>預設全部跑完（<code>--keep-going</code>），摘要列出每個失敗與其代碼，整體以<b>第一個失敗</b>的代碼結束；<code>--fail-fast</code> 則第一次失敗就停。</p>
-<div class="runlog"><div class="runlog__bar"><span>mgit pull</span><span>exit 128 · 5 succeeded, 1 failed</span></div><div class="runlog__body"><span class="rule">================================================================================</span>
+<div class="runlog"><div class="runlog__bar"><span>mgit pull</span><span>exit 128 · 5 succeeded, 1 failed</span></div><div class="runlog__body" tabindex="0" role="group" aria-label="mgit pull 的輸出"><span class="rule">================================================================================</span>
 <span class="folder">📂 Folder: api-gateway │ Branch: main</span>
 <span class="rule">================================================================================</span>
 <span class="">Already up to date.</span>

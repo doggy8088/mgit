@@ -6,6 +6,7 @@
 <title>Install — mgit 2.0.2</title>
 <meta name="description" content="Three install paths, checksum verification, and building from source">
 <link rel="stylesheet" href="../../assets/site.css">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
 <meta name="color-scheme" content="light">
 </head>
 <body class="paper-log">
@@ -36,7 +37,7 @@
 <h3 id="sec-2">Verify it yourself</h3>
 <div class="cmdline"><span class="cmdline__text">shasum -a 256 -c mgit-aarch64-apple-darwin.tar.gz.sha256</span><span class="cmdline__note">macOS</span><button type="button" class="switch switch--ghost" data-copy="shasum -a 256 -c mgit-aarch64-apple-darwin.tar.gz.sha256" data-label-copied="Copied" data-label-failed="Copy manually"><span data-copy-label aria-live="polite">Copy</span></button></div>
 <div class="cmdline"><span class="cmdline__text">sha256sum -c mgit-x86_64-unknown-linux-musl.tar.gz.sha256</span><span class="cmdline__note">Linux</span><button type="button" class="switch switch--ghost" data-copy="sha256sum -c mgit-x86_64-unknown-linux-musl.tar.gz.sha256" data-label-copied="Copied" data-label-failed="Copy manually"><span data-copy-label aria-live="polite">Copy</span></button></div>
-<p>所有檢查碼也彙整在 <a href="https://github.com/doggy8088/mgit/releases/download/v2.0.2/SHA256SUMS.txt">SHA256SUMS.txt</a>。</p>
+<p>Every checksum is also collected in <a href="https://github.com/doggy8088/mgit/releases/download/v2.0.2/SHA256SUMS.txt">SHA256SUMS.txt</a>.</p>
 <h3 id="sec-3">Build from source</h3>
 <p>Needs Rust 1.85 or newer (<code>rust-version</code> is declared and CI enforces it).</p>
 <div class="cmdline"><span class="cmdline__text">cargo build --release</span><span class="cmdline__note">cargo</span><button type="button" class="switch switch--ghost" data-copy="cargo build --release" data-label-copied="Copied" data-label-failed="Copy manually"><span data-copy-label aria-live="polite">Copy</span></button></div>

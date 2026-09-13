@@ -9,3 +9,5 @@ Lighting/mood: flat even neutral studio light, no shadow, no hotspot
 Color palette: cool paper white, roughly #f5f6f4, no colour at all
 Constraints: monochrome and near-white, no grid, no lines, no printing, no text, no numbers, no shadow; variation must stay subtle enough that body text reads over it
 Avoid: watermarks, vignette, creases, stains, colour cast, dramatic lighting
+
+Post-processed: website/build/make-textures.py — the grain of this generated plate, re-laid on the design system's own tone at sigma 3.2/255 (generated original kept in website/build/texture-sources/).

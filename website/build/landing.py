@@ -316,7 +316,7 @@ def build(lang, captures):
         '<ol class="rules">'
         + "".join("<li>" + item + "</li>" for item in rules)
         + "</ol>"
-        '<div class="split" style="margin-top:var(--s5)">'
+        '<div class="split split--logs" style="margin-top:var(--s5)">'
         + runlog(
             "mgit --list",
             WORKSPACE + (" · 6 個路徑" if zh else " · 6 paths"),
@@ -385,7 +385,7 @@ def build(lang, captures):
             "<b>exit 0</b> · mgit: 6 repositories, 6 succeeded",
             {"clean", "dirty"},
         )
-        + '<div class="split" style="margin-top:var(--s5)">'
+        + '<div class="split split--logs" style="margin-top:var(--s5)">'
         + runlog("mgit pull", "exit 128 · 5 succeeded, 1 failed", captures["run_pull"], lang)
         + runlog("mgit --summary", "exit 0 · 6 succeeded", captures["run_calm"], lang)
         + "</div>"

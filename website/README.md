@@ -1,6 +1,6 @@
 # mgit website
 
-`mgit` 的產品網站：首頁（Persuade）加上記錄本八章（Read），zh-TW 為主、`en/` 是完整鏡像。
+`mgit` 的產品網站：首頁（Persuade）加上文件八章（Read），zh-TW 為主、`en/` 是完整鏡像。
 **瀏覽網站不需要任何建置步驟**：倉庫裡的 HTML／CSS／JS 就是成品，開檔案或丟上任何靜態主機都能跑。
 
 `build/` 是**產生器**（作者工具，不是執行期相依）：文案、表格、錄製輸出與兩個語言版本都在
@@ -29,11 +29,12 @@ open website/index.html
 ```
 index.html          zh-TW 首頁
 en/index.html       EN 首頁
-docs/index.html     記錄本首頁（七章索引）
-docs/*.html         記錄本八章（use-cases／install／options／output／discovery／exit-codes／platforms／changes）
+docs/index.html     文件首頁（八章索引）
+docs/*.html         文件八章（use-cases／install／options／output／discovery／exit-codes／platforms／changes）
 en/docs/*.html      EN 版本
-assets/site.css     設計系統：記錄紙、多色筆墨、儀器面板刻字、打孔白窗、刻字規格板
-assets/recorder.js  由頁面自帶的 run record 畫筆跡（含筆的慣性、掃描馬車、重播）、複製鈕
+assets/site.css     設計系統：紙與其纖維、石墨板、通道欄、打孔白窗、刻字規格板
+assets/recorder.js  由頁面自帶的 run record 畫筆跡（含筆的慣性、掃描馬車、重播）、複製鈕、溢出提示
+assets/favicon.svg  分頁圖示：紙＋一條石墨板＋一條藍筆跡，與頁面同一組材質
 assets/fonts/       三個自架 woff2（見下）
 ```
 
@@ -59,13 +60,26 @@ mgit --list               # 六個絕對路徑
 
 `assets/plates/` 三張圖全部是 **AI 生成的背景材質**，只做材質、不描繪物件；每張的生成
 prompt 以 JPEG 註解內嵌在檔案裡，並附同名 `.prompt.txt`（`impeccable embed-prompt --scan
-website/assets/plates` 可檢查）：
+website/assets/plates` 可檢查）。生成原稿留在 `build/texture-sources/`。
 
-| 檔案 | 用在哪 |
-| --- | --- |
-| `paper-fibre.jpg` | 整頁底色（紙色遮罩 0.94，實測地面 `rgb(243,244,242)`） |
-| `graphite-plate.jpg` | 深色規格板與 footer（漆面遮罩 0.88） |
-| `chart-paper.jpg` | 只用在條帶的紙窗裡（遮罩 0.78，`1200px auto`） |
+生成的原稿太均勻，直接鋪（即使加遮罩）在畫面上只量到 σ 0.5/255、spread 3，也就是「看不出來的材質」。
+`build/make-textures.py` 因此把原稿的顆粒重新鋪在設計系統自己的顏色上：均值＝token 的色值，
+只有顆粒起伏，振幅由腳本決定（紙 3.2、石墨 4.0、圖表紙 4.4）。產出後要重新內嵌 provenance：
+
+```sh
+cd website/build && python3 make-textures.py
+cd .. && ../.github/skills/impeccable/scripts/impeccable embed-prompt \
+  assets/plates/paper-fibre.jpg --prompt-file assets/plates/paper-fibre.prompt.txt
+```
+
+| 檔案 | 用在哪 | 實測（材質單獨渲染，σ/255） |
+| --- | --- | --- |
+| `paper-fibre.jpg` | 整頁底色（`900px auto`） | 3.44 |
+| `graphite-plate.jpg` | 規格板、footer、通道欄、石墨安裝窗、run log 的 bar（`900px auto`） | 3.9–4.7 |
+| `chart-paper.jpg` | 只用在條帶的紙窗裡（`1200px auto`，上面另加 40px 印刷格線） | 5.2（含格線） |
+
+因為紙的纖維是真的，`--ink-3`（12px 標籤）必須對**紙最暗的那一角**仍達 4.5：目前值
+`#666870` 的 ±2.2σ 最壞情況是 4.74。改材質振幅或這個 token 時要一起重算。
 
 網站上沒有偽裝成產品照片的影像，也沒有敘事型配圖。要換材質就重新生成、同樣附上 prompt，
 再把舊檔刪掉——不要留下沒有來源的點陣圖。

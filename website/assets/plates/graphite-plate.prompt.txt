@@ -9,3 +9,5 @@ Lighting/mood: flat even light, barely any falloff, no hotspot, no cast shadow
 Color palette: near-black graphite, roughly #191a1d to #24262a, very low contrast variation only
 Constraints: no text, no numbers, no logos, no objects, no reflections, no glossy highlights; must stay dark and quiet enough to set light body text on top
 Avoid: watermarks, vignette, scratches, dust, dramatic lighting, colour cast
+
+Post-processed: website/build/make-textures.py — the grain of this generated plate, re-laid on the design system's own tone at sigma 4.0/255 (generated original kept in website/build/texture-sources/).

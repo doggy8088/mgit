@@ -246,7 +246,13 @@ def chapter(slug, lang, captures):
                 + RELEASE
                 + "/download/v"
                 + VERSION
-                + '/SHA256SUMS.txt">SHA256SUMS.txt</a>。',
+                + '/SHA256SUMS.txt">SHA256SUMS.txt</a>。'
+                if zh
+                else 'Every checksum is also collected in <a href="'
+                + RELEASE
+                + "/download/v"
+                + VERSION
+                + '/SHA256SUMS.txt">SHA256SUMS.txt</a>.',
             )
         )
         body.append(("h3", "從原始碼建置" if zh else "Build from source"))

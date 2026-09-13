@@ -44,7 +44,10 @@
   /* Ink ---------------------------------------------------------------- */
   --ink: #15161a;
   --ink-2: #4b4d53;
-  --ink-3: #6d7076;
+  /* Held one step darker than the flat paper would need: the fibre is real, so
+     12px chrome has to clear 4.5 against the darkest part of the stock, not
+     against the token. Worst case over ±2.2σ: 4.74. */
+  --ink-3: #666870;
   --blue: #0f5c86;
   --blue-deep: #0a3f5c;
   --alarm: #b01b1b;
@@ -100,12 +103,11 @@ html {
 
 body {
   margin: 0;
-  /* The page ground is real paper at a whisper: the fibre keeps the stock from
-     reading as a flat fill, and the scrim holds it within a shade of --paper. */
+  /* The page ground is real paper: the fibre is laid on the token's own tone, so
+     the stock has tooth without moving the colour. */
   background-color: var(--paper);
-  background-image: linear-gradient(rgba(245, 246, 244, 0.94), rgba(245, 246, 244, 0.94)),
-    url("plates/paper-fibre.jpg");
-  background-size: auto, 900px auto;
+  background-image: url("plates/paper-fibre.jpg");
+  background-size: 900px auto;
   color: var(--ink);
   font-family: var(--sans);
   font-size: 1.0625rem;
@@ -244,6 +246,7 @@ button {
 
 .prose {
   max-width: var(--measure);
+  text-wrap: pretty;
 }
 
 .prose p + p {
@@ -310,9 +313,9 @@ button {
 /* The instrument's paper window, where the pens draw. A printed chart, not
    graph paper: the field is clear, one whisper of a rule every 40px, and the
    scale lives as ticks along the two edges. Nothing competes with the pens. */
-/* Real paper under a paper-coloured scrim: the fibre and its slight unevenness
-   come through at about a fifth strength, the page's own paper colour stays,
-   and the printed rule draws on top. No competing line, no tinted box. */
+/* Real paper, tone and all: the chart-paper photograph is laid on the page's own
+   paper colour, and the printed rule draws on top of it. No competing line, no
+   tinted box. */
 .strip {
   background-color: var(--paper);
   background-image: repeating-linear-gradient(
@@ -320,9 +323,8 @@ button {
       var(--rule) 0 1px,
       transparent 1px 40px
     ),
-    linear-gradient(rgba(245, 246, 244, 0.78), rgba(245, 246, 244, 0.78)),
     url("plates/chart-paper.jpg");
-  background-size: auto, auto, 1200px auto;
+  background-size: auto, 1200px auto;
 }
 
 .strip::before,
@@ -569,9 +571,8 @@ button {
    recorder, not a paragraph — the pens stay on clean paper next to it. */
 .legend {
   background-color: var(--plate);
-  background-image: linear-gradient(rgba(25, 26, 29, 0.88), rgba(25, 26, 29, 0.88)),
-    url("plates/graphite-plate.jpg");
-  background-size: auto, 900px auto;
+  background-image: url("plates/graphite-plate.jpg");
+  background-size: 900px auto;
   color: var(--plate-ink);
 }
 
@@ -639,6 +640,18 @@ button {
   letter-spacing: 0.02em;
   color: var(--ink-3);
   font-weight: 600;
+}
+
+/* The instrument's labels are printed on clean paper over the chart: the 40px
+   scale must not run through a line of 12px text (worst case against the fibre
+   is 4.74, against a rule line only 3.6). */
+.strip__meta,
+.vocab,
+.strip__exit {
+  background-color: var(--paper);
+  background-image: url("plates/chart-paper.jpg");
+  background-size: 1200px auto;
+  padding: 0.1rem 0.3rem;
 }
 
 .strip__foot {
@@ -856,9 +869,8 @@ button {
    the plate material; every other command on the site stays on paper. */
 .window--plate {
   background-color: var(--plate);
-  background-image: linear-gradient(rgba(25, 26, 29, 0.88), rgba(25, 26, 29, 0.88)),
-    url("plates/graphite-plate.jpg");
-  background-size: auto, 900px auto;
+  background-image: url("plates/graphite-plate.jpg");
+  background-size: 900px auto;
   border-color: var(--plate);
   box-shadow: 0 22px 44px -36px rgba(21, 22, 26, 0.95);
 }
@@ -980,6 +992,21 @@ button {
   gap: var(--s5) var(--s6);
 }
 
+/* Recorded sessions never wrap: a log line is as wide as the terminal made it.
+   Two of them side by side only read as one spread when each column can hold
+   the longest line, so they stack below that width instead of cutting the
+   evidence off mid-line. */
+.split--logs {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 1350px) {
+  .split--logs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s3);
+  }
+}
+
 .split > *,
 .stack > * {
   min-width: 0;
@@ -1022,6 +1049,8 @@ button {
   letter-spacing: 0.04em;
   color: var(--plate-ink);
   background-color: var(--plate);
+  background-image: url("plates/graphite-plate.jpg");
+  background-size: 900px auto;
 }
 
 .runlog__bar > span:first-child {
@@ -1051,6 +1080,12 @@ button {
   border-top: var(--hair) dotted var(--rule);
 }
 
+/* The recorder tests every log against its own frame and flags the ones whose
+   longest line does not fit, so the hint appears wherever it is true. */
+.runlog[data-scrollable="true"] .runlog__hint {
+  display: block;
+}
+
 .runlog__body .rule {
   color: var(--ink-3);
 }
@@ -1076,13 +1111,12 @@ button {
    Instrument plate (dark engraved panels, spec tables)
    ========================================================================== */
 
-/* The dark bands are lacquered graphite, not a flat fill: a real surface at
-   about an eighth strength under the plate's own colour. */
+/* The dark bands are lacquered graphite, not a flat fill: the plate photograph
+   laid on the plate's own colour, at the grain amplitude make-textures.py sets. */
 .plate {
   background-color: var(--plate);
-  background-image: linear-gradient(rgba(25, 26, 29, 0.88), rgba(25, 26, 29, 0.88)),
-    url("plates/graphite-plate.jpg");
-  background-size: auto, 900px auto;
+  background-image: url("plates/graphite-plate.jpg");
+  background-size: 900px auto;
   color: var(--plate-ink);
   border: var(--hair) solid var(--plate);
   box-shadow: 0 24px 48px -40px rgba(21, 22, 26, 0.9);
@@ -1304,6 +1338,7 @@ button {
   column-gap: var(--s6);
   border-top: 2px solid var(--ink);
   padding-top: var(--s2);
+  text-wrap: pretty;
 }
 
 /* The marker is positioned, not a grid cell: grid would turn every inline
@@ -1471,9 +1506,8 @@ button {
 .foot {
   margin-top: var(--s7);
   background-color: var(--plate);
-  background-image: linear-gradient(rgba(25, 26, 29, 0.88), rgba(25, 26, 29, 0.88)),
-    url("plates/graphite-plate.jpg");
-  background-size: auto, 900px auto;
+  background-image: url("plates/graphite-plate.jpg");
+  background-size: 900px auto;
   color: var(--plate-ink);
 }
 
@@ -1892,10 +1926,6 @@ button {
   .runlog__body,
   .window__cmd {
     font-size: 0.6875rem;
-  }
-
-  .runlog__hint {
-    display: block;
   }
 
   .cmdline__text {

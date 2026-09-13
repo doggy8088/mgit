@@ -1,0 +1,4 @@
+interface:
+  display_name: "mgit 版本更新與發行"
+  short_description: "提升版本、推送標籤並驗證 GitHub Release 與 npm 自動發佈"
+  default_prompt: "使用 $bump-and-release 發佈 mgit 的下一個 patch 版本。"

@@ -308,6 +308,16 @@ git push origin HEAD v0.1.1        # pushing the tag starts the release
 
 After the tag is pushed, the `Release` workflow builds and publishes the GitHub release and the `Publish to npm` workflow publishes `@willh/mgit` with trusted publishing (no token involved), see [npm/PUBLISHING.md](npm/PUBLISHING.md).
 
+Environments that support Agent Skills can run the bundled [`bump-and-release`](.agents/skills/bump-and-release/SKILL.md) skill instead:
+
+```console
+$ /bump-and-release              # patch by default
+$ /bump-and-release minor        # explicit minor
+$ /bump-and-release v2.1.0       # explicit version
+```
+
+It follows the same rules: main branch, clean tree and green CI → `scripts/bump-version.sh` → detailed commit → tag push → verification of both workflows, the GitHub release assets, the npm version and the provenance attestation.
+
 The `Release` workflow can also be started manually with a version; it creates and pushes the matching tag for you.
 
 ---

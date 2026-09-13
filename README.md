@@ -308,6 +308,16 @@ git push origin HEAD v0.1.1        # 推送標籤即觸發發行流程
 
 推送標籤後，`Release` workflow 會建置並發佈 GitHub Release；接著 `Publish to npm` workflow 會把 `@willh/mgit` 發佈到 npm（使用 trusted publishing，不需要任何 token），詳見 [npm/PUBLISHING.md](npm/PUBLISHING.md)。
 
+在支援 Agent Skills 的環境中，可以直接呼叫專案內的 [`bump-and-release`](.agents/skills/bump-and-release/SKILL.md) 技能完成整套流程：
+
+```console
+$ /bump-and-release              # 預設 patch
+$ /bump-and-release minor        # 指定 minor
+$ /bump-and-release v2.1.0       # 指定版號
+```
+
+技能會依相同規則執行：確認 main、工作區乾淨與 CI 綠燈 → `scripts/bump-version.sh` → 完整 zh-TW 提交 → 推送標籤 → 驗證兩個 workflow、GitHub Release 資產、npm 版本與 provenance。
+
 也可以在 GitHub 上以 `Release` workflow 手動指定版本執行，流程會自動建立並推送對應標籤。
 
 ---

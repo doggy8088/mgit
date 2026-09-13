@@ -10,8 +10,19 @@ use tempfile::TempDir;
 
 const BINARY: &str = env!("CARGO_BIN_EXE_mgit");
 
+/// An empty git configuration so that the tests never depend on the settings
+/// of the machine they run on (`commit.gpgsign`, `init.defaultBranch`, ...).
 fn empty_git_config() -> &'static str {
-    if cfg!(windows) { "NUL" } else { "/dev/null" }
+    static PATH: std::sync::OnceLock<String> = std::sync::OnceLock::new();
+    PATH.get_or_init(|| {
+        let directory = std::env::temp_dir().join("mgit-test-gitconfig");
+        std::fs::create_dir_all(&directory).expect("create the config directory");
+        let file = directory.join("empty.gitconfig");
+        if !file.exists() {
+            std::fs::write(&file, "").expect("write the empty config");
+        }
+        file.to_string_lossy().into_owned()
+    })
 }
 
 fn git_available() -> bool {

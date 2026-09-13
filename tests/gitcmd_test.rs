@@ -9,6 +9,21 @@ use std::process::Command;
 use mgit::gitcmd::{GitRunner, Outcome, SystemGit};
 use tempfile::TempDir;
 
+/// An empty git configuration so that the tests never depend on the settings
+/// of the machine they run on (`commit.gpgsign`, `init.defaultBranch`, ...).
+fn empty_git_config() -> &'static str {
+    static PATH: std::sync::OnceLock<String> = std::sync::OnceLock::new();
+    PATH.get_or_init(|| {
+        let directory = std::env::temp_dir().join("mgit-test-gitconfig");
+        std::fs::create_dir_all(&directory).expect("create the config directory");
+        let file = directory.join("empty.gitconfig");
+        if !file.exists() {
+            std::fs::write(&file, "").expect("write the empty config");
+        }
+        file.to_string_lossy().into_owned()
+    })
+}
+
 fn git_available() -> bool {
     Command::new("git")
         .arg("--version")
@@ -23,8 +38,8 @@ fn git(directory: &Path, args: &[&str]) -> String {
     let output = Command::new("git")
         .args(args)
         .current_dir(directory)
-        .env("GIT_CONFIG_GLOBAL", "/dev/null")
-        .env("GIT_CONFIG_SYSTEM", "/dev/null")
+        .env("GIT_CONFIG_GLOBAL", empty_git_config())
+        .env("GIT_CONFIG_SYSTEM", empty_git_config())
         .env("GIT_AUTHOR_NAME", "mgit tests")
         .env("GIT_AUTHOR_EMAIL", "mgit@example.com")
         .env("GIT_COMMITTER_NAME", "mgit tests")

@@ -1,0 +1,365 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release, for example 0.2.0 (must match Cargo.toml)'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  prepare:
+    name: Prepare
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.version.outputs.tag }}
+      version: ${{ steps.version.outputs.version }}
+      prerelease: ${{ steps.version.outputs.prerelease }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Resolve the version
+        id: version
+        shell: bash
+        run: |
+          set -euo pipefail
+          manifest_version=$(awk -F'"' '/^\[/ { section = $0 } \
+            section == "[package]" && /^version = / { print $2; exit }' Cargo.toml)
+
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            tag="v${{ inputs.version }}"
+            tag="${tag#vv}"
+          else
+            tag="${{ github.ref_name }}"
+          fi
+          version="${tag#v}"
+
+          if ! printf '%s' "$version" | grep -Eq \
+            '^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?(\+[0-9A-Za-z.-]+)?$'; then
+            echo "::error::$tag is not a semantic version tag"
+            exit 1
+          fi
+          if [ "$version" != "$manifest_version" ]; then
+            echo "::error::Cargo.toml says $manifest_version but the release is $version"
+            echo "::error::run scripts/bump-version.sh first"
+            exit 1
+          fi
+
+          lock_version=$(awk -F'"' '/^\[\[package\]\]/ { name = "" } \
+            /^name = / { name = $2 } \
+            name == "mgit" && /^version = / { print $2; exit }' Cargo.lock)
+          if [ "$lock_version" != "$version" ]; then
+            echo "::error::Cargo.lock says $lock_version but the release is $version"
+            exit 1
+          fi
+
+          prerelease=false
+          case "$version" in
+            *-*) prerelease=true ;;
+          esac
+
+          {
+            echo "tag=$tag"
+            echo "version=$version"
+            echo "prerelease=$prerelease"
+          } >> "$GITHUB_OUTPUT"
+          echo "Releasing mgit $version as $tag (prerelease: $prerelease)"
+
+      - name: Create the tag for manual runs
+        if: github.event_name == 'workflow_dispatch'
+        shell: bash
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          if git rev-parse -q --verify "refs/tags/$TAG" > /dev/null; then
+            echo "The tag $TAG already exists."
+          else
+            git tag -a "$TAG" -m "mgit $VERSION"
+            git push origin "refs/tags/$TAG"
+          fi
+
+  verify:
+    name: Verify the source
+    needs: [prepare]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.prepare.outputs.tag }}
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+
+      - name: Cache
+        uses: Swatinem/rust-cache@v2
+
+      - name: cargo fmt --check
+        run: cargo fmt --all -- --check
+
+      - name: cargo clippy
+        run: cargo clippy --all-targets --locked -- -D warnings
+
+      - name: cargo test
+        run: cargo test --all-targets --locked
+
+  build:
+    name: Build (${{ matrix.target }})
+    needs: [prepare, verify]
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: x86_64-unknown-linux-gnu
+            os: ubuntu-latest
+            packages: ''
+            linker: ''
+          - target: x86_64-unknown-linux-musl
+            os: ubuntu-latest
+            packages: 'musl-tools'
+            linker: ''
+          - target: aarch64-unknown-linux-gnu
+            os: ubuntu-latest
+            packages: 'gcc-aarch64-linux-gnu'
+            linker: aarch64-linux-gnu-gcc
+          - target: aarch64-unknown-linux-musl
+            os: ubuntu-latest
+            packages: 'gcc-aarch64-linux-gnu musl-tools'
+            linker: aarch64-linux-gnu-gcc
+          - target: x86_64-apple-darwin
+            os: macos-latest
+            packages: ''
+            linker: ''
+          - target: aarch64-apple-darwin
+            os: macos-latest
+            packages: ''
+            linker: ''
+          - target: x86_64-pc-windows-msvc
+            os: windows-latest
+            packages: ''
+            linker: ''
+          - target: aarch64-pc-windows-msvc
+            os: windows-latest
+            packages: ''
+            linker: ''
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.prepare.outputs.tag }}
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - name: Cache
+        uses: Swatinem/rust-cache@v2
+
+      - name: Install the cross compiler
+        if: matrix.packages != ''
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends ${{ matrix.packages }}
+
+      - name: cargo build
+        shell: bash
+        env:
+          TARGET: ${{ matrix.target }}
+          LINKER: ${{ matrix.linker }}
+        run: |
+          set -euo pipefail
+          if [ -n "$LINKER" ]; then
+            variable="CARGO_TARGET_$(printf '%s' "$TARGET" | tr '[:lower:]-' '[:upper:]_')_LINKER"
+            env "$variable=$LINKER" cargo build --release --locked --target "$TARGET"
+          else
+            cargo build --release --locked --target "$TARGET"
+          fi
+
+      - name: Package (unix)
+        if: contains(matrix.target, 'windows') == false
+        shell: bash
+        env:
+          TARGET: ${{ matrix.target }}
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          tar -czf "dist/mgit-$TARGET.tar.gz" -C "target/$TARGET/release" mgit
+          cd dist
+          if command -v sha256sum > /dev/null 2>&1; then
+            sha256sum "mgit-$TARGET.tar.gz" > "mgit-$TARGET.tar.gz.sha256"
+          else
+            shasum -a 256 "mgit-$TARGET.tar.gz" > "mgit-$TARGET.tar.gz.sha256"
+          fi
+          cat "mgit-$TARGET.tar.gz.sha256"
+
+      - name: Package (windows)
+        if: contains(matrix.target, 'windows')
+        shell: pwsh
+        env:
+          TARGET: ${{ matrix.target }}
+        run: |
+          New-Item -ItemType Directory -Force -Path dist | Out-Null
+          $archive = "dist/mgit-$env:TARGET.zip"
+          Compress-Archive -Path "target/$env:TARGET/release/mgit.exe" -DestinationPath $archive -Force
+          $hash = (Get-FileHash $archive -Algorithm SHA256).Hash.ToLower()
+          "$hash  mgit-$env:TARGET.zip" | Out-File -Encoding ascii "dist/mgit-$env:TARGET.zip.sha256"
+          Get-Content "dist/mgit-$env:TARGET.zip.sha256"
+
+      - name: Upload the artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: dist-${{ matrix.target }}
+          path: dist/*
+          if-no-files-found: error
+
+  release:
+    name: Publish the release
+    needs: [prepare, build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download the artifacts
+        uses: actions/download-artifact@v8
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Collect the checksums
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd dist
+          cat ./*.sha256 > SHA256SUMS.txt
+          ls -lh
+          cat SHA256SUMS.txt
+
+      - name: Create the GitHub release
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: ${{ needs.prepare.outputs.tag }}
+          name: mgit ${{ needs.prepare.outputs.version }}
+          prerelease: ${{ needs.prepare.outputs.prerelease }}
+          generate_release_notes: true
+          fail_on_unmatched_files: true
+          body: |
+            ## Install
+
+            **macOS / Linux**
+
+            ```sh
+            curl -fsSL https://raw.githubusercontent.com/doggy8088/mgit/main/install.sh | sh
+            ```
+
+            **Windows / PowerShell (also macOS and Linux)**
+
+            ```powershell
+            irm https://raw.githubusercontent.com/doggy8088/mgit/main/install.ps1 | iex
+            ```
+
+            Every archive is listed in `SHA256SUMS.txt`; the installers verify the
+            matching `.sha256` file before they touch your `PATH`.
+          files: dist/*
+
+  verify-release:
+    name: Install from the release (${{ matrix.os }})
+    needs: [prepare, release]
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Install with install.sh (unix)
+        if: runner.os != 'Windows'
+        shell: bash
+        env:
+          MGIT_VERSION: v${{ needs.prepare.outputs.version }}
+          EXPECTED: ${{ needs.prepare.outputs.version }}
+        run: |
+          set -euo pipefail
+          sh ./install.sh --dir "$RUNNER_TEMP/mgit-release"
+          installed=$("$RUNNER_TEMP/mgit-release/mgit" --version)
+          echo "installed: $installed"
+          [ "$installed" = "mgit $EXPECTED" ]
+
+      - name: Install with install.ps1 (windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        env:
+          EXPECTED: ${{ needs.prepare.outputs.version }}
+        run: |
+          ./install.ps1 -Version $env:EXPECTED -InstallDir "$env:RUNNER_TEMP/mgit-release"
+          $installed = & "$env:RUNNER_TEMP/mgit-release/mgit.exe" --version
+          Write-Host "installed: $installed"
+          if ($installed -ne "mgit $env:EXPECTED") {
+            Write-Error "the installed binary reports '$installed'"
+            exit 1
+          }
+
+  verify-assets:
+    name: Verify the release assets
+    needs: [prepare, release]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Every target is published with a checksum
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ needs.prepare.outputs.tag }}
+        run: |
+          set -euo pipefail
+          gh release view "$TAG" --json assets --jq '.assets[].name' | sort > assets.txt
+          cat assets.txt
+          status=0
+          for target in \
+            x86_64-unknown-linux-gnu x86_64-unknown-linux-musl \
+            aarch64-unknown-linux-gnu aarch64-unknown-linux-musl \
+            x86_64-apple-darwin aarch64-apple-darwin \
+            x86_64-pc-windows-msvc aarch64-pc-windows-msvc; do
+            case "$target" in
+              *windows*) archive="mgit-$target.zip" ;;
+              *) archive="mgit-$target.tar.gz" ;;
+            esac
+            for asset in "$archive" "$archive.sha256"; do
+              if ! grep -qx "$asset" assets.txt; then
+                echo "::error::the release is missing $asset"
+                status=1
+              fi
+            done
+          done
+          if ! grep -qx 'SHA256SUMS.txt' assets.txt; then
+            echo "::error::the release is missing SHA256SUMS.txt"
+            status=1
+          fi
+          exit "$status"

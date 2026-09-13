@@ -151,11 +151,28 @@ if [ -f "$lock" ]; then
     mv -- "$temporary" "$lock"
 fi
 
+# The npm wrapper mirrors the Rust version; trusted publishing and the publish
+# workflow require all of them to agree.
+npm_manifest="$(dirname -- "$manifest")/npm/package.json"
+if [ -f "$npm_manifest" ]; then
+    temporary="$npm_manifest.tmp.$$"
+    # JSON puts the key first, so the quoting field separator is used to replace
+    # the value (the fourth field) instead of the first quoted string.
+    awk -F'"' -v OFS='"' -v new_version="$next" '
+        !updated && /^[[:space:]]*"version":/ {
+            $4 = new_version
+            updated = 1
+        }
+        { print }
+    ' "$npm_manifest" > "$temporary"
+    mv -- "$temporary" "$npm_manifest"
+fi
+
 printf 'mgit %s -> %s\n' "$current" "$next"
 printf '\n'
 printf 'Next steps:\n'
 printf '  cargo test --all-targets\n'
-printf '  git add Cargo.toml Cargo.lock\n'
+printf '  git add Cargo.toml Cargo.lock npm/package.json\n'
 printf '  git commit -m "chore(release): %s"\n' "$next"
 printf '  git tag -a v%s -m "mgit %s"\n' "$next" "$next"
 printf '  git push origin HEAD v%s\n' "$next"

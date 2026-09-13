@@ -289,6 +289,78 @@ jobs:
             Stop-Process -Id $server.Id -Force -ErrorAction SilentlyContinue
           }
 
+  npm:
+    name: npm wrapper (${{ matrix.os }})
+    needs: [formatting, lint]
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache
+        uses: Swatinem/rust-cache@v2
+
+      - name: Build the native binary
+        run: cargo build --locked
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          package-manager-cache: false
+
+      - name: Syntax check the launcher
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check npm/lib/platform.js
+          node --check npm/bin/mgit.js
+
+      - name: Run the wrapper tests
+        shell: bash
+        working-directory: npm
+        run: npm test
+
+      - name: Package a release for the packaging test
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          set -euo pipefail
+          target=$(rustc -vV | sed -n 's/^host: //p')
+          mkdir -p dist staging
+          cargo build --release --locked
+          cp target/release/mgit staging/mgit
+          tar -czf "dist/mgit-${target}.tar.gz" -C staging mgit
+          (cd dist && sha256sum "mgit-${target}.tar.gz" > "mgit-${target}.tar.gz.sha256")
+
+      - name: Vendor, pack and install the package
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          set -euo pipefail
+          target=$(rustc -vV | sed -n 's/^host: //p')
+          sh npm/scripts/vendor.sh dist "$target"
+          cp LICENSE npm/LICENSE
+          cd npm
+          npm pack --json > pack.json
+          # npm 11 reports an array, npm 12 reports an object keyed by name.
+          tarball=$(node -e "
+            const report = require('./pack.json');
+            const entry = Array.isArray(report) ? report[0] : Object.values(report)[0];
+            process.stdout.write(entry.filename);
+          ")
+          echo "packed $tarball"
+          npm install --global --prefix "$RUNNER_TEMP/mgit-npm" "./$tarball"
+          "$RUNNER_TEMP/mgit-npm/bin/mgit" --version
+          "$RUNNER_TEMP/mgit-npm/bin/mgit" --help > /dev/null
+
   scripts:
     name: Script checks
     runs-on: ubuntu-latest

@@ -8,6 +8,7 @@
 # overridden on the command line, for example `make run ARGS='--list'`.
 
 CARGO   ?= cargo
+NPM     ?= npm
 ARGS    ?=
 VERSION ?= patch
 DIST    ?= dist
@@ -26,13 +27,13 @@ RELEASE_TARGETS = x86_64-unknown-linux-gnu x86_64-unknown-linux-musl \
 
 .PHONY: help build release run test e2e fmt fmt-check lint lint-windows \
         check ci coverage coverage-html msrv cross-check package install \
-        bump lint-scripts clean
+        bump lint-scripts npm-test npm-vendor npm-pack clean
 
 help: ## List the available targets
 	@echo 'mgit targets:'
 	@awk 'BEGIN { FS = ":.*?## " } /^[a-zA-Z_-]+:.*?## / { printf "  %-16s %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
 	@echo ''
-	@echo 'Variables: CARGO=$(CARGO) ARGS=$(ARGS) VERSION=$(VERSION) DIST=$(DIST) TARGET=$(TARGET)'
+	@echo 'Variables: CARGO=$(CARGO) NPM=$(NPM) ARGS=$(ARGS) VERSION=$(VERSION) DIST=$(DIST) TARGET=$(TARGET)'
 
 build: ## Compile the debug binary
 	$(CARGO) build --locked
@@ -63,7 +64,7 @@ lint-windows: ## Run clippy for the Windows target (rustup target add x86_64-pc-
 
 check: fmt-check lint test ## Run the gate that CI enforces before anything else
 
-ci: check lint-scripts coverage ## Run everything the CI workflows run
+ci: check lint-scripts coverage npm-test ## Run everything the CI workflows run
 
 coverage: ## Measure the line coverage (needs cargo-llvm-cov)
 	$(CARGO) llvm-cov --all-targets --locked --summary-only
@@ -121,6 +122,17 @@ lint-scripts: ## Lint the shell scripts and the workflows (shellcheck, actionlin
 	@if command -v shellcheck > /dev/null 2>&1; then shellcheck install.sh scripts/*.sh && echo 'shellcheck: ok'; else echo 'shellcheck not installed, skipping'; fi
 	@if command -v actionlint > /dev/null 2>&1; then actionlint && echo 'actionlint: ok'; else echo 'actionlint not installed, skipping'; fi
 
-clean: ## Remove the build output and the packaged archives
+npm-test: ## Run the npm wrapper tests (node --test, uses the Rust binary when it exists)
+	cd npm && $(NPM) test
+
+npm-vendor: ## Vendor this machine's archive from dist/ into npm/vendor (run `make package` first)
+	npm/scripts/vendor.sh $(DIST) $(TARGET)
+
+npm-pack: ## Build the local npm tarball from dist/ (the release flow is in npm/PUBLISHING.md)
+	npm/scripts/vendor.sh $(DIST) $(TARGET)
+	cp LICENSE npm/LICENSE
+	cd npm && $(NPM) pack
+
+clean: ## Remove the build output, the packaged archives and the npm vendor directory
 	$(CARGO) clean
-	rm -rf $(DIST)
+	rm -rf $(DIST) npm/vendor npm/LICENSE npm/*.tgz

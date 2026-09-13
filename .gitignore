@@ -2,3 +2,9 @@
 /dist
 **/.DS_Store
 .DS_Store
+
+# npm wrapper build artefacts
+/npm/vendor
+/npm/LICENSE
+/npm/*.tgz
+/npm/pack.json

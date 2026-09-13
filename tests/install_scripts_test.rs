@@ -232,14 +232,36 @@ fn bump_script() -> PathBuf {
     path
 }
 
-/// A copy of the manifest and the lock file that the test may modify.
+/// A copy of the manifests that the test may modify.
 fn manifest_copy() -> (tempfile::TempDir, PathBuf, PathBuf) {
     let temp = tempfile::TempDir::new().expect("temporary directory");
     let manifest = temp.path().join("Cargo.toml");
     let lock = temp.path().join("Cargo.lock");
     std::fs::copy(manifest_directory().join("Cargo.toml"), &manifest).expect("copy Cargo.toml");
     std::fs::copy(manifest_directory().join("Cargo.lock"), &lock).expect("copy Cargo.lock");
+    let npm_directory = temp.path().join("npm");
+    std::fs::create_dir_all(&npm_directory).expect("create the npm directory");
+    std::fs::copy(
+        manifest_directory().join("npm").join("package.json"),
+        npm_directory.join("package.json"),
+    )
+    .expect("copy npm/package.json");
     (temp, manifest, lock)
+}
+
+/// The version of the npm wrapper next to a copied manifest.
+fn npm_version(manifest: &std::path::Path) -> String {
+    let text = read(
+        &manifest
+            .parent()
+            .expect("parent")
+            .join("npm")
+            .join("package.json"),
+    );
+    text.lines()
+        .find_map(|line| line.trim().strip_prefix("\"version\": "))
+        .map(|value| value.trim().trim_matches(',').trim_matches('"').to_owned())
+        .expect("the npm manifest needs a version")
 }
 
 fn read(path: &std::path::Path) -> String {
@@ -362,6 +384,7 @@ fn bump_version_updates_the_manifest_and_the_lock() {
     assert!(out.contains("0.1.0 -> 0.2.0"), "{out}");
     assert!(read(&manifest).contains("version = \"0.2.0\""));
     assert_eq!(lock_version(&read(&lock)), "0.2.0");
+    assert_eq!(npm_version(&manifest), "0.2.0");
 
     let (code, out, err) = output(
         "sh",
@@ -376,6 +399,7 @@ fn bump_version_updates_the_manifest_and_the_lock() {
     assert!(out.contains("0.2.0 -> 0.2.1"), "{out}");
     assert!(read(&manifest).contains("version = \"0.2.1\""));
     assert_eq!(lock_version(&read(&lock)), "0.2.1");
+    assert_eq!(npm_version(&manifest), "0.2.1");
 
     let (code, _, err) = output(
         "sh",
@@ -389,6 +413,7 @@ fn bump_version_updates_the_manifest_and_the_lock() {
     assert_eq!(code, 0, "{err}");
     assert!(read(&manifest).contains("version = \"1.0.0\""));
     assert_eq!(lock_version(&read(&lock)), "1.0.0");
+    assert_eq!(npm_version(&manifest), "1.0.0");
 }
 
 #[test]
@@ -411,6 +436,7 @@ fn bump_version_accepts_an_explicit_version() {
     assert!(out.contains("1.2.0-rc.1"), "{out}");
     assert!(read(&manifest).contains("version = \"1.2.0-rc.1\""));
     assert_eq!(lock_version(&read(&lock)), "1.2.0-rc.1");
+    assert_eq!(npm_version(&manifest), "1.2.0-rc.1");
 }
 
 #[test]
@@ -441,6 +467,12 @@ fn bump_version_keeps_the_rest_of_the_manifest() {
     let (_temp, manifest, lock) = manifest_copy();
     let original_manifest = read(&manifest);
     let original_lock = read(&lock);
+    let npm_manifest = manifest
+        .parent()
+        .expect("parent")
+        .join("npm")
+        .join("package.json");
+    let original_npm = read(&npm_manifest);
     let path = bump_script();
     let (code, _, err) = output(
         "sh",
@@ -466,4 +498,11 @@ fn bump_version_keeps_the_rest_of_the_manifest() {
     }
     let expected_lock = expected_lines.join("\n") + "\n";
     assert_eq!(read(&lock), expected_lock);
+
+    let expected_npm = original_npm.replace("\"version\": \"0.1.0\"", "\"version\": \"0.1.1\"");
+    assert_eq!(read(&npm_manifest), expected_npm);
+    assert_ne!(
+        original_npm, expected_npm,
+        "the npm manifest must have a version line"
+    );
 }

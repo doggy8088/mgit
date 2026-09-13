@@ -43,6 +43,18 @@ irm https://raw.githubusercontent.com/doggy8088/mgit/main/install.ps1 | iex
 
 安裝腳本會自動偵測作業系統與 CPU 架構、下載對應的發行檔、以 `SHA256` 驗證後才安裝，並在需要時提示你把安裝目錄加入 `PATH`。
 
+### 透過 npm / npx
+
+需要 Node.js 20 以上。套件內已包含 6 個平台的官方二進位檔，安裝時不會執行任何程式碼（沒有 `postinstall`）：
+
+```sh
+npm install -g @willh/mgit      # 或 pnpm add -g @willh/mgit、yarn global add @willh/mgit
+npx @willh/mgit                 # 不安裝直接執行
+bunx @willh/mgit
+```
+
+維護者請參考 [npm/PUBLISHING.md](npm/PUBLISHING.md)：首次發佈步驟與 trusted publishing（無 token 的 CI 發佈）設定。
+
 ### 手動下載發行檔
 
 從 [GitHub Releases](https://github.com/doggy8088/mgit/releases) 下載對應平台的壓縮檔：
@@ -218,6 +230,7 @@ mgit --ascii                          # 在舊版 Windows 主控台使用純 ASC
 
 ```
 Makefile       常用開發目標（`make help` 可列出全部）
+npm/           npm 包裝套件（啟動器、平台對照表、vendor 腳本與測試）
 src/
   main.rs       進入點：解析參數、偵測終端機能力、組裝 App
   cli.rs        命令列解析（純函式，不讀取環境）
@@ -266,14 +279,22 @@ $ make bump VERSION=patch   # 版本升級（0.1.0 -> 0.1.1）
 $ make clean                # 清除 target/ 與 dist/
 ```
 
+npm 包裝套件有自己的測試與打包流程，發佈方式見 [npm/PUBLISHING.md](npm/PUBLISHING.md)：
+
+```console
+$ make npm-test              # 執行包裝套件測試（node --test）
+$ make npm-pack              # 以目前平台打包出可試裝的 tarball
+$ npm i -g ./npm/willh-mgit-0.1.0.tgz && mgit --version
+```
+
 CI（[`.github/workflows/ci.yml`](.github/workflows/ci.yml)）會在 Ubuntu、macOS、Windows 上執行完整測試，另外檢查 MSRV 1.85、8 個發行目標的交叉編譯、shellcheck 與 actionlint，並強制覆蓋率門檻。
 
 ### 版本與發行
 
-版本從 `0.1.0` 起，遵循 [SemVer](https://semver.org/)；`Cargo.toml`、`Cargo.lock` 與 git 標籤三者必須一致。
+版本從 `0.1.0` 起，遵循 [SemVer](https://semver.org/)；`Cargo.toml`、`Cargo.lock`、`npm/package.json` 與 git 標籤四者必須一致。
 
 ```sh
-scripts/bump-version.sh patch      # 0.1.0 -> 0.1.1（同步更新 Cargo.toml 與 Cargo.lock）
+scripts/bump-version.sh patch      # 0.1.0 -> 0.1.1（同步 Cargo.toml、Cargo.lock、npm/package.json）
 scripts/bump-version.sh minor      # 0.1.1 -> 0.2.0
 scripts/bump-version.sh 1.0.0-rc.1 # 指定版本
 scripts/bump-version.sh --dry-run patch
@@ -284,6 +305,8 @@ git push origin HEAD v0.1.1        # 推送標籤即觸發發行流程
 ```
 
 [`.github/workflows/release.yml`](.github/workflows/release.yml) 會驗證版本一致性、跑完整測試、為 8 個目標建置並產生檢查碼、發佈到 GitHub Releases（含 `SHA256SUMS.txt`），最後在三平台用官方安裝腳本安裝**已發佈**的版本做最終驗證。版本含 `-` 尾碼（例如 `0.2.0-rc.1`）時會自動標記為 pre-release。
+
+推送標籤後，`Release` workflow 會建置並發佈 GitHub Release；接著 `Publish to npm` workflow 會把 `@willh/mgit` 發佈到 npm（使用 trusted publishing，不需要任何 token），詳見 [npm/PUBLISHING.md](npm/PUBLISHING.md)。
 
 也可以在 GitHub 上以 `Release` workflow 手動指定版本執行，流程會自動建立並推送對應標籤。
 

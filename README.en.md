@@ -43,6 +43,18 @@ irm https://raw.githubusercontent.com/doggy8088/mgit/main/install.ps1 | iex
 
 The installers detect your operating system and CPU, download the matching archive, verify its SHA-256 checksum and only then install the binary. They also tell you if the install directory is missing from your `PATH`.
 
+### With npm / npx
+
+Requires Node.js 20 or newer. The package bundles the official binaries for six platforms and runs no install scripts at all:
+
+```sh
+npm install -g @willh/mgit      # or: pnpm add -g @willh/mgit, yarn global add @willh/mgit
+npx @willh/mgit                 # run without installing
+bunx @willh/mgit
+```
+
+Maintainers: [npm/PUBLISHING.md](npm/PUBLISHING.md) documents the first publish and the trusted publishing (tokenless CI) setup.
+
 ### Manual download
 
 Grab the archive for your platform from [GitHub Releases](https://github.com/doggy8088/mgit/releases):
@@ -218,6 +230,7 @@ The previous release shipped `mgit` (Bash) and `mgit.ps1` (PowerShell); both are
 
 ```
 Makefile      common development targets (`make help` lists them)
+npm/          the npm wrapper package (launcher, platform table, vendor script, tests)
 src/
   main.rs       entry point: parse, detect capabilities, build the App
   cli.rs        argument parsing (pure, never reads the environment)
@@ -266,14 +279,22 @@ $ make bump VERSION=patch   # bump the version (0.1.0 -> 0.1.1)
 $ make clean                # remove target/ and dist/
 ```
 
+The npm wrapper has its own tests and packaging flow, described in [npm/PUBLISHING.md](npm/PUBLISHING.md):
+
+```console
+$ make npm-test              # run the wrapper tests (node --test)
+$ make npm-pack              # build an installable tarball for this machine
+$ npm i -g ./npm/willh-mgit-0.1.0.tgz && mgit --version
+```
+
 CI ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) runs the whole suite on Ubuntu, macOS and Windows, verifies MSRV 1.85, cross compiles all eight release targets, runs shellcheck and actionlint, and enforces the coverage gate.
 
 ### Versioning and releases
 
-Versions follow [SemVer](https://semver.org/) and start at `0.1.0`. `Cargo.toml`, `Cargo.lock` and the git tag must agree.
+Versions follow [SemVer](https://semver.org/) and start at `0.1.0`. `Cargo.toml`, `Cargo.lock`, `npm/package.json` and the git tag must all agree.
 
 ```sh
-scripts/bump-version.sh patch      # 0.1.0 -> 0.1.1 (Cargo.toml and Cargo.lock)
+scripts/bump-version.sh patch      # 0.1.0 -> 0.1.1 (Cargo.toml, Cargo.lock, npm/package.json)
 scripts/bump-version.sh minor      # 0.1.1 -> 0.2.0
 scripts/bump-version.sh 1.0.0-rc.1 # explicit version
 scripts/bump-version.sh --dry-run patch
@@ -284,6 +305,8 @@ git push origin HEAD v0.1.1        # pushing the tag starts the release
 ```
 
 [`.github/workflows/release.yml`](.github/workflows/release.yml) verifies the versions, runs the tests, builds the eight targets with checksums, publishes the GitHub release (including `SHA256SUMS.txt`) and finally installs the **published** release with the official installers on all three platforms. Versions with a `-` suffix (for example `0.2.0-rc.1`) are published as pre-releases.
+
+After the tag is pushed, the `Release` workflow builds and publishes the GitHub release and the `Publish to npm` workflow publishes `@willh/mgit` with trusted publishing (no token involved), see [npm/PUBLISHING.md](npm/PUBLISHING.md).
 
 The `Release` workflow can also be started manually with a version; it creates and pushes the matching tag for you.
 

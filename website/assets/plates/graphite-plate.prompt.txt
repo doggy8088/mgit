@@ -1,0 +1,11 @@
+Use case: product-mockup
+Asset type: background texture for a dark section of a technical website
+Primary request: a flat panel of matte graphite lacquer, photographed straight on and filling the frame edge to edge
+Scene/backdrop: the surface alone, no objects, no instruments, no text
+Subject: very fine matte grain with faint long brushed streaks, like the lacquered body of an old measuring instrument
+Style/medium: high-resolution macro photograph of a flat matte surface, no gloss, no reflection
+Composition/framing: perfectly flat, edge to edge, no perspective, no vignette, no edges of the panel inside the frame
+Lighting/mood: flat even light, barely any falloff, no hotspot, no cast shadow
+Color palette: near-black graphite, roughly #191a1d to #24262a, very low contrast variation only
+Constraints: no text, no numbers, no logos, no objects, no reflections, no glossy highlights; must stay dark and quiet enough to set light body text on top
+Avoid: watermarks, vignette, scratches, dust, dramatic lighting, colour cast

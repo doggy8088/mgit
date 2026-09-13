@@ -1,0 +1,6 @@
+/private/tmp/mgit-mixed/api-gateway
+/private/tmp/mgit-mixed/billing-worker
+/private/tmp/mgit-mixed/docs-site
+/private/tmp/mgit-mixed/infra-scripts
+/private/tmp/mgit-mixed/web-console
+/private/tmp/mgit-mixed/web-console-hotfix

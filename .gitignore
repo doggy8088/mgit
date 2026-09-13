@@ -20,6 +20,8 @@
 # Impeccable decision page runtime state (one round's answer and log).
 .impeccable/questions/
 
+__pycache__/
+
 # Scratch space: image generation candidates and other local working files.
 /tmp/
 

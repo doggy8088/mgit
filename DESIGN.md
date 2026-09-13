@@ -212,13 +212,16 @@ components:
     textColor: "{colors.ink}"
   toc-item-level3:
     textColor: "{colors.ink-3}"
-  plate-photo:
-    backgroundColor: "{colors.paper-deep}"
+  rules:
+    backgroundColor: "{colors.paper}"
     textColor: "{colors.ink-2}"
-    padding: "16px 0 0"
-  plate-photo-label:
+    padding: "0.6rem 0 0.6rem 1.9rem"
+  rules-number:
     textColor: "{colors.ink-3}"
-    typography: "{typography.label}"
+    typography: "{typography.data-small}"
+  band-footnote:
+    textColor: "{colors.ink-2}"
+    padding: "24px 0 0"
   runlog-body:
     backgroundColor: "{colors.window}"
     textColor: "{colors.ink}"
@@ -237,16 +240,16 @@ components:
 
 The whole site is one instrument. A single strip of chart paper advances under N pens, one channel per repository: a flat line is a clean repository, the excursion is the one that needs you, and the run closes in a totals band printed at the foot of the paper. The page therefore has no cards, no icon grid and no hero-plus-install-box; it has a printed head, a channel legend, a strip with real traces, and bands of the same continuous paper separated by a hairline rule and 112px of quiet.
 
-The materials are a print room's, not a UI kit's. One warm-neutral paper carries the whole site, and the chart paper itself is the instrument's own material: inside the strip the world is a photographed sheet — `plates/chart-paper.jpg` laid under the page's own paper colour at about a fifth strength, with a 1px printed rule every 40px and 40px ticks down both edges — so no structure line and no texture ever runs through a line of prose. What carries the world on the reading surface instead is rules — the 2px ink rules that divide the page, the dotted 1px hairlines between legend, navigation, margin-index and table rows, the logbook row rules, the margin rule beside the chapter rail — plus the engraved plate and the photographic plates that bring the instrument's own object onto the page as captioned figures. Content is ink — graphite, channel blue, alarm red — and nothing else. Anything that must feel physical is printed as an object: a punched white window for a chapter's own action, a printed monospace command line on the paper for everything else, a dark engraved plate for specs and calibration figures, a printed frame for the recorded terminal session. Depth is a printing metaphor (a lifted sheet, a seated plate, a punched hole), never a light source.
+The materials are a print room's, not a UI kit's. Paper runs edge to edge and the texture under it is real: the whole page sits on a photographed sheet of uncoated stock (`plates/paper-fibre.jpg`) held at 0.94 alpha, so the ground measures `rgb(243, 244, 242)` against the token's `rgb(245, 246, 244)` — the fibre shows, the colour does not move. The chart paper is the instrument's own material and appears only inside the strip: `plates/chart-paper.jpg` under a 0.78 scrim, one 1px printed rule every 40px, and 40px ticks down both edges, so no rule and no pattern ever runs through a line of prose. Dark objects are lacquered rather than filled — the plate and the footer sit on `plates/graphite-plate.jpg` at 0.88 alpha. What carries the rest of the world is rules: the 2px ink rules that divide the page, the dotted 1px hairlines between legend, navigation, margin-index and table rows, the logbook row rules, the margin rule beside the chapter rail, and the engraved plate. Content is ink — graphite, channel blue, alarm red — and nothing else. Anything that must feel physical is printed as an object: a punched white window for a chapter's own action, a printed monospace command line on the paper for everything else, a dark engraved plate for specs and calibration figures, a printed frame for the recorded terminal session. Depth is a printing metaphor (a lifted sheet, a seated plate, a punched hole), never a light source.
 
 The build refines the direction contract in one place: the clean pen draws in channel blue, not graphite, and graphite is spent on the dirty pen. The build wins; the pen vocabulary below is the shipped one.
 
 **Key Characteristics:**
 
-- One continuous sheet: `paper-chart` and `paper-log` are both plain `#f5f6f4` — the chart paper is the strip's own material, not the page's; sections are bands, never cards.
+- One continuous sheet: `paper-chart` and `paper-log` both paint the same `#f5f6f4` ground over one photographed fibre texture; the chart paper is the strip's own material, not the page's; sections are bands, never cards.
 - Three inks carry meaning (graphite, channel blue, alarm) and colour means data and nothing else: the structure layer is three neutral rule greys, and the shipped landing measures 0.23% warm pixels at 1600px — all of it alarm ink.
-- Instrument components: a printed channel legend wired to the strip, an engraved plate, a recorded-session frame, a five-word state vocabulary.
-- Photographic plates (`plate-photo`) bring the world's own object in as captioned figures — a chart recorder on a workbench, pen tips on paper — each labelled as an AI-generated illustration, never as a product photo.
+- Instrument components: a printed channel legend wired to the strip, an engraved plate, a recorded-session frame, a five-word state vocabulary, a numbered rule list.
+- Three AI-generated textures carry material and nothing else — fibre under the page, chart paper in the strip, lacquered graphite behind the plate — never a depicted object.
 - On paper, commands are printed lines (`.cmdline` with a text-only copy switch) and only a chapter's own action keeps the punched white window.
 - A margin index holds the chapter's own sections beside the text at ≥1280px (sticky, 232px) and as a compact list above the prose below that.
 - Square corners throughout; hierarchy is rule weight (1px hair, 2px structure) and printed marks.
@@ -286,13 +289,13 @@ The pink grid family that once ruled the paper (`#efa8b4`, `#dd8d9a`, `#ecd2d6`)
 - **Plate Blue** (#7fb6d6): links inside plates and the footer. **Plate Alarm** (#e58a86) is declared in the plate family and not yet spent.
 - **Plate Rules** — `rgba(237, 237, 232, 0.2)` and `rgba(237, 237, 232, 0.1)`: the engraved hairlines and spec-table rules on dark surfaces.
 
-A handful of literal values sit outside the token layer and are recorded as observed one-offs rather than promoted: the `::selection` wash (#dce7ee), the runlog's rule ink (#a8545f), the plate link hover (#a5cfe6), the plate body text ramp (#cfcdc6, #d6d4cd), and the strip's paper scrim (`rgba(245, 246, 244, 0.78)` over the photographed sheet).
+A handful of literal values sit outside the token layer and are recorded as observed one-offs rather than promoted: the `::selection` wash (#dce7ee), the runlog's rule ink (#a8545f), the plate link hover (#a5cfe6), the plate body text ramp (#cfcdc6, #d6d4cd), and the three texture scrims — `rgba(245, 246, 244, 0.94)` over the page's fibre, `rgba(245, 246, 244, 0.78)` over the strip's chart paper, and `rgba(25, 26, 29, 0.88)` over the plate's graphite.
 
 ### Named Rules
 
 **The Structure-Only Rule.** Ruling is neutral and carries no colour: the three rule greys draw every separator, tick, table rule and scrollbar, and they never carry text, never border a control or a message, and never encode state. Colour in this system means data and nothing else — outside the pens, their marks and the failure word the page is neutral: the shipped landing measures 0.23% warm pixels across a 1600px page, and all of it is alarm ink.
 
-**The Instrument-Grid Rule.** Chart paper is the strip's material, not the page's: a photographed sheet laid under the strip at about a fifth strength, a 1px printed rule every 40px, and 40px ticks down both edges. Reading surfaces carry their structure through rules — 2px dividers, dotted 1px hairlines, the margin rule — never through a ruled or photographic ground under text.
+**The Instrument-Grid Rule.** Chart paper is the strip's material, not the page's: a photographed sheet laid under the strip at about a fifth strength, a 1px printed rule every 40px, and 40px ticks down both edges. Reading surfaces carry their structure through rules — 2px dividers, dotted 1px hairlines, the margin rule — never through a ruled pattern under text; the page's own ground may carry a material texture at a whisper, but never a grid.
 
 **The Alarm-Pairs-With-a-Word Rule.** An alarm mark never arrives alone: it ships with a printed word (`失敗` / `failed`), a code (`exit 128`) or a cross, so color is never the only carrier of state.
 
@@ -335,7 +338,7 @@ A handful of literal values sit outside the token layer and are recorded as obse
 
 A 1440px shell (`--shell`) centered with `clamp(16px, 4vw, 48px)` side padding. The spacing rhythm is one 8px unit: `--u` with `--s1`–`--s8` = 8 / 16 / 24 / 32 / 48 / 72 / 112 / 160px. Shipped rules consume `s1`–`s7`; `s8` (160px) is declared headroom. Reading measures are explicit: 68ch for prose (`--measure`), 58ch for a chapter intro, 62ch for plate definitions, 46ch for a lede, 74ch for a logbook description.
 
-Bands sit on the same paper: `padding-block: 112px` (72px at ≤900px) with a 1px Graphite top rule; a band head keeps a 48px gap to its content. Two-column content uses `repeat(auto-fit, minmax(min(320px, 100%), 1fr))` with 48/72px gaps; stacked groups use 24px (48px when wide). The instrument frame is a two-column grid — printed legend `minmax(210px, 244px)` plus a 1fr strip, split by a 2px Graphite rule — and the strip holds `clamp(280px, 36vh, 380px)` of height.
+Bands sit on the same paper: `padding-block: 112px` (72px at ≤900px) with a 1px Graphite top rule; a band head keeps a 48px gap to its content, and its intro is one line at the prose measure — the band states the behaviour and leaves the explaining to the rules, the logs and the plate. Two-column content uses `repeat(auto-fit, minmax(min(320px, 100%), 1fr))` with 48/72px gaps; stacked groups use 24px (48px when wide). The instrument frame is a two-column grid — printed legend `minmax(210px, 244px)` plus a 1fr strip, split by a 2px Graphite rule — and the strip holds `clamp(280px, 36vh, 380px)` of height.
 
 The landing's printed head caps its own measures so the hero reads as a plate rather than a paragraph: the headline at 34ch, the lede at 46ch, and the install window outside the reading measure altogether (`max-width: 100%` of the printed head, so the command never clips).
 
@@ -378,7 +381,7 @@ Square corners everywhere: the only radii in the shipped rules are the 1px focus
 
 ### Paper stocks (the surface)
 
-Character: plain stock, one paper. `paper-chart` (landing bodies) and `paper-log` (docs bodies) both resolve to `background-color: var(--paper)` with `background-image: none`; the paper runs edge to edge behind everything and is never a card. The chart paper is no longer drawn on the page at all — it is a real photograph, `assets/plates/chart-paper.jpg` (1000×667, 63kB), laid into the strip at `background-size: 1200px auto` under a 0.78-alpha paper scrim, with one 1px Hairline Rule Grey line every 40px and 12px columns of Strong Rule Grey ticks at both edges. The measured result is the same stock, with the fibre showing at about a fifth strength: `rgb(243, 244, 242)` inside the strip against the page's `rgb(245, 246, 244)`. What keeps the reading surface in the world is drawn, not photographed: 2px Graphite dividers, 1px dotted Rule Grey hairlines under list and table rows, the logbook row rules, the margin rule beside the chapter rail, the engraved plate and the photographic plates.
+Character: plain stock, one paper. The page ground is `background-color: var(--paper)` over a photographed sheet — `assets/plates/paper-fibre.jpg` (900×600, 53kB) at `900px auto`, held by a 0.94-alpha paper scrim — so the fibre reads and the colour does not move: `rgb(243, 244, 242)` measured against the token's `rgb(245, 246, 244)`. `paper-chart` (landing bodies) and `paper-log` (docs bodies) no longer clear the image; they only repaint the colour, which is what lets the texture show through every page. The chart paper is a separate material and stays inside the strip: `chart-paper.jpg` (1000×667, 63kB) at `1200px auto` under a 0.78 scrim, one 1px Hairline Rule Grey line every 40px, and 12px columns of Strong Rule Grey ticks at both edges. What keeps the reading surface in the world is drawn, not photographed: 2px Graphite dividers, 1px dotted Rule Grey hairlines under list and table rows, the logbook row rules, the margin rule beside the chapter rail, and the engraved plate.
 
 ### Instrument frame (legend + strip)
 
@@ -408,11 +411,15 @@ Character: everything else a reader might copy, printed straight onto the paper.
 
 ### Engraved plate (spec table, calibration figures, rows)
 
-Character: the instrument's spec plate — the only dark object on the page. `--plate` ground, Plate Ivory ink, 1px plate border, seated-plate shadow; head in panel caps (title) with a mono spec stamp in Plate Dim, body padding 32px. Three interior forms: **calibration figures** in an auto-fit `minmax(240px, 1fr)` grid at 32px gaps, each a mono 1.5rem number above a 0.875rem Archivo explanation in Plate Dim; **spec tables** in mono 0.8125rem with plate hairlines at 0.1/0.2 alpha, header in Plate Dim, first column Plate Ivory and never wrapping; and **rows** of a mono term plus a 0.9375rem definition (#cfcdc6 literal, 62ch) over 0.1-alpha rules. Links inside a plate take Plate Blue.
+Character: the instrument's spec plate — the only dark object on the page. `--plate` ground over `graphite-plate.jpg` (900×600, 23kB) at `900px auto` under a `rgba(25, 26, 29, 0.88)` scrim, so the panel reads as lacquered graphite at about an eighth strength rather than a flat fill; Plate Ivory ink, 1px plate border, seated-plate shadow; head in panel caps (title) with a mono spec stamp in Plate Dim, body padding 32px. Three interior forms: **calibration figures** in an auto-fit `minmax(240px, 1fr)` grid at 32px gaps, each a mono 1.5rem number above a 0.875rem Archivo explanation in Plate Dim; **spec tables** in mono 0.8125rem with plate hairlines at 0.1/0.2 alpha, header in Plate Dim, first column Plate Ivory and never wrapping; and **rows** of a mono term plus a 0.9375rem definition (#cfcdc6 literal, 62ch) over 0.1-alpha rules. Links inside a plate take Plate Blue.
 
-### Photographic plate (`plate-photo`)
+### Rule list (`rules`)
 
-Character: the world's own object, printed as a figure. An image with a 1px Graphite border on a Deep Paper ground, captioned underneath in a 0.3rem-gapped grid: a small-caps label in Graphite 3 (`示意影像 · AI 生成，不是產品照片` / `Illustrative image · AI generated, not a product photo`) over 0.9375rem Graphite 2 prose capped at 72ch. The `--wide` variant caps the image at 560px tall with `object-fit: cover` so a plate never dominates a band. Two ship on each landing: `instrument-bench.jpg` (1680×1120, 197kB) in the band titled 紙上的那台儀器 / "The instrument this page is an analogy for", and `pen-detail.jpg` (1400×933, 131kB) opening the report band. All three plates — including the strip's chart paper — are AI-generated illustrative material, never product photography: each file carries its generation prompt both as an embedded JPEG comment (`impeccable:prompt …`) and as a sibling `assets/plates/*.prompt.txt`, and each caption says so on the page. The plates are atmosphere; the run data in the strip is separate — a real recorded session of the binary.
+Character: the rules of a system printed as a numbered list, in two balanced columns. An `<ol>` with `counter-reset: rule` laid out with CSS `columns: 2` and a 72px column gap, opened by a 2px Graphite rule and 16px of air; each `li` increments the counter, avoids breaking across columns, sits on a 1px Rule Grey hairline with `0.6rem 0 0.6rem 1.9rem` padding, and sets in 0.9375rem Graphite 2 at 1.55, with the number drawn absolutely at the left in 0.75rem JetBrains Mono Graphite 3. Measured at 1440 the two columns come out equal — 177px each — and both start on the band's first row. It replaced a version where each `li` was a grid, which turned every inline `<code>` and `<b>` into its own grid item and shredded the sentences into ten lines: the list owns the columns, the item owns only its own text.
+
+### Band footnote
+
+Character: the one line that closes a band's evidence. `margin-top: 24px`, 92ch measure, 0.875rem Graphite 2 — under the two equal runlogs in the 它怎麼找儲存庫 band, where it names the depth difference the logs show.
 
 ### Runlog (the recorded session)
 
@@ -420,7 +427,7 @@ Character: a printed frame for a real terminal session. White body inside a 1px 
 
 ### Logbook row (the index)
 
-Character: a row of the record book. Grid `4.5rem 1fr auto` on baseline with 24px block padding and a Rule Grey hairline under it: `CH 0n` in 0.75rem mono Graphite 3, chapter name in the display stack at 1.0625rem/500, description at 0.9375rem Graphite 2 capped at 74ch, and an 18px drawn arrow at the right edge. Hover and `:focus-visible` punch the row white; nothing moves. At ≤620px the row drops to `3.4rem 1fr` and the arrow is removed.
+Character: a row of the record book, shared by two pages. The same seven rows — identical copy, identical order — are written once and used by the landing's 記錄本 band and by the docs index (`docs/index.html` / `en/docs/index.html`), so the two can never drift. Grid `4.5rem 1fr auto` on baseline with 24px block padding and a Rule Grey hairline under it: `CH 0n` in 0.75rem mono Graphite 3, chapter name in the display stack at 1.0625rem/500, description at 0.9375rem Graphite 2 capped at 74ch, and an 18px drawn arrow at the right edge. Hover and `:focus-visible` punch the row white; nothing moves. At ≤620px the row drops to `3.4rem 1fr` and the arrow is removed.
 
 ### Margin index (the chapter's own sections)
 
@@ -428,11 +435,11 @@ Character: the chapter's table of contents, printed in the margin beside the tex
 
 ### Docs navigation and pager
 
-Character: the logbook's table of contents, then the page turn. The rail is a sticky column (16px from the top) with a 2px Graphite right rule — the margin rule — a panel-caps title over a 1px Graphite rule, and items that grid a channel number beside the chapter name over a dotted Rule Grey hairline; the current page is punched white, weighted 600, and its channel number gets a 6px Alarm square. The chapter head itself is title and intro only — no stamp above the title — and the pager closes a chapter over a 2px Graphite top rule, with a panel-caps `下一章 · CH 0n` label above the destination name, blue on hover. In the article grid the head and pager span both columns, so the pager always sits under the prose at full width.
+Character: the logbook's table of contents, then the page turn. The docs tree now has a door of its own — `docs/index.html`, a head band, a one-line intro and the same seven logbook rows over a link back to the landing — so the header's 記錄本 link lands on a page rather than a directory listing. The rail is a sticky column (16px from the top) with a 2px Graphite right rule — the margin rule — a panel-caps title over a 1px Graphite rule, and items that grid a channel number beside the chapter name over a dotted Rule Grey hairline; the current page is punched white, weighted 600, and its channel number gets a 6px Alarm square. The chapter head itself is title and intro only — no stamp above the title — and the pager closes a chapter over a 2px Graphite top rule, with a panel-caps `下一章 · CH 0n` label above the destination name, blue on hover. In the article grid the head and pager span both columns, so the pager always sits under the prose at full width.
 
 ### Footer plate
 
-Character: the page ends on the instrument's base plate. `--plate` ground with three auto-fit groups (`minmax(220px, 1fr)`), group titles in panel caps Plate Dim, links in Plate Blue, definitions at 0.9375rem (#cfcdc6 literal), and a colophon row across a 0.2-alpha plate rule at 0.8125rem with the licence link at the right.
+Character: the page ends on the instrument's base plate — the same `graphite-plate.jpg` under the same 0.88 graphite scrim as the plate above. `--plate` ground with three auto-fit groups (`minmax(220px, 1fr)`), group titles in panel caps Plate Dim, links in Plate Blue, definitions at 0.9375rem (#cfcdc6 literal), and a colophon row across a 0.2-alpha plate rule at 0.8125rem with the licence link at the right.
 
 ### State vocabulary
 
@@ -446,12 +453,13 @@ The head is a single band over a 2px Graphite bottom rule: the wordmark sets at 
 
 ### Do:
 
-- **Do** keep the reading surface plain paper — `paper-chart` and `paper-log` both resolve to `#f5f6f4` with no background image — and let it run edge to edge, with the chart grid kept inside the strip where the pens draw.
+- **Do** keep the reading surface paper, not pattern: `paper-chart` and `paper-log` repaint the same `#f5f6f4` over one fibre texture at 0.94 alpha, and the chart paper stays inside the strip where the pens draw.
+- **Do** use imagery as material only — fibre under the page, chart paper in the strip, lacquered graphite behind the plate — each AI-generated texture carrying its prompt as an embedded JPEG comment and a sibling `.prompt.txt`.
 - **Do** let ink carry content and paper carry structure through rules: 2px dividers, dotted 1px hairlines under list, table, navigation and index rows, the margin rule, the logbook row rules.
 - **Do** pair every failure with a mark and a word (failed pen + cross + `exit 128`), and print the whole five-word state vocabulary once per strip.
 - **Do** set display-size CJK in the `--display` stack so it lands in "mgit Display", and extend the 155-character subset when new headline copy appears.
 - **Do** print a command as a `.cmdline` on the paper with the text-only ghost switch, and reserve the punched white window for a chapter's own action — the three install paths, the landing's install and verification lines.
-- **Do** bring the world's object in as a captioned photographic plate (`plate-photo`): 1px bordered image, a caption that names it as an AI-generated illustration, and the generation prompt kept both as an embedded JPEG comment and as a sibling `.prompt.txt`.
+- **Do** print a rule set as a `rules` list: CSS columns own the two balanced columns, each `li` owns only its own text and a 1px hairline.
 - **Do** keep the margin index in step with the chapter's own h2/h3 headings (`sec-1`, `sec-2`, … in document order) so the index and the page can never disagree.
 - **Do** keep commands, paths, channel names, exit codes, plate terms and spec tables in JetBrains Mono; keep prose in Archivo.
 - **Do** hold every gap to the 8px unit: 112px between bands, 48px from a band head to its content, 24–32px inside groups.
@@ -463,7 +471,9 @@ The head is a single band over a 2px Graphite bottom rule: the wordmark sets at 
 
 - **Don't** carry text, borders or state on a rule, and don't use the rule greys as anything but hairline, tick, separator or scrollbar.
 - **Don't** put colour back into the structure layer — no tinted grid, no coloured ruling, no coloured hairline; colour belongs to ink and to failure.
-- **Don't** lay a ruled or photographic ground under running text — no chart paper, no reading rule, no repeating gradient beneath a column of prose; reading surfaces take rules at the edges of content, never a texture underneath it.
+- **Don't** lay a ruled pattern under running text — no chart paper, no reading rule, no repeating gradient beneath a column of prose; the page's own ground may carry a material texture at a whisper, never a grid, and never a picture.
+- **Don't** put a picture on this site that pretends to be the product. The imagery is background material and nothing else: no depicted object, no mockup, no scene, no caption claiming a photograph shows mgit working — the run logs and exit codes are the evidence, and they come from the binary.
+- **Don't** make a `li` a grid. The rule list is a CSS-columns list whose items set inline `<code>` and `<b>` as part of their own sentence; a grid item per line splits every inline element onto its own row and shreds the copy.
 - **Don't** introduce a fourth ink. Graphite, Channel Blue and Alarm are the whole meaning layer; a second accent dilutes the alarm.
 - **Don't** use Alarm as decoration — it only appears with a failure word, a code, or a cross.
 - **Don't** add rounded panels, soft UI shadows, glows, gradient fills or colored shadows; the two lifts and two bevels in Elevation & Depth are the entire depth vocabulary.

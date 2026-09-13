@@ -1,7 +1,15 @@
 # mgit website
 
 `mgit` 的產品網站：首頁（Persuade）加上記錄本七章（Read），zh-TW 為主、`en/` 是完整鏡像。
-純靜態 HTML／CSS 加一支原生 JS，**沒有任何建置步驟**，也不需要外部服務。
+**瀏覽網站不需要任何建置步驟**：倉庫裡的 HTML／CSS／JS 就是成品，開檔案或丟上任何靜態主機都能跑。
+
+`build/` 是**產生器**（作者工具，不是執行期相依）：文案、表格、錄製輸出與兩個語言版本都在
+`build/*.py` 裡，跑一次就會重寫 `website/` 底下的 HTML。要改一頁文字時改資料再重跑，比手改
+18 個 HTML 檔（還要中英同步）安全：
+
+```sh
+python3 website/build/build_site.py     # 重寫 index.html、docs/、en/ 底下所有頁面
+```
 
 ## 本機預覽
 
@@ -21,6 +29,7 @@ open website/index.html
 ```
 index.html          zh-TW 首頁
 en/index.html       EN 首頁
+docs/index.html     記錄本首頁（七章索引）
 docs/*.html         記錄本七章（install／options／output／discovery／exit-codes／platforms／changes）
 en/docs/*.html      EN 版本
 assets/site.css     設計系統：記錄紙、多色筆墨、儀器面板刻字、打孔白窗、刻字規格板
@@ -45,6 +54,21 @@ mgit --list               # 六個絕對路徑
 `<script type="application/json" id="mgit-runs">`，由 `recorder.js` 讀取；左欄圖例由同一份結構產生，
 所以圖例與筆跡不可能對不上。要更新示範資料時，重跑上面幾個指令，把輸出換進頁面的 run record
 （`.runlog__body`）與該 JSON，兩邊一起改。
+
+## 材質（AI 生成的背景圖）
+
+`assets/plates/` 三張圖全部是 **AI 生成的背景材質**，只做材質、不描繪物件；每張的生成
+prompt 以 JPEG 註解內嵌在檔案裡，並附同名 `.prompt.txt`（`impeccable embed-prompt --scan
+website/assets/plates` 可檢查）：
+
+| 檔案 | 用在哪 |
+| --- | --- |
+| `paper-fibre.jpg` | 整頁底色（紙色遮罩 0.94，實測地面 `rgb(243,244,242)`） |
+| `graphite-plate.jpg` | 深色規格板與 footer（漆面遮罩 0.88） |
+| `chart-paper.jpg` | 只用在條帶的紙窗裡（遮罩 0.78，`1200px auto`） |
+
+網站上沒有偽裝成產品照片的影像，也沒有敘事型配圖。要換材質就重新生成、同樣附上 prompt，
+再把舊檔刪掉——不要留下沒有來源的點陣圖。
 
 ## 字型
 

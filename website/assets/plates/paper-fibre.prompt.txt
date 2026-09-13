@@ -1,0 +1,11 @@
+Use case: product-mockup
+Asset type: background texture for the paper ground of a technical website
+Primary request: one sheet of uncoated white paper photographed straight down, filling the frame edge to edge
+Scene/backdrop: the paper alone; no printing, no grid, no rules, no objects
+Subject: fine paper fibre and very slight surface irregularity, matte uncoated stock, like a blank engineering pad
+Style/medium: high-resolution macro photograph, visible fibre only at close range, no gloss
+Composition/framing: perfectly flat top-down view, even lighting corner to corner, no perspective, no vignette, no sheet edges inside the frame
+Lighting/mood: flat even neutral studio light, no shadow, no hotspot
+Color palette: cool paper white, roughly #f5f6f4, no colour at all
+Constraints: monochrome and near-white, no grid, no lines, no printing, no text, no numbers, no shadow; variation must stay subtle enough that body text reads over it
+Avoid: watermarks, vignette, creases, stains, colour cast, dramatic lighting

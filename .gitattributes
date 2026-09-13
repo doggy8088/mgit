@@ -1,0 +1,9 @@
+# Keep the line endings identical on every platform. The shell installers,
+# the Rust sources and the manifests must not depend on core.autocrlf; a Windows
+# checkout with CRLF would also break the POSIX shell scripts and awk based
+# tooling.
+* text=auto eol=lf
+
+# Images stay untouched.
+*.png binary
+*.jpg binary

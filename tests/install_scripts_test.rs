@@ -268,6 +268,18 @@ fn read(path: &std::path::Path) -> String {
     std::fs::read_to_string(path).expect("read")
 }
 
+/// The same content with `CRLF` folded to `LF`, so that the comparison does not
+/// depend on the line endings a checkout happens to use (Windows checkouts used
+/// to keep `CRLF`, and some `awk` builds drop the carriage return).
+fn read_normalized(path: &std::path::Path) -> String {
+    normalize(&read(path))
+}
+
+/// `CRLF` folded to `LF`.
+fn normalize(text: &str) -> String {
+    text.replace("\r\n", "\n")
+}
+
 fn lock_version(lock: &str) -> String {
     let mut in_mgit = false;
     for line in lock.lines() {
@@ -487,7 +499,7 @@ fn bump_version_keeps_the_rest_of_the_manifest() {
 
     // Only the version lines may change.
     let expected_manifest = original_manifest.replace("version = \"0.1.0\"", "version = \"0.1.1\"");
-    assert_eq!(read(&manifest), expected_manifest);
+    assert_eq!(read_normalized(&manifest), expected_manifest);
 
     let mut expected_lines: Vec<String> =
         original_lock.lines().map(|line| line.to_owned()).collect();
@@ -497,12 +509,60 @@ fn bump_version_keeps_the_rest_of_the_manifest() {
         }
     }
     let expected_lock = expected_lines.join("\n") + "\n";
-    assert_eq!(read(&lock), expected_lock);
+    assert_eq!(read_normalized(&lock), expected_lock);
 
     let expected_npm = original_npm.replace("\"version\": \"0.1.0\"", "\"version\": \"0.1.1\"");
-    assert_eq!(read(&npm_manifest), expected_npm);
+    assert_eq!(read_normalized(&npm_manifest), expected_npm);
     assert_ne!(
         original_npm, expected_npm,
         "the npm manifest must have a version line"
+    );
+}
+
+#[test]
+fn bump_version_handles_crlf_manifests() {
+    if !sh_available() {
+        return;
+    }
+    let (_temp, manifest, lock) = manifest_copy();
+    let npm_manifest = manifest
+        .parent()
+        .expect("parent")
+        .join("npm")
+        .join("package.json");
+
+    // A Windows checkout with core.autocrlf hands CRLF files to the script.
+    for path in [&manifest, &lock, &npm_manifest] {
+        let text = read(path).replace('\n', "\r\n");
+        std::fs::write(path, text).expect("write the CRLF copy");
+    }
+    let original_manifest = read(&manifest);
+    let original_npm = read(&npm_manifest);
+
+    let path = bump_script();
+    let (code, out, err) = output(
+        "sh",
+        &[
+            path.to_str().expect("utf-8 path"),
+            "--manifest",
+            manifest.to_str().expect("utf-8 path"),
+            "patch",
+        ],
+    );
+
+    assert_eq!(code, 0, "{err}");
+    assert!(out.contains("0.1.0 -> 0.1.1"), "{out}");
+    assert!(read(&manifest).contains("version = \"0.1.1\""));
+    assert_eq!(lock_version(&read_normalized(&lock)), "0.1.1");
+    assert_eq!(npm_version(&manifest), "0.1.1");
+
+    // Only the version line changes, whichever line endings awk happens to keep.
+    assert_eq!(
+        read_normalized(&manifest),
+        normalize(&original_manifest).replace("version = \"0.1.0\"", "version = \"0.1.1\"")
+    );
+    assert_eq!(
+        read_normalized(&npm_manifest),
+        normalize(&original_npm).replace("\"version\": \"0.1.0\"", "\"version\": \"0.1.1\"")
     );
 }

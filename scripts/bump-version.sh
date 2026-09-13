@@ -79,7 +79,11 @@ done
 [ -n "$requested" ] || die "expected major, minor, patch or a version (run with --help)"
 [ -f "$manifest" ] || die "$manifest does not exist"
 
-current=$(awk -F'"' '/^\[/ { section = $0 } section == "[package]" && /^version = / { print $2; exit }' "$manifest")
+# `sub(/\r$/, ...)` keeps the script working on checkouts with CRLF endings.
+current=$(awk -F'"' '
+    /^\[/ { section = $0; sub(/\r$/, "", section) }
+    section == "[package]" && /^version = / { print $2; exit }
+' "$manifest")
 [ -n "$current" ] || die "cannot read the version from $manifest"
 
 next=""
@@ -127,7 +131,7 @@ fi
 
 temporary="$manifest.tmp.$$"
 awk -v new_version="$next" '
-    /^\[/ { section = $0 }
+    /^\[/ { section = $0; sub(/\r$/, "", section) }
     !updated && section == "[package]" && /^version = / {
         sub(/"[^"]*"/, "\"" new_version "\"")
         updated = 1

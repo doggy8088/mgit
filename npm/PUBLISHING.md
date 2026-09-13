@@ -51,8 +51,10 @@ npm/scripts/vendor.sh assets         # 預設處理 6 個平台，逐一驗證 S
 在本機開發時也可以只用自己平台的封存檔（`make package` 產生）：
 
 ```sh
-make package
-npm/scripts/vendor.sh dist aarch64-apple-darwin   # 只 vendor 目前平台
+make package          # 產生 dist/mgit-<target>.tar.gz 與檢查碼
+make npm-vendor       # 等同 npm/scripts/vendor.sh dist $(TARGET)
+make npm-test         # 執行包裝套件測試
+make npm-pack         # 產生可試裝的 tarball（會一併複製 LICENSE）
 ```
 
 ### 3. 檢查版本一致性

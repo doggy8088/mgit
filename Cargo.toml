@@ -10,7 +10,7 @@ license = "MIT"
 readme = "README.md"
 keywords = ["git", "cli", "multi-repo", "git-status", "productivity"]
 categories = ["command-line-utilities", "development-tools"]
-exclude = ["archive/", ".github/", "scripts/"]
+exclude = ["archive/", ".github/", ".agents/", ".impeccable/", "scripts/", "website/"]
 
 [lib]
 name = "mgit"

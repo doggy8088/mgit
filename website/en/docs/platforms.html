@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cross-platform behavior — mgit 2.0.2</title>
+<meta name="description" content="Windows consoles, locales, SIGPIPE and how git is located">
+<link rel="alternate" hreflang="zh-Hant-TW" href="../../docs/platforms.html">
+<link rel="stylesheet" href="../../assets/site.css">
+<meta name="color-scheme" content="light">
+</head>
+<body class="paper-log">
+<a class="skip" href="#main">Skip to content</a>
+<header class="head"><div class="shell head__inner">
+<a class="wordmark" href="../../en/index.html">
+<span class="wordmark__mark">mgit</span>
+<span class="wordmark__spec">v2.0.2 · MIT · 8 targets</span>
+</a>
+<nav class="head__links">
+<a href="../../en/docs/">Logbook</a>
+<a href="https://github.com/doggy8088/mgit">GitHub</a>
+<a href="https://github.com/doggy8088/mgit/releases">Releases</a>
+<a href="https://www.npmjs.com/package/@willh/mgit">npm</a>
+</nav>
+<span class="lang" role="group" aria-label="Language">
+<a href="../../en/index.html" aria-current="true">EN</a>
+<a href="../../docs/platforms.html">中文</a>
+</span>
+</div></header>
+<main id="main">
+<div class="shell doc"><nav class="docnav" aria-label="Chapters"><p class="docnav__title"><span>Logbook · mgit 2.0.2</span></p><div class="docnav__list"><a class="docnav__item" href="install.html"><span class="docnav__ch">CH 01</span><span>Install</span></a><a class="docnav__item" href="options.html"><span class="docnav__ch">CH 02</span><span>Options</span></a><a class="docnav__item" href="output.html"><span class="docnav__ch">CH 03</span><span>Output and behavior</span></a><a class="docnav__item" href="discovery.html"><span class="docnav__ch">CH 04</span><span>Repository discovery</span></a><a class="docnav__item" href="exit-codes.html"><span class="docnav__ch">CH 05</span><span>Exit codes and environment</span></a><a class="docnav__item" href="platforms.html" aria-current="page"><span class="docnav__ch">CH 06</span><span>Cross-platform behavior</span></a><a class="docnav__item" href="changes.html"><span class="docnav__ch">CH 07</span><span>Versions, releases and npm</span></a></div></nav><article class="docmain"><header class="docmain__head"><h1 class="docmain__title">Cross-platform behavior</h1><p class="docmain__intro">Windows consoles, locales, SIGPIPE and how git is located</p></header><div class="prose"><h2>Behaviour on all three systems</h2>
+<table class="table"><thead><tr><th>Situation</th><th>Behaviour</th></tr></thead><tbody><tr><td>Output redirected (pipe, file, CI log)</td><td>Color is switched off automatically; plain text only</td></tr><tr><td>Windows <code>cmd.exe</code> / PowerShell 5.1</td><td>Tries to enable virtual terminal (VT) mode so ANSI color works; falls back to no color when it cannot</td></tr><tr><td>Windows console code page is not UTF-8</td><td>Switches to ASCII glyphs (<code>Folder: … | Branch: …</code>) so no emoji turns into noise</td></tr><tr><td>PowerShell 7, Windows Terminal, macOS, Linux</td><td>Uses Unicode glyphs (<code>📂</code>, <code>│</code>, <code>✗</code>, <code>─</code>)</td></tr><tr><td>POSIX locale that is not UTF-8 (<code>LANG=C</code>)</td><td>Switches to ASCII glyphs; <code>MGIT_ASCII=0</code> forces Unicode back</td></tr><tr><td><code>NO_COLOR</code> / <code>CLICOLOR_FORCE</code></td><td>Follows the community conventions (see the environment chapter)</td></tr><tr><td><code>mgit … | head</code></td><td>Restores the default <code>SIGPIPE</code> behaviour and exits quietly instead of panicking</td></tr><tr><td>git on Windows</td><td>Found through <code>PATH</code> (including <code>PATHEXT</code>); <code>MGIT_GIT</code> takes a full path</td></tr></tbody></table>
+<h2>Two Windows details</h2>
+<ul><li>VT mode is requested at start-up; when it cannot be enabled, color is switched off instead of printing escapes a console cannot render.</li><li>A console code page that is not UTF-8 switches to ASCII glyphs; <code>MGIT_ASCII=0</code> overrides it.</li></ul>
+<h2>Pipes</h2>
+<p><code>mgit … | head</code> restores the default <code>SIGPIPE</code> behaviour: the run ends quietly when the pipe closes, with no panic message.</p></div><nav class="pager"><a href="exit-codes.html"><span>Previous chapter · CH 05</span>Exit codes and environment</a><a class="pager__next" href="changes.html"><span>Next chapter · CH 07</span>Versions, releases and npm</a></nav></article></div>
+</main>
+<footer class="foot"><div class="shell foot__inner">
+<dl class="foot__group"><dt>Release</dt>
+<dd><a href="https://github.com/doggy8088/mgit/releases">Release 2.0.2</a></dd>
+<dd><a href="https://github.com/doggy8088/mgit/blob/main/CHANGELOG.md">CHANGELOG.md</a></dd>
+</dl>
+<dl class="foot__group"><dt>Install</dt>
+<dd><a href="https://github.com/doggy8088/mgit/blob/main/install.sh">install.sh</a></dd>
+<dd><a href="https://github.com/doggy8088/mgit/blob/main/install.ps1">install.ps1</a></dd>
+</dl>
+<dl class="foot__group"><dt>Package</dt>
+<dd><a href="https://www.npmjs.com/package/@willh/mgit">@willh/mgit</a></dd>
+<dd><a href="https://github.com/doggy8088/mgit/blob/main/npm/PUBLISHING.md">npm/PUBLISHING.md</a></dd>
+</dl>
+</div>
+<div class="shell foot__colophon"><span>© 2026 Will 保哥 · MIT licensed · Demo data is a real session recorded with the 2.0.2 binary in a demo workspace</span><span><a href="https://github.com/doggy8088/mgit/blob/main/LICENSE">MIT</a></span></div>
+</footer>
+<script src="../../assets/recorder.js" defer></script>
+</body>
+</html>

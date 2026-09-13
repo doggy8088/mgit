@@ -1,0 +1,331 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-14T01:30:00+08:00",
+  "title": "Design System: mgit website",
+  "extensions": {
+    "colorMeta": {
+      "paper": {
+        "role": "neutral",
+        "displayName": "Chart Paper",
+        "canonical": "#f5f6f4",
+        "tonalRamp": ["#0b0b0a", "#262725", "#444544", "#656665", "#888988", "#adaeac", "#d3d4d3", "#eeefed"],
+        "usage": "Every page ground, both paper stocks; body background."
+      },
+      "paper-deep": {
+        "role": "neutral",
+        "displayName": "Deep Paper",
+        "canonical": "#eceeea",
+        "tonalRamp": ["#0a0c09", "#262724", "#444642", "#656763", "#888a86", "#adafab", "#d3d5d1", "#edefeb"],
+        "usage": "Pressed state of the copy switch."
+      },
+      "grid-fine": {
+        "role": "tertiary",
+        "displayName": "Fine Grid Pink",
+        "canonical": "#efa8b4",
+        "tonalRamp": ["#1d0007", "#460f1e", "#6a2f3c", "#8f505d", "#b6737f", "#dd98a4", "#fec2cb", "#fee8eb"],
+        "usage": "1mm grid line at 8px pitch on instrument surfaces; strip lane baseline."
+      },
+      "grid-bold": {
+        "role": "tertiary",
+        "displayName": "Heavy Rule Pink",
+        "canonical": "#dd8d9a",
+        "tonalRamp": ["#1e0006", "#4b061c", "#6f2a3a", "#954c5a", "#bc6f7c", "#e494a1", "#fdc2cb", "#ffe8eb"],
+        "usage": "5mm rule at 40px pitch; dotted hairlines between legend rows, docnav items and table rows; scrollbar thumb."
+      },
+      "grid-log": {
+        "role": "tertiary",
+        "displayName": "Logbook Rule Pink",
+        "canonical": "#ecd2d6",
+        "tonalRamp": ["#150609", "#332024", "#533f42", "#765f63", "#9a8286", "#bfa7ab", "#e7cdd1", "#fee8eb"],
+        "usage": "Single 48px rule on the reading pages."
+      },
+      "window": {
+        "role": "neutral",
+        "displayName": "Punched White",
+        "canonical": "#ffffff",
+        "tonalRamp": ["#0b0b0b", "#262626", "#454545", "#666666", "#898989", "#aeaeae", "#d4d4d4", "#eeeeee"],
+        "usage": "The only white: punched windows, runlog, callouts, switches, hovered logbook row, current nav item."
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Graphite Ink",
+        "canonical": "#15161a",
+        "tonalRamp": ["#0a0b0f", "#25262a", "#444549", "#64666b", "#87898e", "#acaeb3", "#d2d4da", "#edeef4"],
+        "usage": "Body and headings, wordmark, 1px frames, run tag, dirty pen, flag mark, dirty vocabulary mark."
+      },
+      "ink-2": {
+        "role": "neutral",
+        "displayName": "Graphite 2",
+        "canonical": "#4b4d53",
+        "tonalRamp": ["#090b10", "#24262c", "#43454b", "#64666c", "#878990", "#abaeb5", "#d2d4db", "#eceef6"],
+        "usage": "Ledes, band intros, note prose, runlog bar, table heads, dirty legend state word, interrupted/no-repos swatch."
+      },
+      "ink-3": {
+        "role": "neutral",
+        "displayName": "Graphite 3",
+        "canonical": "#6d7076",
+        "tonalRamp": ["#090b0f", "#24262b", "#42454b", "#63666c", "#86898f", "#abaeb4", "#d1d4db", "#ebeff5"],
+        "usage": "12px chrome: labels, captions, channel numbers, spec stamps, dimmed vocabulary words."
+      },
+      "blue": {
+        "role": "primary",
+        "displayName": "Channel Blue",
+        "canonical": "#0f5c86",
+        "tonalRamp": ["#000d18", "#022a40", "#064a6e", "#266d98", "#4d91be", "#72b6e5", "#aadbff", "#dff1ff"],
+        "usage": "Links, 2px focus outline, clean pen (1.5px), clean swatch, current-chapter hover labels."
+      },
+      "blue-deep": {
+        "role": "primary",
+        "displayName": "Deep Channel",
+        "canonical": "#0a3f5c",
+        "tonalRamp": ["#000d17", "#012a40", "#184a67", "#3c6c8b", "#5f90b1", "#83b5d7", "#abdbfd", "#dff2ff"],
+        "usage": "Link hover on paper surfaces."
+      },
+      "alarm": {
+        "role": "secondary",
+        "displayName": "Alarm Red",
+        "canonical": "#b01b1b",
+        "tonalRamp": ["#1f0001", "#4e0405", "#840a0d", "#b82522", "#e25147", "#fb887b", "#fec4bc", "#fee9e6"],
+        "usage": "Failure only: failed pen (1.9px), cross mark, exit-code tick, failing runlog lines, failed state word in a legend. Its two non-failure appearances are pointers, not meaning: the text caret and the current docs chapter square."
+      },
+      "plate": {
+        "role": "neutral",
+        "displayName": "Instrument Plate",
+        "canonical": "#191a1d",
+        "tonalRamp": ["#0a0b0e", "#252629", "#444548", "#65666a", "#88898d", "#acaeb2", "#d3d4d8", "#edeef3"],
+        "usage": "The dark engraved object: spec plates and the footer."
+      },
+      "plate-2": {
+        "role": "neutral",
+        "displayName": "Plate Deep",
+        "canonical": "#22242a",
+        "tonalRamp": ["#090b10", "#24262c", "#43454b", "#63666d", "#868990", "#abaeb6", "#d1d4dc", "#ebeef7"],
+        "usage": "Declared in the plate family; no shipped rule consumes it yet."
+      },
+      "plate-ink": {
+        "role": "neutral",
+        "displayName": "Plate Ivory",
+        "canonical": "#edede8",
+        "tonalRamp": ["#0b0b08", "#272723", "#454541", "#666662", "#898985", "#aeaea9", "#d4d4d0", "#efefea"],
+        "usage": "Plate titles, row terms, calibration figures."
+      },
+      "plate-dim": {
+        "role": "neutral",
+        "displayName": "Plate Dim",
+        "canonical": "#a3a199",
+        "tonalRamp": ["#0d0b06", "#282620", "#47453e", "#68665f", "#8b8981", "#b0aea6", "#d6d4cc", "#f1efe6"],
+        "usage": "Plate spec stamps, figure captions, footer group titles, colophon."
+      },
+      "plate-blue": {
+        "role": "neutral",
+        "displayName": "Plate Blue",
+        "canonical": "#7fb6d6",
+        "tonalRamp": ["#000d16", "#032a3d", "#114b67", "#376d8a", "#5b91af", "#7fb6d6", "#a5ddfe", "#def2ff"],
+        "usage": "Links inside plates and the footer; hovers to the literal #a5cfe6."
+      },
+      "plate-alarm": {
+        "role": "neutral",
+        "displayName": "Plate Alarm",
+        "canonical": "#e58a86",
+        "tonalRamp": ["#1f0002", "#4e030b", "#752627", "#9c4947", "#c46c69", "#ed918d", "#fec3bf", "#fee9e7"],
+        "usage": "Declared in the plate family; no shipped rule consumes it yet."
+      },
+      "plate-rule": {
+        "role": "neutral",
+        "displayName": "Plate Hairline",
+        "canonical": "rgba(237, 237, 232, 0.2)",
+        "usage": "Engraved hairlines on dark surfaces: plate head rule, footer colophon rule, spec-table header rule."
+      },
+      "plate-rule-soft": {
+        "role": "neutral",
+        "displayName": "Plate Hairline Soft",
+        "canonical": "rgba(237, 237, 232, 0.1)",
+        "usage": "Interior rules on dark surfaces: plate rows and spec-table row rules."
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "The single h1 per page, in the Archivo + \"mgit Display\" stack.", "fontStretch": "106%" },
+      "headline": { "displayName": "Headline", "purpose": "Band titles on the landings.", "fontStretch": "104%" },
+      "title": { "displayName": "Title", "purpose": "Docs chapter titles and prose h2 inside a section.", "fontStretch": "100%" },
+      "lede": { "displayName": "Lede", "purpose": "The one explanation under a headline, capped at 46ch.", "fontStretch": "100%" },
+      "body": { "displayName": "Body", "purpose": "Prose at 68ch measure; tabular numerals everywhere.", "fontStretch": "100%" },
+      "label": { "displayName": "Label", "purpose": "Printed small caps labels, 108% width, 0.11em tracking.", "fontStretch": "108%" },
+      "panel-caps": { "displayName": "Panel Caps", "purpose": "Plate titles and procedure names, 116% width, 0.12-0.13em tracking.", "fontStretch": "116%" },
+      "data": { "displayName": "Data", "purpose": "Commands, recorded lines, plate terms, spec tables.", "fontStretch": "100%" },
+      "data-small": { "displayName": "Data Chrome", "purpose": "Channel numbers, spec stamps, run tags, captions, bar labels.", "fontStretch": "100%" },
+      "figure": { "displayName": "Calibration Figure", "purpose": "The plate's numbers, each with a 0.875rem Archivo explanation below.", "fontStretch": "100%" }
+    },
+    "shadows": [
+      { "name": "lifted-sheet", "value": "0 26px 50px -44px rgba(21, 22, 26, 0.65)", "purpose": "The instrument frame; the paper lifted off the desk. Used once." },
+      { "name": "seated-plate", "value": "0 24px 48px -40px rgba(21, 22, 26, 0.9)", "purpose": "The dark plate and footer object seated into the paper." },
+      { "name": "punched-window", "value": "inset 0 1px 0 rgba(255, 255, 255, 0.9), inset 0 -1px 0 rgba(21, 22, 26, 0.05)", "purpose": "Window and runlog frame read as punched openings." },
+      { "name": "keycap-rest", "value": "inset 0 1px 0 rgba(255, 255, 255, 0.85), inset 0 -2px 0 rgba(21, 22, 26, 0.09)", "purpose": "Copy switch at rest." },
+      { "name": "keycap-pressed", "value": "inset 0 2px 0 rgba(21, 22, 26, 0.12)", "purpose": "Copy switch while pressed, with translateY(1px)." }
+    ],
+    "motion": [
+      { "name": "sweep", "value": "2400ms cubic-bezier(.22, .61, .24, 1)", "purpose": "The one authored moment: traces draw themselves via stroke-dashoffset 1 to 0 (pathLength=1)." },
+      { "name": "sweep-stagger", "value": "60ms per lane", "purpose": "Trace transition delay by channel index." },
+      { "name": "carriage", "value": "requestAnimationFrame, eased = 1 - (1 - t)^3", "purpose": "Carriage head and block travel left to right across the same 2400ms." },
+      { "name": "mark-fade", "value": "260ms linear at 1968ms delay", "purpose": "Flag, cross and exit-code ticks appear after 82% of the sweep." },
+      { "name": "carriage-fade", "value": "200ms linear", "purpose": "Carriage parks at the right edge and fades out." },
+      { "name": "link", "value": "120ms linear", "purpose": "Link color on hover." },
+      { "name": "state-hover", "value": "140ms ease-out", "purpose": "Replay button, logbook row and switch background/color changes." },
+      { "name": "switch-press", "value": "90ms ease-out transform, 140ms ease-out background", "purpose": "Copy switch press travel." },
+      { "name": "trace-opacity", "value": "160ms ease-out", "purpose": "Legend linkage: other traces to 0.26, the named one lifted to 3.2px." },
+      { "name": "reduced-motion", "value": "0.001ms !important on animation and transition; JS settle()", "purpose": "Reduced motion settles to the final state: traces drawn, marks visible, carriage parked and hidden; replay re-settles." }
+    ],
+    "breakpoints": [
+      { "name": "docs-collapse", "value": "1100px" },
+      { "name": "instrument-stack", "value": "900px" },
+      { "name": "compact", "value": "620px" },
+      { "name": "shell", "value": "1440px" }
+    ],
+    "stateVocabulary": [
+      { "word": "乾淨", "wordEn": "clean", "state": "clean", "ink": "#0f5c86", "meaning": "Repository reported nothing; the pen draws flat in channel blue." },
+      { "word": "有變更", "wordEn": "dirty", "state": "dirty", "ink": "#15161a", "meaning": "Uncommitted changes; graphite excursions with a flag mark per change. Word and pen agree: dirty prints Graphite 2 (legend word) and marks Graphite; alarm stays reserved for failure." },
+      { "word": "失敗", "wordEn": "failed", "state": "failed", "ink": "#b01b1b", "meaning": "The git command failed; alarm pen with cross mark and the exit code." },
+      { "word": "被中斷", "wordEn": "interrupted", "state": "interrupted", "ink": "#4b4d53", "meaning": "Run stopped by SIGINT/SIGTERM; no pen motion, printed word only." },
+      { "word": "找不到儲存庫", "wordEn": "no repos", "state": "empty", "ink": "#4b4d53", "meaning": "No repository found under the directory; exit code 1." }
+    ],
+    "pens": [
+      { "state": "clean", "strokeColor": "#0f5c86", "strokeWidth": 1.5, "figure": "flat line across the lane", "mark": "none" },
+      { "state": "dirty", "strokeColor": "#15161a", "strokeWidth": 1.6, "figure": "one square S-curve excursion per change, 7px corner radius, plateau max 58px, amplitude max min(lane * 0.36, 34)", "mark": "5px graphite flag triangle" },
+      { "state": "failed", "strokeColor": "#b01b1b", "strokeWidth": 1.9, "figure": "one violent overshoot to 1.85x amplitude that rings and settles", "mark": "6px alarm cross plus the exit code as 12px/700 alarm mono" }
+    ],
+    "browserSurfaces": {
+      "selection": { "background": "#f7d8dd", "color": "#15161a", "note": "Literal pink, untokenized." },
+      "caret": { "color": "#b01b1b" },
+      "focus": { "outline": "2px solid #0f5c86", "offset": "2px", "radius": "1px" },
+      "scrollbar": { "thumb": "#dd8d9a", "track": "transparent", "size": "12px", "thumbBorder": "4px solid #f5f6f4", "thumbRadius": "8px" }
+    }
+  },
+  "components": [
+    {
+      "name": "Strip Chart",
+      "kind": "custom",
+      "refersTo": "instrument-frame",
+      "description": "The instrument: three pen weights on chart paper with lane rules, drawn from the page's own run record.",
+      "html": "<div class=\"ds-strip\"><svg class=\"ds-strip__svg\" viewBox=\"0 0 320 120\" preserveAspectRatio=\"none\" role=\"presentation\" aria-hidden=\"true\" focusable=\"false\"><line x1=\"0\" y1=\"20\" x2=\"320\" y2=\"20\" class=\"ds-lane__rule\"/><line x1=\"0\" y1=\"60\" x2=\"320\" y2=\"60\" class=\"ds-lane__rule\"/><line x1=\"0\" y1=\"100\" x2=\"320\" y2=\"100\" class=\"ds-lane__rule\"/><path d=\"M 0 20 L 320 20\" class=\"ds-trace ds-trace--clean\"/><path d=\"M 0 60 C 10 60, 10 34, 24 34 L 60 34 C 74 34, 74 60, 88 60 L 320 60\" class=\"ds-trace ds-trace--dirty\"/><path d=\"M 0 100 C 120 100, 120 52, 140 52 L 170 52 C 182 52, 182 116, 200 116 C 226 116, 240 88, 262 96 C 286 100, 300 100, 320 100\" class=\"ds-trace ds-trace--failed\"/><g class=\"ds-mark--flag\"><path d=\"M 54 34 l 5 -5 l 0 10 z\"/></g><g class=\"ds-mark--cross\"><path d=\"M 164 94 L 176 106 M 176 94 L 164 106\"/></g><text x=\"180\" y=\"112\" class=\"ds-tick--alarm\">128</text></svg><p class=\"ds-strip__foot\"><span class=\"ds-vocab__word ds-vocab__word--clean\">乾淨</span><span class=\"ds-vocab__word ds-vocab__word--failed\">失敗</span><span class=\"ds-strip__exit\"><b>exit 128</b> · 6 repositories, 5 succeeded, 1 failed</span></p></div>",
+      "css": ".ds-strip { position: relative; min-height: 180px; background: var(--paper); background-image: repeating-linear-gradient(to right, var(--grid-bold) 0 1px, transparent 1px 40px), repeating-linear-gradient(to bottom, var(--grid-bold) 0 1px, transparent 1px 40px), repeating-linear-gradient(to right, var(--grid-fine) 0 1px, transparent 1px 8px), repeating-linear-gradient(to bottom, var(--grid-fine) 0 1px, transparent 1px 8px); border: var(--hair) solid var(--ink); padding: 8px; } .ds-strip__svg { position: absolute; inset: 0; width: 100%; height: 100%; } .ds-lane__rule { stroke: var(--grid-bold); stroke-width: 1; stroke-dasharray: 2 6; } .ds-trace { fill: none; stroke-linecap: round; stroke-linejoin: round; } .ds-trace--clean { stroke: var(--blue); stroke-width: 1.5; } .ds-trace--dirty { stroke: var(--ink); stroke-width: 1.6; } .ds-trace--failed { stroke: var(--alarm); stroke-width: 1.9; } .ds-mark--flag path { fill: var(--ink); } .ds-mark--cross path { fill: none; stroke: var(--alarm); stroke-width: 1.8; stroke-linecap: round; } .ds-tick--alarm { font-family: var(--mono); font-size: 12px; font-weight: 700; fill: var(--alarm); } .ds-strip__foot { position: absolute; left: 24px; right: 24px; bottom: 16px; display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin: 0; } .ds-vocab__word { font-family: var(--mono); font-size: 0.75rem; color: var(--ink-2); } .ds-vocab__word::before { content: \"\"; display: inline-block; width: 10px; height: 2px; margin-right: 0.45rem; vertical-align: 0.28em; background: var(--grid-bold); } .ds-vocab__word--clean::before { background: var(--blue); } .ds-vocab__word--failed::before { background: var(--alarm); } .ds-strip__exit { font-family: var(--mono); font-size: 0.8125rem; color: var(--ink); } .ds-strip__exit b { font-weight: 700; }"
+    },
+    {
+      "name": "Punched Window",
+      "kind": "custom",
+      "refersTo": "window",
+      "description": "A command printed into a punched white opening, with the copy switch at its end.",
+      "html": "<div class=\"ds-window\"><span class=\"ds-window__label\">macOS · Linux</span><code class=\"ds-window__cmd\">curl -fsSL https://raw.githubusercontent.com/doggy8088/mgit/main/install.sh | sh</code><button class=\"ds-switch\" type=\"button\"><svg class=\"ds-switch__glyph\" viewBox=\"0 0 16 16\" aria-hidden=\"true\" focusable=\"false\"><rect x=\"2.5\" y=\"2.5\" width=\"8\" height=\"11\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.4\"/><path d=\"M5.5 2.5V1h8v11h-1.5\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.4\"/></svg><span>複製</span></button></div>",
+      "css": ".ds-window { display: flex; align-items: center; gap: 16px; min-width: 0; background: var(--window); border: var(--hair) solid var(--ink); padding: 0.55rem 0.65rem 0.55rem 0.75rem; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), inset 0 -1px 0 rgba(21, 22, 26, 0.05); } .ds-window__label { flex: none; font-family: var(--sans); font-stretch: 108%; font-weight: 600; text-transform: uppercase; letter-spacing: 0.11em; font-size: 0.75rem; color: var(--ink-3); } .ds-window__cmd { flex: 1; min-width: 0; font-family: var(--mono); font-size: 0.8125rem; color: var(--ink); overflow-x: auto; white-space: pre; } .ds-switch { flex: none; display: inline-flex; align-items: center; gap: 0.45rem; border: var(--hair) solid var(--ink); background: var(--paper); padding: 0.42rem 0.6rem; font-family: var(--sans); font-stretch: 108%; font-weight: 600; font-size: 0.75rem; letter-spacing: 0.11em; text-transform: uppercase; color: var(--ink); cursor: pointer; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85), inset 0 -2px 0 rgba(21, 22, 26, 0.09); transition: transform 90ms ease-out, background 140ms ease-out; } .ds-switch:hover { background: var(--paper-deep); } .ds-switch:active { transform: translateY(1px); box-shadow: inset 0 2px 0 rgba(21, 22, 26, 0.12); } .ds-switch:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; border-radius: 1px; } .ds-switch__glyph { width: 12px; height: 12px; flex: none; }"
+    },
+    {
+      "name": "Copy Switch, Copied",
+      "kind": "button",
+      "refersTo": "switch-copied",
+      "description": "The switch's confirmation state: full ink/paper inversion, no bevel, label swapped for 1800ms.",
+      "html": "<button class=\"ds-switch ds-switch--copied\" type=\"button\" aria-live=\"polite\"><svg class=\"ds-switch__glyph\" viewBox=\"0 0 16 16\" aria-hidden=\"true\" focusable=\"false\"><rect x=\"2.5\" y=\"2.5\" width=\"8\" height=\"11\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.4\"/><path d=\"M5.5 2.5V1h8v11h-1.5\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.4\"/></svg><span>已複製</span></button>",
+      "css": ".ds-switch { display: inline-flex; align-items: center; gap: 0.45rem; border: var(--hair) solid var(--ink); background: var(--ink); color: var(--paper); padding: 0.42rem 0.6rem; font-family: var(--sans); font-stretch: 108%; font-weight: 600; font-size: 0.75rem; letter-spacing: 0.11em; text-transform: uppercase; cursor: pointer; transition: transform 90ms ease-out, background 140ms ease-out; } .ds-switch:hover { background: var(--ink); color: var(--paper); } .ds-switch:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; border-radius: 1px; } .ds-switch__glyph { width: 12px; height: 12px; flex: none; }"
+    },
+    {
+      "name": "Replay Control",
+      "kind": "button",
+      "refersTo": "replay-button",
+      "description": "Re-runs the carriage sweep on demand; inverts to ink/paper on hover.",
+      "html": "<button class=\"ds-replay\" type=\"button\"><svg class=\"ds-replay__glyph\" viewBox=\"0 0 16 16\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M2.5 8a5.5 5.5 0 1 1 1.7 4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\"/><path d=\"M2.5 8V4.4M2.5 8h3.6\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg><span>重播</span></button>",
+      "css": ".ds-replay { display: inline-flex; align-items: center; gap: 0.5rem; border: var(--hair) solid var(--ink); background: var(--window); color: var(--ink); padding: 0.4rem 0.6rem; font-family: var(--sans); font-stretch: 108%; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.11em; text-transform: uppercase; cursor: pointer; transition: background 140ms ease-out, color 140ms ease-out; } .ds-replay:hover { background: var(--ink); color: var(--paper); } .ds-replay:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; border-radius: 1px; } .ds-replay__glyph { width: 12px; height: 12px; flex: none; }"
+    },
+    {
+      "name": "Channel Legend Row",
+      "kind": "custom",
+      "refersTo": "legend-row",
+      "description": "One printed channel of the recorder: channel number, repository, branch, state word; dotted hairline under each row.",
+      "html": "<ul class=\"ds-legend\"><li class=\"ds-legend__head\"><span class=\"ds-legend__label\">通道</span><span class=\"ds-legend__label\">儲存庫 · 分支</span></li><li class=\"ds-legend__row\"><span class=\"ds-legend__ch\">CH 05</span><span class=\"ds-legend__name\">web-console</span><span class=\"ds-legend__meta\">main · 1 項變更 · <span class=\"ds-legend__state\">有變更</span> · M src/main.rs</span></li><li class=\"ds-legend__row\"><span class=\"ds-legend__ch\">CH 05</span><span class=\"ds-legend__name\">web-console</span><span class=\"ds-legend__meta\">main · exit 128 · <span class=\"ds-legend__state ds-legend__state--failed\">失敗</span> · cannot pull with rebase: unstaged changes</span></li><li class=\"ds-legend__row\"><span class=\"ds-legend__ch\">CH 06</span><span class=\"ds-legend__name\">web-console-hotfix</span><span class=\"ds-legend__meta\">hotfix · 乾淨 · <span class=\"ds-legend__state ds-legend__state--clean\">乾淨</span></span></li></ul>",
+      "css": ".ds-legend { list-style: none; margin: 0; padding: 16px 0; background: var(--paper); border-right: 2px solid var(--ink); } .ds-legend__head, .ds-legend__row { display: grid; grid-template-columns: 3.1rem 1fr; align-items: baseline; gap: 8px; padding-inline: 16px; } .ds-legend__head { padding-bottom: 8px; border-bottom: var(--hair) solid var(--ink); margin-bottom: 8px; } .ds-legend__row { padding-block: 0.3rem; border-bottom: var(--hair) dotted var(--grid-bold); } .ds-legend__row:last-child { border-bottom: 0; } .ds-legend__label { font-family: var(--sans); font-stretch: 108%; font-weight: 600; text-transform: uppercase; letter-spacing: 0.11em; font-size: 0.75rem; color: var(--ink-3); } .ds-legend__ch { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.06em; color: var(--ink-3); } .ds-legend__name { font-family: var(--mono); font-size: 0.8125rem; font-weight: 500; color: var(--ink); overflow-wrap: anywhere; } .ds-legend__meta { grid-column: 2; font-size: 0.75rem; line-height: 1.4; color: var(--ink-3); } .ds-legend__state { color: var(--ink-2); } .ds-legend__state--clean { color: var(--ink-3); } .ds-legend__state--failed { color: var(--alarm); font-weight: 600; }"
+    },
+    {
+      "name": "Engraved Plate",
+      "kind": "custom",
+      "refersTo": "plate",
+      "description": "The dark spec object: panel-caps title with a mono spec stamp, calibration figures as mono measurements, hairline rows.",
+      "html": "<section class=\"ds-plate\"><header class=\"ds-plate__head\"><span class=\"ds-plate__title\">校正表</span><span class=\"ds-plate__spec\">mgit 2.0.2</span></header><div class=\"ds-plate__body\"><dl class=\"ds-plate__grid\"><div class=\"ds-plate__figure\"><dt>8</dt><dd><span class=\"ds-plate__value\">release targets</span><span>macOS、Linux、Windows，x86_64 與 aarch64</span></dd></div><div class=\"ds-plate__figure\"><dt>0</dt><dd><span class=\"ds-plate__value\">執行期相依</span><span>單一 Rust 二進位檔</span></dd></div></dl><div class=\"ds-plate__rows\"><div class=\"ds-plate__row\"><div class=\"ds-plate__term\">透明代理</div><div class=\"ds-plate__def\">mgit 只認自己文件列出的選項，不認得的直接轉給 git。</div></div><div class=\"ds-plate__row\"><div class=\"ds-plate__term\">管線安全</div><div class=\"ds-plate__def\"><code>mgit … | head</code> 會還原 <code>SIGPIPE</code> 預設行為，安靜結束。</div></div></div></div></section>",
+      "css": ".ds-plate { background: var(--plate); color: var(--plate-ink); border: var(--hair) solid var(--plate); box-shadow: 0 24px 48px -40px rgba(21, 22, 26, 0.9); } .ds-plate__head { padding: 24px 32px; border-bottom: var(--hair) solid var(--plate-rule); display: flex; align-items: baseline; justify-content: space-between; gap: 24px; flex-wrap: wrap; } .ds-plate__title { font-family: var(--sans); font-stretch: 116%; text-transform: uppercase; letter-spacing: 0.13em; font-weight: 600; font-size: 0.8125rem; color: var(--plate-ink); } .ds-plate__spec { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.05em; color: var(--plate-dim); text-transform: uppercase; } .ds-plate__body { padding: 32px; } .ds-plate__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 32px; margin: 0; } .ds-plate__figure { margin: 0; } .ds-plate__figure dt { font-family: var(--sans); font-stretch: 108%; text-transform: uppercase; letter-spacing: 0.11em; font-size: 0.75rem; color: var(--plate-dim); margin-bottom: 0.4rem; } .ds-plate__figure dd { margin: 0; font-family: var(--mono); font-size: 1.5rem; line-height: 1.15; color: var(--plate-ink); } .ds-plate__figure dd span:not(.ds-plate__value) { font-family: var(--sans); font-size: 0.875rem; color: var(--plate-dim); display: block; margin-top: 0.3rem; } .ds-plate__rows { display: grid; margin-top: 48px; } .ds-plate__row { display: grid; grid-template-columns: minmax(150px, 20ch) 1fr; gap: 16px 32px; padding-block: 16px; border-top: var(--hair) solid var(--plate-rule-soft); } .ds-plate__term { font-family: var(--mono); font-size: 0.8125rem; color: var(--plate-ink); } .ds-plate__def { font-size: 0.9375rem; color: #cfcdc6; max-width: 62ch; } .ds-plate__def code { font-family: var(--mono); font-size: 0.8125rem; } .ds-plate a { color: var(--plate-blue); } .ds-plate a:hover { color: #a5cfe6; }"
+    },
+    {
+      "name": "Recorded Runlog",
+      "kind": "custom",
+      "refersTo": "runlog",
+      "description": "A printed frame for a real terminal session: paper bar over a white mono body that scrolls horizontally.",
+      "html": "<div class=\"ds-runlog\"><div class=\"ds-runlog__bar\"><span>RUN B · mgit pull</span><span>exit 128 · 5 succeeded, 1 failed</span></div><div class=\"ds-runlog__body\"><span class=\"ds-rule\">================================================================================</span>\n<span class=\"ds-folder\">📂 Folder: web-console │ Branch: main</span>\n<span class=\"ds-rule\">================================================================================</span>\n<span class=\"ds-err\">error: cannot pull with rebase: You have unstaged changes.</span>\n<span class=\"ds-quiet\"> </span>\n<span class=\"ds-sum\">mgit: 6 repositories, 5 succeeded, 1 failed</span>\n<span class=\"ds-err\">  ✗ web-console (exit code 128)</span></div></div>",
+      "css": ".ds-runlog { border: var(--hair) solid var(--ink); background: var(--window); } .ds-runlog__bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0.4rem 0.75rem; border-bottom: var(--hair) solid var(--ink); font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.04em; color: var(--ink-2); background: var(--paper); } .ds-runlog__body { padding: 16px 24px; font-family: var(--mono); font-size: 0.8125rem; line-height: 1.65; white-space: pre; overflow-x: auto; color: var(--ink); } .ds-rule { color: #a8545f; } .ds-folder { color: var(--ink); font-weight: 500; } .ds-quiet { color: var(--ink-3); } .ds-err { color: var(--alarm); } .ds-sum { color: var(--ink-2); }"
+    },
+    {
+      "name": "Logbook Row",
+      "kind": "card",
+      "refersTo": "logbook-row",
+      "description": "One chapter of the record book: channel number, name, description, drawn arrow; hover punches the row white.",
+      "html": "<a class=\"ds-logbook__row\" href=\"#\"><span class=\"ds-logbook__ch\">CH 01</span><span><span class=\"ds-logbook__name\">安裝</span><span class=\"ds-logbook__desc\">三種安裝方式、驗證檢查碼，以及從原始碼建置</span></span><svg class=\"ds-logbook__arrow\" viewBox=\"0 0 20 20\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M4 10h11M11 5.5 15.5 10 11 14.5\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></a>",
+      "css": ".ds-logbook__row { display: grid; grid-template-columns: 4.5rem 1fr auto; align-items: baseline; gap: 24px; padding-block: 24px; border-bottom: var(--hair) solid var(--grid-bold); text-decoration: none; color: var(--ink); transition: background 140ms ease-out; } .ds-logbook__row:hover, .ds-logbook__row:focus-visible { background: var(--window); color: var(--ink); } .ds-logbook__ch { font-family: var(--mono); font-size: 0.75rem; color: var(--ink-3); } .ds-logbook__name { font-family: var(--display); font-size: 1.0625rem; font-weight: 500; } .ds-logbook__desc { display: block; margin-top: 0.25rem; font-size: 0.9375rem; color: var(--ink-2); max-width: 74ch; } .ds-logbook__arrow { width: 18px; height: 18px; align-self: center; color: var(--ink-3); }"
+    },
+    {
+      "name": "Docs Nav Item",
+      "kind": "nav",
+      "refersTo": "docnav-item",
+      "description": "The logbook's table of contents: channel number beside the chapter name over a dotted hairline; the current page is punched white with an alarm square on its number.",
+      "html": "<nav class=\"ds-docnav\"><p class=\"ds-docnav__title\">記錄本 · mgit 2.0.2</p><div class=\"ds-docnav__list\"><a class=\"ds-docnav__item ds-docnav__item--current\" href=\"#\"><span class=\"ds-docnav__ch\">CH 01</span><span>安裝</span></a><a class=\"ds-docnav__item\" href=\"#\"><span class=\"ds-docnav__ch\">CH 02</span><span>選項</span></a></div></nav>",
+      "css": ".ds-docnav { border-right: 2px solid var(--ink); padding-right: 24px; } .ds-docnav__title { font-family: var(--sans); font-stretch: 108%; text-transform: uppercase; letter-spacing: 0.11em; font-size: 0.75rem; font-weight: 600; color: var(--ink-3); padding-bottom: 16px; border-bottom: var(--hair) solid var(--ink); margin: 0 0 16px; } .ds-docnav__list { display: grid; gap: 0.1rem; } .ds-docnav__item { display: grid; grid-template-columns: 2.6rem 1fr; gap: 8px; align-items: baseline; padding: 0.45rem 0.5rem 0.45rem 0.35rem; text-decoration: none; color: var(--ink-2); font-size: 0.9375rem; border-bottom: var(--hair) dotted var(--grid-bold); } .ds-docnav__item:hover { background: var(--window); color: var(--ink); } .ds-docnav__item:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; border-radius: 1px; } .ds-docnav__item--current { color: var(--ink); font-weight: 600; background: var(--window); } .ds-docnav__item--current .ds-docnav__ch::after { content: \"\"; display: inline-block; width: 6px; height: 6px; margin-left: 0.35rem; background: var(--alarm); vertical-align: 0.1em; } .ds-docnav__ch { font-family: var(--mono); font-size: 0.75rem; color: var(--ink-3); }"
+    },
+    {
+      "name": "State Vocabulary",
+      "kind": "custom",
+      "refersTo": "legend-row",
+      "description": "The printed key that makes the strip legible without color: five words, each with a 10x2px pen-weight swatch.",
+      "html": "<p class=\"ds-vocab\"><span class=\"ds-vocab__word ds-vocab__word--clean ds-is-active\">乾淨</span><span class=\"ds-vocab__word ds-vocab__word--dirty ds-is-active\">有變更</span><span class=\"ds-vocab__word ds-vocab__word--failed\">失敗</span><span class=\"ds-vocab__word\">被中斷</span><span class=\"ds-vocab__word\">找不到儲存庫</span></p>",
+      "css": ".ds-vocab { display: flex; flex-wrap: wrap; gap: 0.35rem 16px; align-items: baseline; margin: 0; } .ds-vocab__word { font-family: var(--mono); font-size: 0.75rem; color: var(--ink-2); } .ds-vocab__word::before { content: \"\"; display: inline-block; width: 10px; height: 2px; margin-right: 0.45rem; vertical-align: 0.28em; background: var(--ink-3); } .ds-vocab__word--dirty::before { background: var(--ink); } .ds-vocab__word--failed::before { background: var(--alarm); } .ds-vocab__word--clean::before { background: var(--blue); } .ds-vocab__word:not(.ds-is-active) { color: var(--ink-3); } .ds-vocab__word:not(.ds-is-active)::before { background: var(--grid-bold); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Strip-Chart Fleet Recorder",
+    "overview": "The whole site is one instrument. A single strip of chart paper advances under N pens, one channel per repository: a flat line is a clean repository, the excursion is the one that needs you, and the run closes in a totals band printed at the foot of the paper. The page therefore has no cards, no icon grid and no hero-plus-install-box; it has a printed head, a channel legend, a strip with real traces, and bands of the same continuous paper separated by a hairline rule and 112px of quiet.\n\nThe materials are a print room's, not a UI kit's. Two stocks of the same warm-neutral paper carry all structure in pink ruling: the instrument surfaces take a fine 1mm grid with a heavier 5mm rule, the reading pages take one coarse 48px rule. Content is ink — graphite, channel blue, alarm red — and nothing else. Anything that must feel physical is printed as an object: a punched white window for a command, a dark engraved plate for specs and calibration figures, a printed frame for the recorded terminal session. Depth is a printing metaphor (a lifted sheet, a seated plate, a punched hole), never a light source.\n\nThe build refines the direction contract in one place: the clean pen draws in channel blue, not graphite, and graphite is spent on the dirty pen. The build wins; the pen vocabulary below is the shipped one.",
+    "keyCharacteristics": [
+      "One continuous sheet: `paper-chart` on the landings, `paper-log` on the docs; sections are bands, never cards.",
+      "Three inks carry meaning (graphite, channel blue, alarm); pink rules carry structure only.",
+      "Instrument components: a printed channel legend wired to the strip, punched white windows, an engraved plate, a recorded-session frame, a five-word state vocabulary.",
+      "Square corners throughout; hierarchy is rule weight (1px hair, 2px structure) and printed marks.",
+      "One authored moment: the carriage sweep that draws the traces in 2400ms, with a replay control and a reduced-motion settle.",
+      "Three type voices: Archivo (variable width) for lettering and text, \"mgit Display\" (a Noto Sans TC subset) for CJK display, JetBrains Mono for data."
+    ],
+    "rules": [
+      { "name": "The Structure-Only Pink Rule", "body": "Pink draws ruling, separators and scrollbars; it never carries text, never borders a control or a message, and never encodes state.", "section": "colors" },
+      { "name": "The Alarm-Pairs-With-a-Word Rule", "body": "An alarm mark never arrives alone: it ships with a printed word (`失敗` / `failed`), a code (`exit 128`) or a cross, so color is never the only carrier of state.", "section": "colors" },
+      { "name": "The Punched-White Rule", "body": "White is an opening, not a surface: a window, a runlog, a callout, a switch, or the hovered/current row. No band, no section, no page is white.", "section": "colors" },
+      { "name": "The Three Voices Rule", "body": "Archivo for lettering and text, \"mgit Display\" for CJK at display sizes, JetBrains Mono for data, paths, commands and tables. No fourth face, and mono is never a costume for \"technical\" — it is reserved for things that are literally code, data or measurement.", "section": "typography" },
+      { "name": "The Panel-Caps Rule", "body": "Every all-caps line in this system is small: 0.75–0.8125rem, 0.09–0.13em tracking, 108/116% width. Large display caps do not exist here.", "section": "typography" },
+      { "name": "The Subset Rule", "body": "\"mgit Display\" carries only the 155 characters the shipped headings use; anything outside that set falls back to the platform CJK stack, which is not the world's voice. New zh-TW display copy must be added to the subset, or it arrives in a platform face.", "section": "typography" },
+      { "name": "The Tabular Rule", "body": "All numerals are `tabular-nums`; counts, exit codes and durations must align in columns without a mono face.", "section": "typography" },
+      { "name": "The One-Sheet Rule", "body": "Landing and docs are the same paper. Sections are separated by a hairline rule and 112px of quiet — not by cards, containers-with-borders, or background changes.", "section": "layout" },
+      { "name": "The 8px Rule", "body": "Every gap, padding and offset is a step on the unit: 8 / 16 / 24 / 32 / 48 / 72 / 112. A one-off spacing value is a bug in the system, not a style choice.", "section": "layout" },
+      { "name": "The Two-Shadows Rule", "body": "The depth vocabulary is these four values, full stop. A new shadow needs a printing reason — a lifted sheet, a seated plate, a punched hole — and decoration is not one.", "section": "elevation" },
+      { "name": "The Inversion Rule", "body": "Hover and selection are printed as ink/paper inversion or a punched white opening, not as elevation: `background: Graphite, color: Paper` for a copied switch, white for a hovered logbook row or the current nav item.", "section": "elevation" },
+      { "name": "The Hairline-and-Punch Rule", "body": "Hierarchy comes from rule weight (1px hair, 2px structure) and from printed marks. Never from radius, never from a container's background, never from a border above 2px on a card, callout or list item.", "section": "shapes" }
+    ],
+    "dos": [
+      "Do keep every surface on one of the two stocks — `paper-chart` on instrument surfaces, `paper-log` on reading pages — and let the paper run edge to edge.",
+      "Do let ink carry content and paper carry structure: grid pinks are background ruling, hairlines and scrollbars, nothing more.",
+      "Do pair every failure with a mark and a word (failed pen + cross + `exit 128`), and print the whole five-word state vocabulary once per strip.",
+      "Do set display-size CJK in the `--display` stack so it lands in \"mgit Display\", and extend the 155-character subset when new headline copy appears.",
+      "Do keep commands, paths, channel names, exit codes, plate terms and spec tables in JetBrains Mono; keep prose in Archivo.",
+      "Do hold every gap to the 8px unit: 112px between bands, 48px from a band head to its content, 24–32px inside groups.",
+      "Do keep corners square, and express state as inversion (Graphite/Paper) or a punched white opening.",
+      "Do honor reduced motion by settling the strip to its final state — drawn traces, visible marks, parked carriage — rather than suppressing the drawing.",
+      "Do theme the browser surfaces (selection, caret, scrollbars, focus ring) from the same palette; all four already ship themed."
+    ],
+    "donts": [
+      "Don't put text, icons, borders or state into the grid pinks, and don't use Heavy Rule Pink as anything but a hairline, a separator or the scrollbar.",
+      "Don't introduce a fourth ink. Graphite, Channel Blue and Alarm are the whole meaning layer; a second accent dilutes the alarm.",
+      "Don't use Alarm as decoration — it only appears with a failure word, a code, or a cross.",
+      "Don't add rounded panels, soft UI shadows, glows, gradient fills or colored shadows; the two lifts and two bevels in Elevation & Depth are the entire depth vocabulary.",
+      "Don't carry plate inks onto paper or paper inks onto the plate: the dark object has its own four inks, and the page keeps its three.",
+      "Don't invert the site into a dark theme; pages declare `color-scheme: light`, and the plate stays an object on paper.",
+      "Don't hang a label, kicker or eyebrow above a heading. No chapter head, band or page carries one: a chapter head is its title and intro, the chapter coordinate lives in the navigation (where `aria-current` marks the open one), and the version lives in the head band's spec stamp and the navigation title. The heading carries its own weight.",
+      "Don't reproduce the CLI's printed symbols as site iconography, and don't style a screen that imitates the terminal outside the runlog frame."
+    ]
+  }
+}

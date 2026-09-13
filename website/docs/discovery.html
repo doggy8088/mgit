@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>它怎麼找儲存庫 — mgit 2.0.2</title>
+<meta name="description" content="深度、worktree、submodule、symlink 與跨平台一致的排序">
+<link rel="alternate" hreflang="en" href="../en/docs/discovery.html">
+<link rel="stylesheet" href="../assets/site.css">
+<meta name="color-scheme" content="light">
+</head>
+<body class="paper-log">
+<a class="skip" href="#main">跳至主要內容</a>
+<header class="head"><div class="shell head__inner">
+<a class="wordmark" href="../index.html">
+<span class="wordmark__mark">mgit</span>
+<span class="wordmark__spec">v2.0.2 · MIT · 8 targets</span>
+</a>
+<nav class="head__links">
+<a href="../docs/">記錄本</a>
+<a href="https://github.com/doggy8088/mgit">GitHub</a>
+<a href="https://github.com/doggy8088/mgit/releases">發行檔</a>
+<a href="https://www.npmjs.com/package/@willh/mgit">npm</a>
+</nav>
+<span class="lang" role="group" aria-label="語言">
+<a href="../index.html" aria-current="true">中文</a>
+<a href="../en/docs/discovery.html">EN</a>
+</span>
+</div></header>
+<main id="main">
+<div class="shell doc"><nav class="docnav" aria-label="章節"><p class="docnav__title"><span>記錄本 · mgit 2.0.2</span></p><div class="docnav__list"><a class="docnav__item" href="install.html"><span class="docnav__ch">CH 01</span><span>安裝</span></a><a class="docnav__item" href="options.html"><span class="docnav__ch">CH 02</span><span>選項</span></a><a class="docnav__item" href="output.html"><span class="docnav__ch">CH 03</span><span>輸出與行為</span></a><a class="docnav__item" href="discovery.html" aria-current="page"><span class="docnav__ch">CH 04</span><span>它怎麼找儲存庫</span></a><a class="docnav__item" href="exit-codes.html"><span class="docnav__ch">CH 05</span><span>結束代碼與環境變數</span></a><a class="docnav__item" href="platforms.html"><span class="docnav__ch">CH 06</span><span>跨平台行為</span></a><a class="docnav__item" href="changes.html"><span class="docnav__ch">CH 07</span><span>版本、發行與 npm</span></a></div></nav><article class="docmain"><header class="docmain__head"><h1 class="docmain__title">它怎麼找儲存庫</h1><p class="docmain__intro">深度、worktree、submodule、symlink 與跨平台一致的排序</p></header><div class="prose"><h2>規則</h2>
+<ul><li>從當前目錄開始，逐層往下找（預設只找第一層，<code>--depth</code> 可調整）。</li><li>目錄內只要有 <code>.git</code> 目錄或 <code>.git</code> 檔案都算儲存庫，因此 <code>git worktree</code> 與 submodule 都能正確辨識。</li><li>找到儲存庫後不會再往下進入該儲存庫，避免把 submodule 或 vendored 的專案重複算進來。</li><li>符號連結會被跟進，且以「看到的名字」為準；走訪過的實際目錄只會進入一次，連結迴圈不會無限迴圈。</li><li>結果依名稱排序（忽略大小寫），順序在 macOS、Linux、Windows 上完全一致。</li><li>如果一個儲存庫都沒找到，但<b>當前目錄本身</b>是儲存庫，就直接在該目錄執行 git。</li></ul>
+<h2>先看它會動到誰</h2>
+<div class="window"><span class="label">--list</span><span class="window__cmd">mgit --list</span><button type="button" class="switch" data-copy="mgit --list" data-label-copied="已複製" data-label-failed="請手動複製"><svg class="switch__glyph" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="2.5" y="2.5" width="8" height="11" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M5.5 2.5V1h8v11h-1.5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg><span data-copy-label aria-live="polite">複製</span></button></div>
+<div class="runlog"><div class="runlog__bar"><span>mgit --list</span><span>/tmp/mgit-mixed</span></div><div class="runlog__body"><span class="">/private/tmp/mgit-mixed/api-gateway</span>
+<span class="">/private/tmp/mgit-mixed/billing-worker</span>
+<span class="">/private/tmp/mgit-mixed/docs-site</span>
+<span class="">/private/tmp/mgit-mixed/infra-scripts</span>
+<span class="">/private/tmp/mgit-mixed/web-console</span>
+<span class="">/private/tmp/mgit-mixed/web-console-hotfix</span></div></div>
+<h2>深度</h2>
+<p>同一個示範工作台：<code>--depth 1</code> 找到 6 個儲存庫，<code>--depth 2</code> 找到 7 個，多出來的是埋在 <code>vendor/</code> 下的 <code>legacy-auth</code>。</p>
+<div class="runlog"><div class="runlog__bar"><span>mgit --depth 2 --summary</span><span>7 個儲存庫</span></div><div class="runlog__body"><span class="rule">================================================================================</span>
+<span class="folder">📂 Folder: web-console-hotfix │ Branch: hotfix</span>
+<span class="rule">================================================================================</span>
+<span class="quiet"> </span>
+<span class="rule">────────────────────────────────────────────────────────────────────────────────</span>
+<span class="sum">mgit: 7 repositories, 7 succeeded</span></div></div></div><nav class="pager"><a href="output.html"><span>上一章 · CH 03</span>輸出與行為</a><a class="pager__next" href="exit-codes.html"><span>下一章 · CH 05</span>結束代碼與環境變數</a></nav></article></div>
+</main>
+<footer class="foot"><div class="shell foot__inner">
+<dl class="foot__group"><dt>發行</dt>
+<dd><a href="https://github.com/doggy8088/mgit/releases">Release 2.0.2</a></dd>
+<dd><a href="https://github.com/doggy8088/mgit/blob/main/CHANGELOG.md">CHANGELOG.md</a></dd>
+</dl>
+<dl class="foot__group"><dt>安裝</dt>
+<dd><a href="https://github.com/doggy8088/mgit/blob/main/install.sh">install.sh</a></dd>
+<dd><a href="https://github.com/doggy8088/mgit/blob/main/install.ps1">install.ps1</a></dd>
+</dl>
+<dl class="foot__group"><dt>套件</dt>
+<dd><a href="https://www.npmjs.com/package/@willh/mgit">@willh/mgit</a></dd>
+<dd><a href="https://github.com/doggy8088/mgit/blob/main/npm/PUBLISHING.md">npm/PUBLISHING.md</a></dd>
+</dl>
+</div>
+<div class="shell foot__colophon"><span>© 2026 Will 保哥 · MIT 授權 · 示範資料是 2.0.2 版二進位在示範工作台錄下來的真實 session</span><span><a href="https://github.com/doggy8088/mgit/blob/main/LICENSE">MIT</a></span></div>
+</footer>
+<script src="../assets/recorder.js" defer></script>
+</body>
+</html>

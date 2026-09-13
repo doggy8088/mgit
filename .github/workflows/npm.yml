@@ -1,0 +1,274 @@
+name: Publish to npm
+
+# Publishing uses npm trusted publishing (OIDC): no NPM_TOKEN secret is
+# involved. The workflow filename below (`npm.yml`) has to match the trusted
+# publisher configuration on npmjs.com exactly, see npm/PUBLISHING.md.
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to publish, for example 0.1.1 (default: the newest tag)'
+        required: false
+        type: string
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: npm-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  PACKAGE: '@willh/mgit'
+
+jobs:
+  publish:
+    name: Publish ${{ github.workflow }}
+    runs-on: ubuntu-latest
+    # Uncomment together with the Environment field of the trusted publisher
+    # configuration to require a manual approval before anything is published.
+    # environment: npm
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Resolve the version
+        id: version
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [ -n "${{ inputs.version }}" ]; then
+            tag="v${{ inputs.version }}"
+            tag="${tag#vv}"
+          elif [ "${{ github.event_name }}" = "push" ]; then
+            tag="${{ github.ref_name }}"
+          else
+            tag=$(git describe --tags --abbrev=0)
+          fi
+
+          git checkout --quiet "$tag"
+          version="${tag#v}"
+
+          if ! printf '%s' "$version" | grep -Eq \
+            '^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?(\+[0-9A-Za-z.-]+)?$'; then
+            echo "::error::$tag is not a semantic version tag"
+            exit 1
+          fi
+
+          manifest_version=$(awk -F'"' '/^\[/ { section = $0 } \
+            section == "[package]" && /^version = / { print $2; exit }' Cargo.toml)
+          package_version=$(node -p "require('./npm/package.json').version")
+
+          if [ "$version" != "$manifest_version" ] || [ "$version" != "$package_version" ]; then
+            echo "::error::version mismatch: tag=$version Cargo.toml=$manifest_version npm=$package_version"
+            echo "::error::run scripts/bump-version.sh to keep them in sync"
+            exit 1
+          fi
+
+          prerelease=false
+          case "$version" in
+            *-*) prerelease=true ;;
+          esac
+
+          {
+            echo "tag=$tag"
+            echo "version=$version"
+            echo "prerelease=$prerelease"
+          } >> "$GITHUB_OUTPUT"
+          echo "Publishing ${{ env.PACKAGE }} $version (prerelease: $prerelease)"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          registry-url: 'https://registry.npmjs.org'
+          package-manager-cache: false
+
+      - name: Check the npm CLI
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --version
+          npm --version
+          npm_version=$(npm --version)
+          node -e "
+            const [major, minor] = '$npm_version'.split('.').map(Number);
+            if (major < 11 || (major === 11 && minor < 5)) {
+              console.error('npm >= 11.5.1 is required for trusted publishing, found $npm_version');
+              process.exit(1);
+            }
+          "
+
+      - name: Wait for the release assets
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          set -uo pipefail
+          targets='x86_64-apple-darwin aarch64-apple-darwin
+          x86_64-unknown-linux-musl aarch64-unknown-linux-musl
+          x86_64-pc-windows-msvc aarch64-pc-windows-msvc'
+          deadline=$(( $(date +%s) + 1200 ))
+
+          while true; do
+            if gh release view "$TAG" --json assets --jq '.assets[].name' > assets.txt 2> /dev/null; then
+              missing=0
+              for target in $targets; do
+                case "$target" in
+                  *windows*) archive="mgit-$target.zip" ;;
+                  *) archive="mgit-$target.tar.gz" ;;
+                esac
+                grep -qx "$archive" assets.txt || missing=1
+                grep -qx "$archive.sha256" assets.txt || missing=1
+              done
+              if [ "$missing" -eq 0 ]; then
+                echo "All release assets for $TAG are available."
+                break
+              fi
+              echo "Waiting for the release assets of $TAG ..."
+            else
+              echo "Waiting for the release $TAG to appear ..."
+            fi
+
+            if [ "$(date +%s)" -ge "$deadline" ]; then
+              echo "::error::timed out after 20 minutes waiting for the release assets"
+              cat assets.txt 2> /dev/null || true
+              exit 1
+            fi
+            sleep 30
+          done
+
+      - name: Download the release assets
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          set -euo pipefail
+          mkdir -p assets
+          gh release download "$TAG" --dir assets \
+            --pattern '*.tar.gz' --pattern '*.zip' --pattern '*.sha256'
+          ls -lh assets
+
+      - name: Verify the checksums
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd assets
+          sha256sum -c ./*.sha256
+
+      - name: Vendor the binaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          sh npm/scripts/vendor.sh assets
+          cp LICENSE npm/LICENSE
+          find npm/vendor -type f -exec ls -l {} +
+
+      - name: Run the package tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd npm
+          node --check bin/mgit.js
+          node --check lib/platform.js
+          npm test
+
+      - name: Check the registry state
+        id: registry
+        shell: bash
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          set -euo pipefail
+
+          # npm refuses to configure a trusted publisher for a package that does
+          # not exist yet, so the very first version has to be published by hand.
+          # Skipping here keeps the first tag from turning into a red run.
+          if ! npm view "${{ env.PACKAGE }}" version > /dev/null 2>&1; then
+            echo "missing=true" >> "$GITHUB_OUTPUT"
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+            echo "::notice title=First publish::${{ env.PACKAGE }} is not on the registry yet. Publish it once by hand (npm/PUBLISHING.md) and configure the trusted publisher with the workflow filename npm.yml."
+            exit 0
+          fi
+          echo "missing=false" >> "$GITHUB_OUTPUT"
+
+          if npm view "${{ env.PACKAGE }}@$VERSION" version > /dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+            echo "::notice title=Already published::${{ env.PACKAGE }}@$VERSION is already on the registry, skipping the publish."
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Publish with trusted publishing
+        if: steps.registry.outputs.missing != 'true' && steps.registry.outputs.exists == 'false'
+        shell: bash
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          PRERELEASE: ${{ steps.version.outputs.prerelease }}
+        run: |
+          set -euo pipefail
+          cd npm
+          if [ "$PRERELEASE" = "true" ]; then
+            dist_tag=next
+          else
+            dist_tag=latest
+          fi
+          echo "npm publish --access public --tag $dist_tag (version $VERSION)"
+          if ! npm publish --access public --tag "$dist_tag"; then
+            echo "::error::the publish failed. For the very first release publish the package by hand (npm/PUBLISHING.md) and configure the trusted publisher with the workflow filename npm.yml."
+            exit 1
+          fi
+
+      - name: Verify the published package
+        if: steps.registry.outputs.missing != 'true' && steps.registry.outputs.exists == 'false'
+        shell: bash
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 10); do
+            if npm view "${{ env.PACKAGE }}@$VERSION" version dist.tarball; then
+              break
+            fi
+            echo "Waiting for the registry to serve $VERSION ..."
+            sleep 15
+            if [ "$attempt" -eq 10 ]; then
+              echo "::error::the published version did not show up in the registry"
+              exit 1
+            fi
+          done
+
+      - name: Write the summary
+        if: always()
+        shell: bash
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          TAG: ${{ steps.version.outputs.tag }}
+          EXISTS: ${{ steps.registry.outputs.exists }}
+          MISSING: ${{ steps.registry.outputs.missing }}
+        run: |
+          {
+            echo "## ${{ env.PACKAGE }}@$VERSION"
+            echo ""
+            if [ "$MISSING" = "true" ]; then
+              echo "The package is not on the registry yet, so nothing was published."
+              echo ""
+              echo "Publish the first version by hand and configure the trusted publisher"
+              echo "(workflow filename \`npm.yml\`) as described in npm/PUBLISHING.md."
+            elif [ "$EXISTS" = "true" ]; then
+              echo "The version was already published, nothing was uploaded."
+            else
+              echo "- published from tag \`$TAG\`"
+              echo "- binaries vendored from the GitHub release assets (SHA-256 verified)"
+              echo "- \`npm i -g ${{ env.PACKAGE }}\` / \`npx ${{ env.PACKAGE }}\`"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"

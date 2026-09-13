@@ -8,3 +8,14 @@
 /npm/LICENSE
 /npm/*.tgz
 /npm/pack.json
+
+# Impeccable engine binary: platform specific and fetched on first run by the
+# launcher that ships beside it. Same principle as /npm/vendor: no binaries in
+# the repository.
+**/skills/impeccable/scripts/bin/
+
+# Impeccable machine local settings (hook consent, per machine overrides).
+.impeccable/config.local.json
+
+# Impeccable decision page runtime state (one round's answer and log).
+.impeccable/questions/

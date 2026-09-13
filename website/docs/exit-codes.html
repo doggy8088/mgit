@@ -15,7 +15,7 @@
 <a class="wordmark" href="../index.html">
 <span class="wordmark__mark">mgit</span>
 </a>
-<nav class="head__links">
+<nav class="head__links" aria-label="網站">
 <a href="../docs/">文件</a>
 <a href="https://github.com/doggy8088/mgit">GitHub</a>
 <a href="https://github.com/doggy8088/mgit/releases">發行檔</a>
@@ -33,9 +33,9 @@
 <h2 id="sec-2">環境變數</h2>
 <table class="table"><thead><tr><th>Variable</th><th>說明</th></tr></thead><tbody><tr><td><code>MGIT_GIT</code></td><td>指定 <code>git</code> 執行檔名稱或路徑（預設 <code>git</code>）</td></tr><tr><td><code>MGIT_COLOR</code></td><td><code>auto</code>、<code>always</code> 或 <code>never</code>，優先於終端機偵測</td></tr><tr><td><code>MGIT_ASCII</code></td><td><code>1</code> 強制 ASCII 符號；<code>0</code> 強制 Unicode 符號</td></tr><tr><td><code>NO_COLOR</code></td><td>設為非空值時關閉顏色（no-color.org 慣例）</td></tr><tr><td><code>CLICOLOR_FORCE</code></td><td>設為非空且非 <code>0</code> 的值時強制開啟顏色</td></tr><tr><td><code>CLICOLOR</code></td><td>設為 <code>0</code> 時關閉顏色</td></tr><tr><td><code>MGIT_VERSION</code></td><td>安裝腳本要安裝的版本，例如 <code>2.0.0</code>（預設最新版）</td></tr><tr><td><code>MGIT_INSTALL_DIR</code></td><td>安裝腳本的安裝目錄</td></tr><tr><td><code>MGIT_DOWNLOAD_BASE</code></td><td>安裝腳本的下載來源網址（測試用）</td></tr></tbody></table>
 <p>優先順序：命令列選項 → <code>MGIT_*</code> → <code>CLICOLOR_FORCE</code> → <code>NO_COLOR</code> → 終端機偵測。</p>
-<div class="cmdline"><span class="cmdline__text">NO_COLOR=1 mgit status</span><span class="cmdline__note"># 強制關閉顏色</span><button type="button" class="switch switch--ghost" data-copy="NO_COLOR=1 mgit status" data-label-copied="已複製" data-label-failed="請手動複製"><span data-copy-label aria-live="polite">複製</span></button></div>
-<div class="cmdline"><span class="cmdline__text">MGIT_ASCII=0 mgit</span><span class="cmdline__note"># LANG=C 時仍用 Unicode 符號</span><button type="button" class="switch switch--ghost" data-copy="MGIT_ASCII=0 mgit" data-label-copied="已複製" data-label-failed="請手動複製"><span data-copy-label aria-live="polite">複製</span></button></div>
-<div class="cmdline"><span class="cmdline__text">MGIT_GIT=/usr/local/bin/git mgit fetch</span><span class="cmdline__note"># 指定 git</span><button type="button" class="switch switch--ghost" data-copy="MGIT_GIT=/usr/local/bin/git mgit fetch" data-label-copied="已複製" data-label-failed="請手動複製"><span data-copy-label aria-live="polite">複製</span></button></div></div><nav class="pager"><a href="discovery.html"><span>上一章 · 05</span>它怎麼找儲存庫</a><a class="pager__next" href="platforms.html"><span>下一章 · 07</span>跨平台行為</a></nav></article></div>
+<div class="cmdline"><span class="cmdline__text" tabindex="0">NO_COLOR=1 mgit status</span><span class="cmdline__note"># 強制關閉顏色</span><button type="button" class="switch switch--ghost" data-copy="NO_COLOR=1 mgit status" data-label-copied="已複製" data-label-failed="請手動複製"><span data-copy-label aria-live="polite">複製</span></button></div>
+<div class="cmdline"><span class="cmdline__text" tabindex="0">MGIT_ASCII=0 mgit</span><span class="cmdline__note"># LANG=C 時仍用 Unicode 符號</span><button type="button" class="switch switch--ghost" data-copy="MGIT_ASCII=0 mgit" data-label-copied="已複製" data-label-failed="請手動複製"><span data-copy-label aria-live="polite">複製</span></button></div>
+<div class="cmdline"><span class="cmdline__text" tabindex="0">MGIT_GIT=/usr/local/bin/git mgit fetch</span><span class="cmdline__note"># 指定 git</span><button type="button" class="switch switch--ghost" data-copy="MGIT_GIT=/usr/local/bin/git mgit fetch" data-label-copied="已複製" data-label-failed="請手動複製"><span data-copy-label aria-live="polite">複製</span></button></div></div><nav class="pager" aria-label="章節切換"><a href="discovery.html"><span>上一章 · 05</span>它怎麼找儲存庫</a><a class="pager__next" href="platforms.html"><span>下一章 · 07</span>跨平台行為</a></nav></article></div>
 </main>
 <footer class="foot"><div class="shell foot__inner">
 <dl class="foot__group"><dt>發行</dt>

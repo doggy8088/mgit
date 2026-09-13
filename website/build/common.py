@@ -92,6 +92,7 @@ UI = {
         "releases": "發行檔",
         "npm": "npm",
         "lang_label": "語言",
+        "nav_site": "網站",
         "copy": "複製",
         "copied": "已複製",
         "copy_failed": "請手動複製",
@@ -107,6 +108,7 @@ UI = {
         "releases": "Releases",
         "npm": "npm",
         "lang_label": "Language",
+        "nav_site": "Site",
         "copy": "Copy",
         "copied": "Copied",
         "copy_failed": "Copy manually",
@@ -152,7 +154,7 @@ def window(command, lang, label=None, plate=False):
     return (
         '<div class="window' + (" window--plate" if plate else "") + '">'
         + head
-        + '<span class="window__cmd">'
+        + '<span class="window__cmd" tabindex="0">'
         + esc(command)
         + "</span>"
         + '<button type="button" class="switch" data-copy="'
@@ -174,7 +176,7 @@ def cmdline(command, lang, label=None):
     t = UI[lang]
     note = '<span class="cmdline__note">' + esc(label) + "</span>" if label else ""
     return (
-        '<div class="cmdline"><span class="cmdline__text">'
+        '<div class="cmdline"><span class="cmdline__text" tabindex="0">'
         + esc(command)
         + "</span>"
         + note
@@ -347,7 +349,7 @@ def head(lang, root, *, counterpart=None):
             '<a class="wordmark" href="' + home + '">',
             '<span class="wordmark__mark">mgit</span>',
             "</a>",
-            '<nav class="head__links">',
+            '<nav class="head__links" aria-label="' + esc(t["nav_site"]) + '">',
             '<a href="' + docs_home + '">' + esc(t["docs"]) + "</a>",
             '<a href="' + REPO + '">' + esc(t["github"]) + "</a>",
             '<a href="' + RELEASE + '">' + esc(t["releases"]) + "</a>",

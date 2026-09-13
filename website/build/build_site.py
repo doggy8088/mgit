@@ -100,7 +100,11 @@ def toc(lang, blocks):
 def pager(lang, slug):
     zh = lang == "zh"
     index = [c[0] for c in CHAPTERS].index(slug)
-    out = ['<nav class="pager">']
+    out = [
+        '<nav class="pager" aria-label="'
+        + ("章節切換" if zh else "Chapter navigation")
+        + '">'
+    ]
     if index > 0:
         prev_slug, prev_ch, prev_zh, prev_en, _, _ = CHAPTERS[index - 1]
         out.append(
@@ -231,7 +235,9 @@ def main():
                 else "Eight chapters: why, how to install, every option, every exit code, every platform difference."
             )
             + "</p></div></div>"
-            '<nav class="logbook">'
+            '<nav class="logbook" aria-label="'
+            + ("文件章節" if zh else "Docs chapters")
+            + '">'
             + logbook_rows(lang)
             + "</nav><p style=\"margin-top:var(--s5)\"><a href=\""
             + ("../index.html" if zh else "../../index.html")

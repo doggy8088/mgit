@@ -565,7 +565,9 @@ def build(lang, captures):
             if zh
             else "Eight chapters: why, how to install, every option, every exit code, every platform difference."
         )
-        + '</p></div></div><nav class="logbook">'
+        + '</p></div></div><nav class="logbook" aria-label="'
+        + ("文件章節" if zh else "Docs chapters")
+        + '">'
         + logbook_rows(lang, "docs/")
         + "</nav></div></section>"
     )

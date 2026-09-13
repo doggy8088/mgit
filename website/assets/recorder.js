@@ -379,18 +379,21 @@
     });
   }
 
-  /* A run log is real terminal output: when its longest line is wider than the
-     printed frame, the reader gets the hint and the container is focusable, so
-     the rest of the evidence is reachable without a mouse. */
-  function initRunlogs() {
-    var logs = [].slice.call(document.querySelectorAll(".runlog"));
-    if (!logs.length) return;
+  /* Terminal output and long commands are real text at a real width: when one
+     of them is wider than its frame, the reader gets a tab stop — and, for a
+     run log, the hint. The markup ships the stops so they work without script;
+     with script, only the ones that actually scroll keep theirs. */
+  function initScrollers() {
+    var nodes = [].slice.call(
+      document.querySelectorAll(".runlog__body, .window__cmd, .cmdline__text")
+    );
+    if (!nodes.length) return;
     function check() {
-      logs.forEach(function (log) {
-        var body = log.querySelector(".runlog__body");
-        if (!body) return;
-        var overflows = body.scrollWidth - body.clientWidth > 2;
-        log.setAttribute("data-scrollable", overflows ? "true" : "false");
+      nodes.forEach(function (el) {
+        var overflows = el.scrollWidth - el.clientWidth > 2;
+        el.tabIndex = overflows ? 0 : -1;
+        var log = el.closest ? el.closest(".runlog") : null;
+        if (log) log.setAttribute("data-scrollable", overflows ? "true" : "false");
       });
     }
     check();
@@ -405,7 +408,7 @@
     initStrips();
     initLegendLinks();
     initSwitches();
-    initRunlogs();
+    initScrollers();
   }
 
   if (document.readyState === "loading") {

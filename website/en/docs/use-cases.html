@@ -15,7 +15,7 @@
 <a class="wordmark" href="../../en/index.html">
 <span class="wordmark__mark">mgit</span>
 </a>
-<nav class="head__links">
+<nav class="head__links" aria-label="Site">
 <a href="../../en/docs/">Docs</a>
 <a href="https://github.com/doggy8088/mgit">GitHub</a>
 <a href="https://github.com/doggy8088/mgit/releases">Releases</a>
@@ -68,7 +68,7 @@
 <h2 id="sec-3">How it differs from submodules and from a monorepo</h2>
 <table class="table"><thead><tr><th>Approach</th><th>Who owns the version</th><th>Does it touch the repositories</th><th>When it fits</th></tr></thead><tbody><tr><td><code>git submodule</code></td><td>The parent records each submodule's commit; updating means committing the parent</td><td>Needs <code>.gitmodules</code> in the parent and a remote in each child</td><td>Pinned versions and reproducible builds</td></tr><tr><td>One monorepo</td><td>One repository, one history</td><td>Everything moves in: history, permissions, CI and release rhythm change together</td><td>The team and its process are already unified</td></tr><tr><td>mgit</td><td>No relationship at all; every repository stays independent</td><td>None: mgit puts no files inside a repository</td><td>Repositories scattered in one working directory that must move together</td></tr></tbody></table>
 <h2 id="sec-4">When it is the wrong tool</h2>
-<ul><li>You need pinned dependency versions and reproducible builds → use <code>git submodule</code> or vendoring.</li><li>You need one CI, one release, one permission model → that is a monorepo problem; merge the repositories first.</li><li>mgit changes nothing inside the repositories and resolves no version relationship: it only sends the same command to every child directory.</li></ul></div><nav class="pager"><a class="pager__next" href="install.html"><span>Next chapter · 02</span>Install</a></nav></article></div>
+<ul><li>You need pinned dependency versions and reproducible builds → use <code>git submodule</code> or vendoring.</li><li>You need one CI, one release, one permission model → that is a monorepo problem; merge the repositories first.</li><li>mgit changes nothing inside the repositories and resolves no version relationship: it only sends the same command to every child directory.</li></ul></div><nav class="pager" aria-label="Chapter navigation"><a class="pager__next" href="install.html"><span>Next chapter · 02</span>Install</a></nav></article></div>
 </main>
 <footer class="foot"><div class="shell foot__inner">
 <dl class="foot__group"><dt>Release</dt>

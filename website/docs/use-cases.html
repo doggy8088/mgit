@@ -15,7 +15,7 @@
 <a class="wordmark" href="../index.html">
 <span class="wordmark__mark">mgit</span>
 </a>
-<nav class="head__links">
+<nav class="head__links" aria-label="網站">
 <a href="../docs/">文件</a>
 <a href="https://github.com/doggy8088/mgit">GitHub</a>
 <a href="https://github.com/doggy8088/mgit/releases">發行檔</a>
@@ -68,7 +68,7 @@
 <h2 id="sec-3">與 submodule、monorepo 的差別</h2>
 <table class="table"><thead><tr><th>做法</th><th>版本由誰管</th><th>要動到 repo 內容嗎</th><th>什麼時候適合</th></tr></thead><tbody><tr><td><code>git submodule</code></td><td>父專案記錄每個子模組的 commit；要更新就得 commit 父專案</td><td>要在父專案放 <code>.gitmodules</code>，子 repo 也要有 remote</td><td>需要精確鎖定版本、可重現的建置</td></tr><tr><td>單一 monorepo</td><td>一個 repo、一條歷史</td><td>要把所有東西搬進去（歷史、權限、CI、發佈節奏一起改）</td><td>團隊與流程已經統一</td></tr><tr><td>mgit</td><td>沒有關係，每個 repo 各自獨立</td><td>不用：mgit 不會在 repo 裡放任何檔案</td><td>repo 散在一個工作目錄、需要一起操作</td></tr></tbody></table>
 <h2 id="sec-4">什麼時候不適合</h2>
-<ul><li>需要精確鎖定每個相依的版本、建置要可重現 → 用 <code>git submodule</code> 或 vendoring。</li><li>需要單一的 CI、單一的發佈與權限 → 那其實是 monorepo 的問題，先把 repo 合併。</li><li>mgit 不改變任何 repo 的內容，也不解決版本關係：它只是把同一個指令送到每個子目錄。</li></ul></div><nav class="pager"><a class="pager__next" href="install.html"><span>下一章 · 02</span>安裝</a></nav></article></div>
+<ul><li>需要精確鎖定每個相依的版本、建置要可重現 → 用 <code>git submodule</code> 或 vendoring。</li><li>需要單一的 CI、單一的發佈與權限 → 那其實是 monorepo 的問題，先把 repo 合併。</li><li>mgit 不改變任何 repo 的內容，也不解決版本關係：它只是把同一個指令送到每個子目錄。</li></ul></div><nav class="pager" aria-label="章節切換"><a class="pager__next" href="install.html"><span>下一章 · 02</span>安裝</a></nav></article></div>
 </main>
 <footer class="foot"><div class="shell foot__inner">
 <dl class="foot__group"><dt>發行</dt>

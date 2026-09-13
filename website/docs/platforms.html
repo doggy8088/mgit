@@ -15,7 +15,7 @@
 <a class="wordmark" href="../index.html">
 <span class="wordmark__mark">mgit</span>
 </a>
-<nav class="head__links">
+<nav class="head__links" aria-label="網站">
 <a href="../docs/">文件</a>
 <a href="https://github.com/doggy8088/mgit">GitHub</a>
 <a href="https://github.com/doggy8088/mgit/releases">發行檔</a>
@@ -32,7 +32,7 @@
 <h2 id="sec-2">Windows 的兩個細節</h2>
 <ul><li>啟動時會嘗試開啟 VT 模式；開不起來就自動關閉顏色，不會輸出看不懂的跳脫序列。</li><li>主控台代碼頁不是 UTF-8 時自動改用 ASCII 符號，可用 <code>MGIT_ASCII=0</code> 覆寫。</li></ul>
 <h2 id="sec-3">管線</h2>
-<p><code>mgit … | head</code> 會還原 <code>SIGPIPE</code> 的預設行為，管線中斷時安靜結束，不會噴出 panic 訊息。</p></div><nav class="pager"><a href="exit-codes.html"><span>上一章 · 06</span>結束代碼與環境變數</a><a class="pager__next" href="changes.html"><span>下一章 · 08</span>版本、發行與 npm</a></nav></article></div>
+<p><code>mgit … | head</code> 會還原 <code>SIGPIPE</code> 的預設行為，管線中斷時安靜結束，不會噴出 panic 訊息。</p></div><nav class="pager" aria-label="章節切換"><a href="exit-codes.html"><span>上一章 · 06</span>結束代碼與環境變數</a><a class="pager__next" href="changes.html"><span>下一章 · 08</span>版本、發行與 npm</a></nav></article></div>
 </main>
 <footer class="foot"><div class="shell foot__inner">
 <dl class="foot__group"><dt>發行</dt>

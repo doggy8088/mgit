@@ -44,10 +44,11 @@
   /* Ink ---------------------------------------------------------------- */
   --ink: #15161a;
   --ink-2: #4b4d53;
-  /* Held one step darker than the flat paper would need: the fibre is real, so
-     12px chrome has to clear 4.5 against the darkest part of the stock, not
-     against the token. Worst case over ±2.2σ: 4.74. */
-  --ink-3: #666870;
+  /* Held darker than the flat paper would need: the fibre is real and its tail
+     is heavier than a Gaussian, so 12px chrome has to clear 4.5 against the
+     darkest grain (226/255), not against the token. Measured: 4.64 there,
+     5.51 on the token. */
+  --ink-3: #616369;
   --blue: #0f5c86;
   --blue-deep: #0a3f5c;
   --alarm: #b01b1b;
@@ -907,6 +908,7 @@ button {
 /* The page's focus ring is blue, which disappears on graphite: everything that
    sits on a plate takes the plate's own light tone instead. */
 .window--plate .switch:focus-visible,
+.window--plate .window__cmd:focus-visible,
 .plate a:focus-visible,
 .foot a:focus-visible {
   outline-color: var(--plate-blue);

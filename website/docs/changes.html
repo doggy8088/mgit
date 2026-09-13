@@ -15,7 +15,7 @@
 <a class="wordmark" href="../index.html">
 <span class="wordmark__mark">mgit</span>
 </a>
-<nav class="head__links">
+<nav class="head__links" aria-label="網站">
 <a href="../docs/">文件</a>
 <a href="https://github.com/doggy8088/mgit">GitHub</a>
 <a href="https://github.com/doggy8088/mgit/releases">發行檔</a>
@@ -32,10 +32,10 @@
 <table class="table"><thead><tr><th>項目</th><th>1.0.0</th><th>2.x</th></tr></thead><tbody><tr><td>執行形式</td><td>Bash 腳本 + PowerShell 腳本（各自維護）</td><td>單一 Rust 二進位檔，跨平台共用同一組測試</td></tr><tr><td>預設指令</td><td><code>git status -s</code></td><td>相同</td></tr><tr><td>輸出格式</td><td>80 個 <code>=</code>、<code>📂 Folder: … │ Branch: …</code></td><td>相同，再加上可切換的 ASCII 模式</td></tr><tr><td>找不到儲存庫</td><td>完全靜默、結束代碼 <code>0</code></td><td>印出警告並以 <code>1</code> 結束（<code>--allow-empty</code> 回復舊行為）</td></tr><tr><td>結束代碼</td><td>多儲存庫模式永遠回傳 <code>0</code></td><td>彙總結果，回傳第一個失敗的結束代碼</td></tr><tr><td>選項</td><td>無，所有參數都給 git</td><td>新增 <code>--list</code>、<code>--depth</code>、<code>--quiet</code>、<code>--color</code>、<code>--ascii</code>、<code>--summary</code>、<code>--fail-fast</code>、<code>--allow-empty</code></td></tr><tr><td>顏色</td><td>一律輸出 ANSI 跳脫序列</td><td>依終端機能力自動決定，並支援 <code>NO_COLOR</code>／<code>CLICOLOR_FORCE</code></td></tr><tr><td>網頁與安裝腳本</td><td><code>public/</code>、<code>install.sh</code>、<code>install.ps1</code> 直接提供腳本</td><td>安裝腳本改為下載並驗證官方發行檔</td></tr></tbody></table>
 <h2 id="sec-2">版本與發行</h2>
 <p>版本以 <code>Cargo.toml</code> 為單一來源，遵循 SemVer；<code>Cargo.toml</code>、<code>Cargo.lock</code>、<code>npm/package.json</code>、<code>CHANGELOG.md</code> 與 git 標籤必須一致。</p>
-<div class="cmdline"><span class="cmdline__text">scripts/bump-version.sh patch</span><span class="cmdline__note"># 2.0.2 → 2.0.3（同步三個檔案）</span><button type="button" class="switch switch--ghost" data-copy="scripts/bump-version.sh patch" data-label-copied="已複製" data-label-failed="請手動複製"><span data-copy-label aria-live="polite">複製</span></button></div>
-<div class="cmdline"><span class="cmdline__text">git tag -a v2.0.3 -m "mgit 2.0.3" &amp;&amp; git push origin HEAD v2.0.3</span><span class="cmdline__note"># 推送標籤即觸發發行</span><button type="button" class="switch switch--ghost" data-copy="git tag -a v2.0.3 -m &quot;mgit 2.0.3&quot; &amp;&amp; git push origin HEAD v2.0.3" data-label-copied="已複製" data-label-failed="請手動複製"><span data-copy-label aria-live="polite">複製</span></button></div>
+<div class="cmdline"><span class="cmdline__text" tabindex="0">scripts/bump-version.sh patch</span><span class="cmdline__note"># 2.0.2 → 2.0.3（同步三個檔案）</span><button type="button" class="switch switch--ghost" data-copy="scripts/bump-version.sh patch" data-label-copied="已複製" data-label-failed="請手動複製"><span data-copy-label aria-live="polite">複製</span></button></div>
+<div class="cmdline"><span class="cmdline__text" tabindex="0">git tag -a v2.0.3 -m "mgit 2.0.3" &amp;&amp; git push origin HEAD v2.0.3</span><span class="cmdline__note"># 推送標籤即觸發發行</span><button type="button" class="switch switch--ghost" data-copy="git tag -a v2.0.3 -m &quot;mgit 2.0.3&quot; &amp;&amp; git push origin HEAD v2.0.3" data-label-copied="已複製" data-label-failed="請手動複製"><span data-copy-label aria-live="polite">複製</span></button></div>
 <ul><li>每個版本都必須先在 <code>CHANGELOG.md</code> 建立 <code>## [X.Y.Z] - YYYY-MM-DD</code> 區段；GitHub Release 的說明就是該區段。</li><li>Release workflow 驗證版本一致性、跑完整測試、為 8 個目標建置並產生檢查碼，最後釋出到 GitHub Releases（含 <code>SHA256SUMS.txt</code>）。</li><li>接著 Publish to npm workflow 用 trusted publishing 發佈 <code>@willh/mgit</code>，不需要任何 token。</li></ul>
-<div class="callout"><span class="callout__label label">發行後驗證</span><p>官方安裝腳本會在三平台安裝<b>已發佈</b>的版本做最終驗證；npm 版本附 provenance 簽章。</p></div></div><nav class="pager"><a href="platforms.html"><span>上一章 · 07</span>跨平台行為</a></nav></article></div>
+<div class="callout"><span class="callout__label label">發行後驗證</span><p>官方安裝腳本會在三平台安裝<b>已發佈</b>的版本做最終驗證；npm 版本附 provenance 簽章。</p></div></div><nav class="pager" aria-label="章節切換"><a href="platforms.html"><span>上一章 · 07</span>跨平台行為</a></nav></article></div>
 </main>
 <footer class="foot"><div class="shell foot__inner">
 <dl class="foot__group"><dt>發行</dt>

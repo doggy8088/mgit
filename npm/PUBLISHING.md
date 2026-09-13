@@ -135,6 +135,8 @@ git push origin HEAD v0.1.1
 1. `Release` workflow：驗證版本 → 跑測試 → 建置 8 個平台 → 發佈 GitHub Release（含檢查碼）
 2. `Publish to npm` workflow：等待 Release 資產齊全 → 下載並驗證 → vendoring → 跑套件測試 → `npm publish`（自動產生 provenance）
 
+> **第一次推送標籤時（v0.1.0）**：此時套件尚未在 registry 上，npm 也還不能設定 trusted publisher，所以 npm workflow 會**自動跳過**（印出提示並以成功結束，不會是紅燈）。等手動發佈完並設好 trusted publisher，之後的版本就會全自動。
+
 也可以手動只發佈 npm：Actions → **Publish to npm** → **Run workflow**（可指定版本；未指定時使用最新標籤）。
 
 ### 選用：用 GitHub Environment 加上人工審核
@@ -157,6 +159,7 @@ git push origin HEAD v0.1.1
 | 等待資產 | 輪詢 GitHub Release，直到 6 個平台的封存檔與檢查碼都出現（最多 20 分鐘） |
 | 驗證 | 以 `sha256sum -c` 驗證每個封存檔，再交給 `npm/scripts/vendor.sh` 解開 |
 | 測試 | `npm test`（Node 內建測試框架）與 `node --check` 語法檢查 |
+| 首發保護 | 若套件還不存在於 registry（第一次發佈）就跳過，並在摘要中提示手動發佈的步驟 |
 | 重複保護 | 若該版本已存在於 registry 就跳過發佈（npm 不允許覆蓋既有版本） |
 | 發佈 | `npm publish`；版本含 `-` 時使用 `--tag next` 避免動到 `latest` |
 | 權限 | `contents: read` + `id-token: write`（trusted publishing 必要，不需要任何 secret） |

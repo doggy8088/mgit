@@ -182,13 +182,25 @@ jobs:
           node --check lib/platform.js
           npm test
 
-      - name: Check whether this version is already published
+      - name: Check the registry state
         id: registry
         shell: bash
         env:
           VERSION: ${{ steps.version.outputs.version }}
         run: |
           set -euo pipefail
+
+          # npm refuses to configure a trusted publisher for a package that does
+          # not exist yet, so the very first version has to be published by hand.
+          # Skipping here keeps the first tag from turning into a red run.
+          if ! npm view "${{ env.PACKAGE }}" version > /dev/null 2>&1; then
+            echo "missing=true" >> "$GITHUB_OUTPUT"
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+            echo "::notice title=First publish::${{ env.PACKAGE }} is not on the registry yet. Publish it once by hand (npm/PUBLISHING.md) and configure the trusted publisher with the workflow filename npm.yml."
+            exit 0
+          fi
+          echo "missing=false" >> "$GITHUB_OUTPUT"
+
           if npm view "${{ env.PACKAGE }}@$VERSION" version > /dev/null 2>&1; then
             echo "exists=true" >> "$GITHUB_OUTPUT"
             echo "::notice title=Already published::${{ env.PACKAGE }}@$VERSION is already on the registry, skipping the publish."
@@ -197,7 +209,7 @@ jobs:
           fi
 
       - name: Publish with trusted publishing
-        if: steps.registry.outputs.exists == 'false'
+        if: steps.registry.outputs.missing != 'true' && steps.registry.outputs.exists == 'false'
         shell: bash
         env:
           VERSION: ${{ steps.version.outputs.version }}
@@ -211,10 +223,13 @@ jobs:
             dist_tag=latest
           fi
           echo "npm publish --access public --tag $dist_tag (version $VERSION)"
-          npm publish --access public --tag "$dist_tag"
+          if ! npm publish --access public --tag "$dist_tag"; then
+            echo "::error::the publish failed. For the very first release publish the package by hand (npm/PUBLISHING.md) and configure the trusted publisher with the workflow filename npm.yml."
+            exit 1
+          fi
 
       - name: Verify the published package
-        if: steps.registry.outputs.exists == 'false'
+        if: steps.registry.outputs.missing != 'true' && steps.registry.outputs.exists == 'false'
         shell: bash
         env:
           VERSION: ${{ steps.version.outputs.version }}
@@ -239,11 +254,17 @@ jobs:
           VERSION: ${{ steps.version.outputs.version }}
           TAG: ${{ steps.version.outputs.tag }}
           EXISTS: ${{ steps.registry.outputs.exists }}
+          MISSING: ${{ steps.registry.outputs.missing }}
         run: |
           {
             echo "## ${{ env.PACKAGE }}@$VERSION"
             echo ""
-            if [ "$EXISTS" = "true" ]; then
+            if [ "$MISSING" = "true" ]; then
+              echo "The package is not on the registry yet, so nothing was published."
+              echo ""
+              echo "Publish the first version by hand and configure the trusted publisher"
+              echo "(workflow filename \`npm.yml\`) as described in npm/PUBLISHING.md."
+            elif [ "$EXISTS" = "true" ]; then
               echo "The version was already published, nothing was uploaded."
             else
               echo "- published from tag \`$TAG\`"

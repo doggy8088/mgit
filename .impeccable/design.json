@@ -18,7 +18,7 @@
           "#d3d4d3",
           "#eeefed"
         ],
-        "usage": "Every page ground; paper-chart and paper-log both repaint it over the fibre texture, which they no longer clear."
+        "usage": "Every page ground; paper-chart and paper-log repaint it over paper-fibre.jpg, whose grain is laid on this exact tone."
       },
       "paper-deep": {
         "role": "neutral",
@@ -135,18 +135,18 @@
       "ink-3": {
         "role": "neutral",
         "displayName": "Graphite 3",
-        "canonical": "#6d7076",
+        "canonical": "#666870",
         "tonalRamp": [
-          "#090b0f",
-          "#24262b",
-          "#42454b",
-          "#63666c",
-          "#86898f",
-          "#abaeb4",
-          "#d1d4db",
-          "#ebeff5"
+          "#090b11",
+          "#24262d",
+          "#43454c",
+          "#64666e",
+          "#878991",
+          "#abadb6",
+          "#d1d4dd",
+          "#eceef7"
         ],
-        "usage": "12px chrome and quiet lines: labels, captions, lane and chapter numbers, spec stamps, the command-line note, dimmed vocabulary words, the runlog's rule and quiet lines, the strip's ticks."
+        "usage": "12px chrome and quiet lines: labels, captions, lane and chapter numbers, spec stamps, the command-line note, dimmed vocabulary words, the runlog's rule and quiet lines, the strip's ticks. Held darker than flat paper would need because the fibre is real: worst case over ±2.2σ of the stock is 4.75:1, 5.13:1 against the token paper."
       },
       "blue": {
         "role": "primary",
@@ -210,7 +210,7 @@
           "#d3d4d8",
           "#edeef3"
         ],
-        "usage": "The dark engraved object: spec plates and the footer."
+        "usage": "The dark engraved object (plates and footer); graphite-plate.jpg carries its grain laid on this exact tone, as do the lane legend, the graphite install window and the runlog bar."
       },
       "plate-2": {
         "role": "neutral",
@@ -583,72 +583,115 @@
     },
     "rasterPlates": [
       {
-        "name": "chart-paper",
-        "file": "assets/plates/chart-paper.jpg",
-        "provenance": "assets/plates/chart-paper.prompt.txt",
-        "dimensions": "1000x667",
-        "bytes": 64685,
-        "embeddedComment": "impeccable:prompt …",
-        "role": "The strip's ground only, at background-size 1200px auto under a 0.78 paper scrim.",
-        "material": "printed chart paper: a whisper of a rule every 40px, ticks at the edges, no depicted object."
-      },
-      {
         "name": "paper-fibre",
         "file": "assets/plates/paper-fibre.jpg",
+        "source": "build/texture-sources/paper-fibre.jpg",
         "provenance": "assets/plates/paper-fibre.prompt.txt",
         "dimensions": "900x600",
-        "bytes": 54394,
-        "embeddedComment": "impeccable:prompt …",
-        "role": "The whole page ground: body background-image over a 0.94 paper scrim at 900px auto; paper-chart and paper-log only repaint the colour so the texture shows through.",
-        "material": "uncoated stock fibre; measured ground rgb(243, 244, 242) against --paper rgb(245, 246, 244)."
+        "bytes": 67727,
+        "postProcessed": "make-textures.py — photographed grain re-laid on #f5f6f4 at sigma 3.2/255",
+        "role": "The whole page ground: body background-image at 900px auto, grain only, no scrim.",
+        "caption": null
       },
       {
         "name": "graphite-plate",
         "file": "assets/plates/graphite-plate.jpg",
+        "source": "build/texture-sources/graphite-plate.jpg",
         "provenance": "assets/plates/graphite-plate.prompt.txt",
         "dimensions": "900x600",
-        "bytes": 24048,
-        "embeddedComment": "impeccable:prompt …",
-        "role": "Behind .plate and .foot: 900px auto under a rgba(25, 26, 29, 0.88) scrim.",
-        "material": "matte graphite lacquer at about an eighth strength, no gloss, no depicted object."
+        "bytes": 52810,
+        "postProcessed": "make-textures.py — photographed grain re-laid on #191a1d at sigma 4.0/255",
+        "role": "Behind the plate, the footer, the lane legend, the graphite install window and the runlog bar, at 900px auto.",
+        "caption": null
+      },
+      {
+        "name": "chart-paper",
+        "file": "assets/plates/chart-paper.jpg",
+        "source": "build/texture-sources/chart-paper.jpg",
+        "provenance": "assets/plates/chart-paper.prompt.txt",
+        "dimensions": "1000x667",
+        "bytes": 71238,
+        "postProcessed": "make-textures.py — photographed grain re-laid on #f5f6f4 at sigma 4.4/255",
+        "role": "The strip's ground at 1200px auto, under the printed 40px rule; also the paper chips under the strip's meta, vocabulary and exit labels.",
+        "caption": null
       }
     ],
-    "imageryPolicy": "Backgrounds may add material (fibre, chart paper, lacquered graphite); pictures may not pretend to be the product. Every texture is AI-generated, carries its prompt as an embedded JPEG comment and a sibling .prompt.txt, and depicts no object. The run data in the strip is separate from the imagery: a real recorded session of the binary.",
+    "imageryPolicy": "Backgrounds may add material, and the material has to be visible: each texture's photographed grain is re-laid on the design system's own tone by website/build/make-textures.py (mean = token, only grain varies; paper 3.44/255, graphite 3.9-4.7/255, strip 5.2/255 with its printed rule) and shipped with no scrim. Pictures may not pretend to be the product: every texture is AI-generated, carries its prompt as an embedded JPEG comment and a sibling .prompt.txt, and depicts no object. The run data in the strip is separate from the imagery.",
     "measurements": [
       {
-        "name": "warm-pixel-budget",
-        "value": "0.23% of a 1600px page",
-        "note": "All warm pixels are the alarm pen and its marks; the rest of the page is neutral. This is the check for 'colour means data'."
+        "name": "texture-amplitudes",
+        "value": "generated originals sigma 1.3-4.5/255; shipped paper-fibre 3.2, graphite-plate 4.0, chart-paper 4.4 (targets); rendered in isolation: paper 3.44, graphite 3.9-4.7, strip 5.2 including the 40px rule",
+        "note": "The pre-fix scrimmed build measured a 3/255 spread on dark surfaces - a flat fill. Measured with `*{color:transparent}` to isolate texture from text and rules."
+      },
+      {
+        "name": "texture-files",
+        "value": "paper-fibre 67,727 B (66 KiB), graphite-plate 52,810 B (52 KiB), chart-paper 71,238 B (70 KiB); sources kept in build/texture-sources/",
+        "note": "Each prompt.txt ends with a 'Post-processed:' line pointing at make-textures.py."
       },
       {
         "name": "graphite-share",
-        "value": "desktop page 20.3% (was 15.5%), hero 13.4% (was 2.8%); mobile page 22.6% (was 19.6%), hero 9.9% (was 4.4%)",
-        "note": "Dark-pixel share after the weight pass: the legend panel, the graphite runlog bars and the install window carry the weight."
+        "value": "desktop page 20.4% (was 20.3%), hero 13.4%; mobile page 22.6%, hero 9.9%",
+        "note": "The visible material did not change the overall weight."
       },
       {
-        "name": "page-height",
-        "value": "desktop 8716px (was 8763px); mobile 12299px (was 12271px)",
-        "note": "At 1440 and 390 respectively."
-      },
-      {
-        "name": "hero-h1-lines",
-        "value": "1 line at 1440px (text width about 950px); 2 lines in the EN page",
-        "note": "The h1 is the largest voice on the site: 49px at 1440."
-      },
-      {
-        "name": "type-ladder",
-        "value": "h1 49 / h2 36 / hero lede 21 / body and band intro 17 / 15 / 14 / 13 / 12px at 1440",
-        "note": "The h1 is now larger than the h2 — the earlier build had the hierarchy inverted."
+        "name": "ink-3-contrast",
+        "value": "#666870: 4.75:1 against the darkest fibre (worst case over ±2.2 sigma), 5.13:1 against the token paper; the other 8 foregrounds are 5.9:1 or better in their worst case",
+        "note": "The token moved from #6d7076 because 12px chrome has to clear AA against the darkest part of the stock, not against the flat token."
       },
       {
         "name": "contrast-and-overflow",
         "value": "0 violations at 1440 / 1000 / 620 / 390 across landing, EN landing, a docs chapter, the docs index and the docs install chapter; 0 horizontal overflow",
-        "note": "On graphite, the ring switches to Plate Blue because --blue measures about 2.4:1 there."
+        "note": "axe on the landing reports 0 violations but 273 color-contrast nodes as incomplete because it cannot resolve background images - hence the worst-case material calculation above."
+      },
+      {
+        "name": "axe-a11y",
+        "value": "docs chapter 0 violations; landing 0 violations (273 color-contrast incomplete)",
+        "note": "Run with agent-browser a11y."
+      },
+      {
+        "name": "links-and-css",
+        "value": "330 in-site links resolve; CSS braces 286/286 balanced",
+        "note": null
+      },
+      {
+        "name": "runlog-not-clipped",
+        "value": "1440 656/656, 1280 1180/1180, 1100 1008/1008, 900 824/824; 620 566/578 and 390 354/578 with data-scrollable=true and the hint shown",
+        "note": "scrollWidth/clientWidth per run log; .split--logs opens two columns only at >=1350px."
       },
       {
         "name": "lighthouse",
-        "value": "landing desktop: Accessibility 100, Best Practices 100, SEO 100, Agentic Browsing 100 (55 passed / 0 failed)",
-        "note": "Measured after the weight pass."
+        "value": "landing desktop: Accessibility 100, Best Practices 100, SEO 100, Agentic Browsing 100 (56 passed / 0 failed)",
+        "note": "After the finish-review fixes."
+      },
+      {
+        "name": "page-height",
+        "value": "desktop 8716px; mobile 12256px; hero h1 still one line at 1440",
+        "note": "At 1440 and 390 respectively."
+      },
+      {
+        "name": "type-ladder",
+        "value": "h1 49 / h2 36 / hero lede 21 / body and band intro 17 / 15 / 14 / 13 / 12px at 1440",
+        "note": "text-wrap: pretty on .prose, .band__intro, .docmain__intro and the rule list; the rule list's third item wrapped a 30px last line before the fix."
+      },
+      {
+        "name": "warm-pixel-budget",
+        "value": "0.23% of a 1600px page",
+        "note": "All warm pixels are the alarm pen and its marks; the rest of the page is neutral."
+      },
+      {
+        "name": "strip-crop-budget",
+        "value": "89.1% paper / 6.1% neutral rules and ink / 3.2% blue pen / 1.5% alarm pen / 0% warm",
+        "note": "Measured on a strip crop."
+      },
+      {
+        "name": "head-band-height",
+        "value": "76px on one row at 1440 / 1000 / 620; 132px folded to two rows at 390px",
+        "note": "Wordmark + four links + language switch; horizontal overflow 0."
+      },
+      {
+        "name": "legend-panel-revert",
+        "value": "621px",
+        "note": "The graphite legend panel holds from 621px up and reverts to paper at <=620px."
       },
       {
         "name": "section-geometry-1440",
@@ -656,29 +699,9 @@
         "note": "Where each band begins down the page."
       },
       {
-        "name": "split-heights",
-        "value": "bands' .split columns stay equal: 197/197, 792/792, 513/513; .rules two columns 195px tall",
-        "note": "Two-column blocks remain balanced after the re-weighting."
-      },
-      {
-        "name": "strip-crop-budget",
-        "value": "89.1% paper / 6.1% neutral rules and ink / 3.2% blue pen / 1.5% alarm pen / 0% warm",
-        "note": "Measured on a strip crop; the strip is a printed chart, not graph paper."
-      },
-      {
-        "name": "strip-ground",
-        "value": "rgb(243, 244, 242) in the strip vs rgb(245, 246, 244) on the page",
-        "note": "The photographed sheet reads as the same stock at about a fifth strength."
-      },
-      {
-        "name": "head-band-height",
-        "value": "76px on one row at 1440 / 1000 / 620; 132px folded to two rows at 390px",
-        "note": "Wordmark + four links + language switch, no spec stamp; horizontal overflow 0."
-      },
-      {
-        "name": "verified-this-pass",
-        "value": "318 local links resolve; Lighthouse 100 accessibility / 100 best practices / 100 SEO on desktop and mobile, landing and docs index",
-        "note": "Site-level verification after the naming pass."
+        "name": "evidence",
+        "value": "six review screenshots re-taken",
+        "note": "Stored outside the site tree."
       }
     ]
   },
@@ -743,9 +766,9 @@
       "name": "Recorded Runlog",
       "kind": "custom",
       "refersTo": "runlog",
-      "description": "A printed frame for a real terminal session: 2px ink frame, graphite bar (Plate Ivory title at 700, Plate Dim meta), white mono body at 0.78125rem/1.7 that fits an 80-column line.",
+      "description": "A printed frame for a real terminal session: 2px ink frame, graphite bar (texture, Plate Ivory command at 700), white mono body at 0.78125rem/1.7; the hint appears only when the measured body actually overflows.",
       "html": "<div class=\"ds-runlog\"><div class=\"ds-runlog__bar\"><span class=\"ds-runlog__title\">mgit pull</span><span>exit 128 · 5 succeeded, 1 failed</span></div><div class=\"ds-runlog__body\"><span class=\"ds-rule\">================================================================================</span>\n<span class=\"ds-folder\">📂 Folder: web-console │ Branch: main</span>\n<span class=\"ds-rule\">================================================================================</span>\n<span class=\"ds-err\">error: cannot pull with rebase: You have unstaged changes.</span>\n<span class=\"ds-quiet\"> </span>\n<span class=\"ds-sum\">mgit: 6 repositories, 5 succeeded, 1 failed</span>\n<span class=\"ds-err\">  ✗ web-console (exit code 128)</span></div></div>",
-      "css": ".ds-runlog { border: 2px solid var(--ink); background: var(--window); } .ds-runlog__bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0.4rem 0.75rem; background-color: var(--plate); color: var(--plate-ink); border-bottom: var(--hair) solid var(--plate); font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.04em; } .ds-runlog__title { font-weight: 700; } .ds-runlog__bar > span:last-child { color: var(--plate-dim); } .ds-runlog__body { padding: 16px 24px; font-family: var(--mono); font-size: 0.78125rem; line-height: 1.7; white-space: pre; overflow-x: auto; color: var(--ink); } .ds-rule { color: var(--ink-3); } .ds-folder { color: var(--ink); font-weight: 500; } .ds-quiet { color: var(--ink-3); } .ds-err { color: var(--alarm); } .ds-sum { color: var(--ink-2); }"
+      "css": ".ds-runlog { border: 2px solid var(--ink); background: var(--window); } .ds-runlog__bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0.4rem 0.75rem; background-color: var(--plate); background-image: url(\"assets/plates/graphite-plate.jpg\"); background-size: 900px auto; color: var(--plate-ink); border-bottom: var(--hair) solid var(--plate); font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.04em; } .ds-runlog__title { font-weight: 700; } .ds-runlog__bar > span:last-child { color: var(--plate-dim); } .ds-runlog__body { padding: 16px 24px; font-family: var(--mono); font-size: 0.78125rem; line-height: 1.7; white-space: pre; overflow-x: auto; color: var(--ink); } .ds-runlog__hint { display: none; margin: 0; padding: 0.35rem 24px 16px; font-size: 0.75rem; color: var(--ink-3); border-top: var(--hair) dotted var(--rule); } .ds-runlog[data-scrollable=\"true\"] .ds-runlog__hint { display: block; } .ds-rule { color: var(--ink-3); } .ds-folder { color: var(--ink); font-weight: 500; } .ds-quiet { color: var(--ink-3); } .ds-err { color: var(--alarm); } .ds-sum { color: var(--ink-2); }"
     },
     {
       "name": "Docs Row",
@@ -806,12 +829,12 @@
   ],
   "narrative": {
     "northStar": "The Strip-Chart Fleet Recorder",
-    "overview": "The whole site is one instrument. A single strip of chart paper advances under N pens, one pen per repository: a flat line is a clean repository, the excursion is the one that needs you, and the run closes in a totals band printed at the foot of the paper. The page therefore has no cards, no icon grid and no hero-plus-install-box; it has a printed head, a dark lane legend wired to the strip, and bands of the same continuous paper separated by a hairline rule and 112px of quiet. The vocabulary is plain throughout: the legend's number column is headed `#`, the documentation is 文件 / Docs, and chapter numbers are plain two-digit `01`–`08` — no coined shorthand.\n\nThe materials are a print room's, not a UI kit's. Paper runs edge to edge and the texture under it is real: the whole page sits on a photographed sheet of uncoated stock (`plates/paper-fibre.jpg`) held at 0.94 alpha, so the ground measures `rgb(243, 244, 242)` against the token's `rgb(245, 246, 244)` — the fibre shows, the colour does not move. The chart paper is the instrument's own material and appears only inside the strip: `plates/chart-paper.jpg` under a 0.78 scrim, one 1px printed rule every 40px, and 40px ticks down both edges, so no rule and no pattern ever runs through a line of prose. Dark objects are lacquered rather than filled — the plate and the footer sit on `plates/graphite-plate.jpg` at 0.88 alpha. What carries the rest of the world is rules: the 2px ink rules that divide the page, the dotted 1px hairlines between legend, navigation, margin-index and table rows, the docs row rules, the margin rule beside the chapter rail, and the engraved plate. Content is ink — graphite, link blue, alarm red — and nothing else. Anything that must feel physical is printed as an object: a punched white window for a chapter's own action, a printed monospace command line on the paper for everything else, a dark engraved plate for specs and calibration figures, a printed frame for the recorded terminal session. Depth is a printing metaphor (a lifted sheet, a seated plate, a punched hole), never a light source.\n\nThe build refines the direction contract in one place: the clean pen draws in link blue, not graphite, and graphite is spent on the dirty pen. The build wins; the pen vocabulary below is the shipped one.",
+    "overview": "The whole site is one instrument. A single strip of chart paper advances under N pens, one pen per repository: a flat line is a clean repository, the excursion is the one that needs you, and the run closes in a totals band printed at the foot of the paper. The page therefore has no cards, no icon grid and no hero-plus-install-box; it has a printed head, a dark lane legend wired to the strip, and bands of the same continuous paper separated by a hairline rule and 112px of quiet. The vocabulary is plain throughout: the legend's number column is headed `#`, the documentation is 文件 / Docs, and chapter numbers are plain two-digit `01`–`08` — no coined shorthand.\n\nThe materials are a print room's, not a UI kit's. Paper runs edge to edge and the texture under it is real: the grain of a photographed sheet (`plates/paper-fibre.jpg`) is re-laid on the token's own tone, so the stock carries tooth at the exact `#f5f6f4` and no overlay stands between the material and the reader. The chart paper is the instrument's own material and appears only inside the strip: `plates/chart-paper.jpg` (grain re-laid on `#f5f6f4` at σ 4.4), one 1px printed rule every 40px, and 40px ticks down both edges, so no rule and no pattern ever runs through a line of prose. Dark objects are lacquered rather than filled — the plate, the footer, the lane legend, the graphite install window and the runlog bar all carry `plates/graphite-plate.jpg`, its grain re-laid on `#191a1d` at σ 4.0. What carries the rest of the world is rules: the 2px ink rules that divide the page, the dotted 1px hairlines between legend, navigation, margin-index and table rows, the docs row rules, the margin rule beside the chapter rail, and the engraved plate. Content is ink — graphite, link blue, alarm red — and nothing else. Anything that must feel physical is printed as an object: a punched white window for a chapter's own action, a printed monospace command line on the paper for everything else, a dark engraved plate for specs and calibration figures, a printed frame for the recorded terminal session. Depth is a printing metaphor (a lifted sheet, a seated plate, a punched hole), never a light source.\n\nThe build refines the direction contract in one place: the clean pen draws in link blue, not graphite, and graphite is spent on the dirty pen. The build wins; the pen vocabulary below is the shipped one.",
     "keyCharacteristics": [
       "One continuous sheet: `paper-chart` and `paper-log` both paint the same `#f5f6f4` ground over one photographed fibre texture; the chart paper is the strip's own material, not the page's; sections are bands, never cards.",
       "Three inks carry meaning (graphite, link blue, alarm) and colour means data and nothing else: the structure layer is three neutral rule greys, and the shipped landing measures 0.23% warm pixels at 1600px — all of it alarm ink.",
       "Instrument components: a dark lane legend wired to the strip, an engraved plate, a recorded-session frame, a five-word state vocabulary, a numbered rule list.",
-      "Three AI-generated textures carry material and nothing else — fibre under the page, chart paper in the strip, lacquered graphite behind the plate — never a depicted object.",
+      "Three AI-generated textures carry material and nothing else — fibre under the page, chart paper in the strip, lacquered graphite behind the plate, the legend, the graphite window and the runlog bar — each re-laid on its token's own tone so the grain is visible without a scrim, and never a depicted object.",
       "On paper, commands are printed lines (`.cmdline` with a text-only copy switch) and only a chapter's own action keeps the punched white window.",
       "A margin index holds the chapter's own sections beside the text at ≥1280px (sticky, 232px) and as a compact list above the prose below that.",
       "Square corners throughout; hierarchy is rule weight (1px hair, 2px structure) and printed marks.",
@@ -886,8 +909,9 @@
       }
     ],
     "dos": [
-      "Do keep the reading surface paper, not pattern: `paper-chart` and `paper-log` repaint the same `#f5f6f4` over one fibre texture at 0.94 alpha, and the chart paper stays inside the strip where the pens draw.",
-      "Do use imagery as material only — fibre under the page, chart paper in the strip, lacquered graphite behind the plate — each AI-generated texture carrying its prompt as an embedded JPEG comment and a sibling `.prompt.txt`.",
+      "Do keep the reading surface paper, not pattern: `paper-chart` and `paper-log` repaint the same `#f5f6f4` over one fibre texture whose grain is laid on the token's own tone, and the chart paper stays inside the strip where the pens draw.",
+      "Do use imagery as material only — fibre under the page, chart paper in the strip, lacquered graphite behind the plate, the legend, the graphite window and the runlog bar — each AI-generated texture carrying its prompt as an embedded JPEG comment and a sibling `.prompt.txt`.",
+      "Do re-lay a texture's grain on the token it stands on (`website/build/make-textures.py`: paper-fibre σ 3.2 on `#f5f6f4`, graphite-plate σ 4.0 on `#191a1d`, chart-paper σ 4.4 on `#f5f6f4`) so the material is visible at the token's own tone instead of under a scrim.",
       "Do let ink carry content and paper carry structure through rules: 2px dividers, dotted 1px hairlines under list, table, navigation and index rows, the margin rule, the docs row rules.",
       "Do pair every failure with a mark and a word (failed pen + cross + `exit 128`), and print the whole five-word state vocabulary once per strip.",
       "Do set display-size CJK in the `--display` stack so it lands in \"mgit Display\", and extend the 155-character subset when new headline copy appears.",
@@ -905,6 +929,7 @@
     "donts": [
       "Don't carry text, borders or state on a rule, and don't use the rule greys as anything but hairline, tick, separator or scrollbar.",
       "Don't put colour back into the structure layer — no tinted grid, no coloured ruling, no coloured hairline; colour belongs to ink and to failure.",
+      "Don't scrim a texture or ship it flat: an overlay that keeps only a few percent of the grain turns a material into a fill (the scrimmed build measured a 3/255 spread on every dark surface), and a fill carrying a material's name is worse than no material at all.",
       "Don't lay a ruled pattern under running text — no chart paper, no reading rule, no repeating gradient beneath a column of prose; the page's own ground may carry a material texture at a whisper, never a grid, and never a picture.",
       "Don't put a picture on this site that pretends to be the product. The imagery is background material and nothing else: no depicted object, no mockup, no scene, no caption claiming a photograph shows mgit working — the run logs and exit codes are the evidence, and they come from the binary.",
       "Don't make a `li` a grid. The rule list is a CSS-columns list whose items set inline `<code>` and `<b>` as part of their own sentence; a grid item per line splits every inline element onto its own row and shreds the copy.",

@@ -56,6 +56,10 @@ mgit --list               # 六個絕對路徑
 所以圖例與筆跡不可能對不上。要更新示範資料時，重跑上面幾個指令，把輸出換進頁面的 run record
 （`.runlog__body`）與該 JSON，兩邊一起改。
 
+驗證方式（頁面上寫的是 2.0.2 版二進位錄下來的，這句話必須能重現）：`cargo build --release`
+之後在 `/tmp/mgit-mixed` 重跑上面四個指令，輸出要與 `build/captures/*.txt` 逐字相同；
+`depth.txt` 是完整輸出的最後六行（頁面上是截錄，不是全部）。
+
 ## 材質（AI 生成的背景圖）
 
 `assets/plates/` 三張圖全部是 **AI 生成的背景材質**，只做材質、不描繪物件；每張的生成

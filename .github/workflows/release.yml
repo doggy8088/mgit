@@ -142,7 +142,9 @@ jobs:
             linker: ''
           - target: aarch64-unknown-linux-gnu
             os: ubuntu-latest
-            packages: 'gcc-aarch64-linux-gnu'
+            # The cross compiler alone cannot link a PIE executable: the glibc
+            # start files (Scrt1.o, crti.o) come from libc6-dev-<arch>-cross.
+            packages: 'gcc-aarch64-linux-gnu libc6-dev-arm64-cross'
             linker: aarch64-linux-gnu-gcc
           - target: aarch64-unknown-linux-musl
             os: ubuntu-latest

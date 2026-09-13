@@ -230,6 +230,7 @@ The previous release shipped `mgit` (Bash) and `mgit.ps1` (PowerShell); both are
 
 ```
 Makefile      common development targets (`make help` lists them)
+CHANGELOG.md  version history (the source of the GitHub release notes)
 npm/          the npm wrapper package (launcher, platform table, vendor script, tests)
 src/
   main.rs       entry point: parse, detect capabilities, build the App
@@ -291,7 +292,9 @@ CI ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) runs the whole suite
 
 ### Versioning and releases
 
-Versions follow [SemVer](https://semver.org/) and start at `2.0.0` (the last shell implementation was `1.0.0`). `Cargo.toml`, `Cargo.lock`, `npm/package.json` and the git tag must all agree.
+Versions follow [SemVer](https://semver.org/) and start at `2.0.0` (the last shell implementation was `1.0.0`). `Cargo.toml`, `Cargo.lock`, `npm/package.json`, `CHANGELOG.md` and the git tag must all agree.
+
+Every version needs a `## [X.Y.Z] - YYYY-MM-DD` section in [`CHANGELOG.md`](CHANGELOG.md) first: the GitHub release notes are that section plus the install instructions, extracted by `scripts/release-notes.sh`. A missing section fails the release workflow in the `prepare` job.
 
 ```sh
 scripts/bump-version.sh patch      # 2.0.0 -> 2.0.1 (Cargo.toml, Cargo.lock, npm/package.json)

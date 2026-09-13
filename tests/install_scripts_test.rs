@@ -602,3 +602,236 @@ fn bump_version_handles_crlf_manifests() {
         )
     );
 }
+
+fn release_notes_script() -> PathBuf {
+    let path = manifest_directory()
+        .join("scripts")
+        .join("release-notes.sh");
+    assert!(path.is_file(), "{path:?} must exist");
+    path
+}
+
+#[test]
+fn release_notes_explains_itself() {
+    if !sh_available() {
+        return;
+    }
+    let path = release_notes_script();
+    let (code, out, _) = output("sh", &[path.to_str().expect("utf-8 path"), "--help"]);
+    assert_eq!(code, 0);
+    for needle in ["USAGE:", "<version>", "CHANGELOG.md"] {
+        assert!(out.contains(needle), "the help must mention {needle}");
+    }
+}
+
+#[test]
+fn release_notes_prints_only_the_requested_section() {
+    if !sh_available() {
+        return;
+    }
+    let path = release_notes_script();
+    let (code, out, err) = output("sh", &[path.to_str().expect("utf-8 path"), "2.0.1"]);
+    assert_eq!(code, 0, "{err}");
+    assert!(out.starts_with("## [2.0.1]"), "{out}");
+    assert!(out.contains("### 改進"), "{out}");
+    assert!(
+        !out.contains("## [2.0.0]"),
+        "the section must stop at the next version: {out}"
+    );
+    // The leading `v` of a tag is optional.
+    let (code, tagged, _) = output("sh", &[path.to_str().expect("utf-8 path"), "v2.0.1"]);
+    assert_eq!(code, 0);
+    assert_eq!(out, tagged);
+}
+
+#[test]
+fn release_notes_rejects_an_unknown_version() {
+    if !sh_available() {
+        return;
+    }
+    let path = release_notes_script();
+    let (code, out, err) = output("sh", &[path.to_str().expect("utf-8 path"), "9.9.9"]);
+    assert_eq!(code, 1);
+    assert!(out.is_empty(), "{out}");
+    assert!(err.contains("no '## [9.9.9]' section"), "{err}");
+}
+
+#[test]
+fn release_notes_reads_an_explicit_file() {
+    if !sh_available() {
+        return;
+    }
+    let temp = tempfile::TempDir::new().expect("temporary directory");
+    let changelog = temp.path().join("CHANGELOG.md");
+    std::fs::write(
+        &changelog,
+        "# 變更記錄\n\n## [Unreleased]\n\n## [1.2.0] - 2026-01-01\n\n### 新增\n\n- 測試用條目\n\n## [1.1.0] - 2025-12-01\n\n- 舊版\n",
+    )
+    .expect("write the fixture");
+
+    let path = release_notes_script();
+    let (code, out, err) = output(
+        "sh",
+        &[
+            path.to_str().expect("utf-8 path"),
+            "1.2.0",
+            changelog.to_str().expect("utf-8 path"),
+        ],
+    );
+    assert_eq!(code, 0, "{err}");
+    assert!(out.contains("- 測試用條目"), "{out}");
+    assert!(!out.contains("1.1.0"), "{out}");
+}
+
+#[test]
+fn release_notes_fails_when_the_changelog_is_missing() {
+    if !sh_available() {
+        return;
+    }
+    let path = release_notes_script();
+    let (code, _, err) = output(
+        "sh",
+        &[
+            path.to_str().expect("utf-8 path"),
+            "1.0.0",
+            "/definitely/not/a/changelog.md",
+        ],
+    );
+    assert_eq!(code, 1);
+    assert!(err.contains("no changelog at"), "{err}");
+}
+
+#[test]
+fn the_current_version_has_a_release_notes_section() {
+    if !sh_available() {
+        return;
+    }
+    // The release workflow refuses to publish without a CHANGELOG section, so
+    // the version in Cargo.toml must have one before anybody tags it.
+    let version = manifest_version(&manifest_directory().join("Cargo.toml"));
+    let path = release_notes_script();
+    let (code, out, err) = output("sh", &[path.to_str().expect("utf-8 path"), &version]);
+    assert_eq!(code, 0, "{version} has no CHANGELOG section: {err}");
+    assert!(out.starts_with(&format!("## [{version}]")), "{out}");
+}
+
+fn verify_notes_script() -> PathBuf {
+    let path = manifest_directory()
+        .join("scripts")
+        .join("verify-release-notes.sh");
+    assert!(path.is_file(), "{path:?} must exist");
+    path
+}
+
+/// The release body that `verify-release-notes.sh` expects for a version.
+fn expected_release_body(version: &str) -> String {
+    let notes = manifest_directory()
+        .join("scripts")
+        .join("release-notes.sh");
+    let (code, section, err) = output("sh", &[notes.to_str().expect("utf-8 path"), version]);
+    assert_eq!(code, 0, "{err}");
+    let install = read(
+        &manifest_directory()
+            .join(".github")
+            .join("release-install-section.md"),
+    );
+    format!("{section}{install}")
+}
+
+#[test]
+fn verify_release_notes_explains_itself() {
+    if !sh_available() {
+        return;
+    }
+    let path = verify_notes_script();
+    let (code, out, _) = output("sh", &[path.to_str().expect("utf-8 path"), "--help"]);
+    assert_eq!(code, 0);
+    for needle in ["USAGE:", "--tag", "--body-file", "--fix"] {
+        assert!(out.contains(needle), "the help must mention {needle}");
+    }
+}
+
+#[test]
+fn verify_release_notes_accepts_a_matching_body() {
+    if !sh_available() {
+        return;
+    }
+    let temp = tempfile::TempDir::new().expect("temporary directory");
+    let body = temp.path().join("body.md");
+    // GitHub appends a trailing newline to a release body.
+    std::fs::write(&body, format!("{}\n\n", expected_release_body("2.0.1"))).expect("write body");
+
+    let path = verify_notes_script();
+    let (code, out, err) = output(
+        "sh",
+        &[
+            path.to_str().expect("utf-8 path"),
+            "2.0.1",
+            "--body-file",
+            body.to_str().expect("utf-8 path"),
+        ],
+    );
+    assert_eq!(code, 0, "{err}");
+    assert!(out.contains("match CHANGELOG.md"), "{out}");
+}
+
+#[test]
+fn verify_release_notes_detects_a_different_body() {
+    if !sh_available() {
+        return;
+    }
+    let temp = tempfile::TempDir::new().expect("temporary directory");
+    let body = temp.path().join("body.md");
+    std::fs::write(&body, "## Install\n\nonly the old notes\n").expect("write body");
+
+    let path = verify_notes_script();
+    let (code, _, err) = output(
+        "sh",
+        &[
+            path.to_str().expect("utf-8 path"),
+            "2.0.1",
+            "--body-file",
+            body.to_str().expect("utf-8 path"),
+        ],
+    );
+    assert_eq!(code, 1);
+    assert!(err.contains("differ from CHANGELOG.md"), "{err}");
+    assert!(err.contains("--fix"), "{err}");
+}
+
+#[test]
+fn verify_release_notes_rejects_an_unknown_version() {
+    if !sh_available() {
+        return;
+    }
+    let temp = tempfile::TempDir::new().expect("temporary directory");
+    let body = temp.path().join("body.md");
+    std::fs::write(&body, "anything\n").expect("write body");
+
+    let path = verify_notes_script();
+    let (code, _, err) = output(
+        "sh",
+        &[
+            path.to_str().expect("utf-8 path"),
+            "9.9.9",
+            "--body-file",
+            body.to_str().expect("utf-8 path"),
+        ],
+    );
+    assert_eq!(code, 1);
+    assert!(err.contains("no section for 9.9.9"), "{err}");
+}
+
+#[test]
+fn verify_release_notes_rejects_unknown_options() {
+    if !sh_available() {
+        return;
+    }
+    let path = verify_notes_script();
+    let (code, _, err) = output(
+        "sh",
+        &[path.to_str().expect("utf-8 path"), "2.0.1", "--nope"],
+    );
+    assert_eq!(code, 1);
+    assert!(err.contains("unknown option"), "{err}");
+}

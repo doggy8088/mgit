@@ -230,6 +230,7 @@ mgit --ascii                          # 在舊版 Windows 主控台使用純 ASC
 
 ```
 Makefile       常用開發目標（`make help` 可列出全部）
+CHANGELOG.md   版本變更記錄（GitHub Release 發行說明來源）
 npm/           npm 包裝套件（啟動器、平台對照表、vendor 腳本與測試）
 src/
   main.rs       進入點：解析參數、偵測終端機能力、組裝 App
@@ -291,7 +292,9 @@ CI（[`.github/workflows/ci.yml`](.github/workflows/ci.yml)）會在 Ubuntu、ma
 
 ### 版本與發行
 
-版本從 `2.0.0` 起（舊版 Shell 實作最後一版是 `1.0.0`），遵循 [SemVer](https://semver.org/)；`Cargo.toml`、`Cargo.lock`、`npm/package.json` 與 git 標籤四者必須一致。
+版本從 `2.0.0` 起（舊版 Shell 實作最後一版是 `1.0.0`），遵循 [SemVer](https://semver.org/)；`Cargo.toml`、`Cargo.lock`、`npm/package.json`、`CHANGELOG.md` 與 git 標籤必須全部一致。
+
+每個版本都必須先在 [`CHANGELOG.md`](CHANGELOG.md) 建立 `## [X.Y.Z] - YYYY-MM-DD` 區段：GitHub Release 的發行說明就是該區段（加上安裝說明），由 `scripts/release-notes.sh` 取出，缺少區段會讓 Release workflow 在 `prepare` 階段直接失敗。
 
 ```sh
 scripts/bump-version.sh patch      # 2.0.0 -> 2.0.1（同步 Cargo.toml、Cargo.lock、npm/package.json）

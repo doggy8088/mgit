@@ -1,6 +1,6 @@
 ---
 name: bump-and-release
-description: 在 mgit 專案中提升語意化版本並完成標籤驅動的正式發行。當使用者要求 bump 版本、發佈新版本、release、發行下一個 patch/minor 或指定版號時使用。版本必須同時更新 Cargo.toml、Cargo.lock 與 npm/package.json（一律使用 scripts/bump-version.sh，不得手改），未明確指定時預設 patch，只有明確指定 minor、major 或版號才使用對應類型。發行流程只允許在 main 分支、工作區乾淨、且該 commit 的 CI 全部成功時執行；發行方式是把 vX.Y.Z 標籤推上 GitHub，由 Release workflow 建置 8 個平台並發佈 GitHub Release，再由 Publish to npm workflow 以 trusted publishing 發佈 @willh/mgit（附 provenance），因此不得手動 npm publish。發佈完成後必須驗證 GitHub Release 的 17 個資產、npm registry 版本、npx 執行結果與 provenance 簽章，並在失敗時依「npm 是否已發佈」決定是否可移動標籤，不得重用已發佈的版號。
+description: 在 mgit 專案中提升語意化版本並完成標籤驅動的正式發行。當使用者要求 bump 版本、發佈新版本、release、發行下一個 patch/minor 或指定版號時使用。版本必須同時更新 Cargo.toml、Cargo.lock 與 npm/package.json（一律使用 scripts/bump-version.sh，不得手改），未明確指定時預設 patch，只有明確指定 minor、major 或版號才使用對應類型。發行流程只允許在 main 分支、工作區乾淨、且該 commit 的 CI 全部成功時執行；發行方式是把 vX.Y.Z 標籤推上 GitHub，由 Release workflow 建置 8 個平台並發佈 GitHub Release，再由 Publish to npm workflow 以 trusted publishing 發佈 @willh/mgit（附 provenance），因此不得手動 npm publish。發行前必須在 CHANGELOG.md 建立對應版本區段（release workflow 直接以該區段產生 GitHub Release 說明，缺少區段會讓發行失敗，且不得以 commit log 充當發行說明）；發佈完成後必須驗證 GitHub Release 的 17 個資產、Release notes 與 CHANGELOG 區段一致（不一致時用 gh release edit 更新）、npm registry 版本、npx 執行結果與 provenance 簽章，並在失敗時依「npm 是否已發佈」決定是否可移動標籤，不得重用已發佈的版號。
 ---
 
 # Bump And Release（mgit）
@@ -17,6 +17,7 @@ description: 在 mgit 專案中提升語意化版本並完成標籤驅動的正�
 | --- | --- |
 | 版本號 | `Cargo.toml`（`[package] version`）、`Cargo.lock`（mgit 套件）、`npm/package.json` 三處必須一致 |
 | 版本升級工具 | `scripts/bump-version.sh`（會一次同步三處，並印出後續指令） |
+| 發行說明 | `CHANGELOG.md` 的 `## [X.Y.Z] - YYYY-MM-DD` 區段；`scripts/release-notes.sh <version>` 取出該區段，release workflow 會再加上 `.github/release-install-section.md` 的安裝說明 |
 | 發行觸發點 | 推送 `vX.Y.Z` 標籤（**不是** push main） |
 | 建置與 GitHub Release | `.github/workflows/release.yml`（8 個平台、`SHA256SUMS.txt`） |
 | npm 發佈 | `.github/workflows/npm.yml`（trusted publishing / OIDC，自動產生 provenance） |
@@ -52,7 +53,7 @@ description: 在 mgit 專案中提升語意化版本並完成標籤驅動的正�
 
 ### 1. 前置檢查（硬性閘門，任一項不成立就停止）
 
-先讀取 `README.md`、`npm/PUBLISHING.md`、`Cargo.toml`、`scripts/bump-version.sh` 與三個 workflow，確認流程沒有變動，再檢查狀態：
+先讀取 `README.md`、`CHANGELOG.md`、`npm/PUBLISHING.md`、`Cargo.toml`、`scripts/bump-version.sh`、`scripts/release-notes.sh`、`scripts/verify-release-notes.sh` 與三個 workflow，確認流程沒有變動，再檢查狀態：
 
 ~~~sh
 git status --short --branch
@@ -91,7 +92,9 @@ awk -F'"' '/^\[\[package\]\]/ { n = "" } /^name = / { n = $2 } n == "mgit" && /^
 node -p "'npm/package.json: ' + require('./npm/package.json').version"
 ~~~
 
-### 2. 提升版本
+### 2. 提升版本並更新 CHANGELOG.md
+
+**a. 提升版本**
 
 ~~~sh
 scripts/bump-version.sh <patch|minor|major|X.Y.Z>
@@ -107,6 +110,27 @@ git diff --check
 
 若 `scripts/bump-version.sh` 失敗、三處版本不一致，或 diff 出現版本行以外的改動，停止並回報，不要繼續提交。
 
+**b. 更新 CHANGELOG.md（發行說明唯一來源）**
+
+只有版本提升完成後才動 CHANGELOG.md。以實際的程式碼差異、提交紀錄、測試與文件變更為依據，不得只複製提交標題，也不得新增沒有證據的敘述：
+
+- `## [Unreleased]` 必須保留在最上方。
+- 把本次要發佈的項目移到新的 `## [X.Y.Z] - YYYY-MM-DD` 區段，日期使用發行當天的台灣時區日期，版本號必須與剛 bump 的版本完全一致。
+- 依內容使用既有的 `### 新增`、`### 改進`、`### 修正`、`### 變更` 分類標題，並保留檔案既有的語氣與格式。
+- 尚未納入本次版本的內容留在 `Unreleased`；即使沒有內容也要保留空的 `Unreleased`，不要捏造條目。
+- pre-release 版號（例如 `2.1.0-rc.1`）同樣要建立對應區段。
+
+完成後驗證區段確實可被取出，且只有新增的區段與版本行變動：
+
+~~~sh
+version="$(node -p "require('./npm/package.json').version")"
+scripts/release-notes.sh "$version" | head -n 20
+git diff --check
+git diff -- CHANGELOG.md
+~~~
+
+`scripts/release-notes.sh` 必須成功並印出本次版本的區段；失敗代表區段標題格式錯誤或還沒建立，修正後才可提交。release workflow 也會在 `prepare` 階段做同樣檢查，缺少區段時直接讓發行失敗。
+
 ### 3. 提交版本變更（完整正體中文訊息）
 
 提交訊息必須使用 UTF-8 暫存檔，不可使用 `git commit -m`：
@@ -118,7 +142,7 @@ git commit -F "$commit_msg_file"
 rm -f "$commit_msg_file"
 ~~~
 
-訊息至少包含：本次版號與 bump 類型（或指定版號的理由）、自上一版以來的變更摘要（使用者可見行為、相容性影響）、以及實際執行過的驗證（`make check`、`make msrv` 等）與未執行的項目。標題使用 Conventional Commits，例如 `chore(release): 2.0.2`。
+訊息至少包含：本次版號與 bump 類型（或指定版號的理由）、`CHANGELOG.md` 新增的區段摘要（使用者可見行為、相容性影響）、以及實際執行過的驗證（`make check`、`make msrv` 等）與未執行的項目。版本檔與 `CHANGELOG.md` 必須一起提交。標題使用 Conventional Commits，例如 `chore(release): 2.0.2`。
 
 提交後確認 `git status --short` 乾淨，且**尚未**建立任何標籤。
 
@@ -191,9 +215,27 @@ work_dir="$(mktemp -d)"; cd "$work_dir" && npm init -y > /dev/null && npm instal
 
 必須出現 `has a verified attestation`。最後清理暫存目錄。
 
-**d. 回報**
+**d. 驗證並修復 GitHub Release notes**
 
-回報內容必須包含：版號、bump 類型、發布提交 SHA、標籤、兩個 workflow 的 run id 與結論、GitHub Release 資產數、npm `dist-tags`、`npx` 輸出，以及未執行或未通過的項目。不得只說「完成」。
+GitHub Release 的說明必須等於 `CHANGELOG.md` 的本次版本區段加上安裝說明，**不得**保留只由 commit log 或 `--generate-notes` 產生的內容。用專案腳本逐字比對（會忽略行尾空白與 GitHub 在結尾補的換行）：
+
+~~~sh
+version="$(node -p "require('./npm/package.json').version")"
+release_tag="v${version}"
+scripts/verify-release-notes.sh "$version" --tag "$release_tag"
+~~~
+
+必須看到 `release notes of vX.Y.Z match CHANGELOG.md [X.Y.Z]`。若不一致（例如 Release 由舊流程建立或被手動改過），以 CHANGELOG 區段覆寫並重新驗證：
+
+~~~sh
+scripts/verify-release-notes.sh "$version" --tag "$release_tag" --fix
+~~~
+
+`--fix` 會執行 `gh release edit --notes-file`，並在更新後再比對一次；仍然不一致時停止並回報 Release tag 與 diff 內容，不得宣稱發行說明正確。
+
+**e. 回報**
+
+回報內容必須包含：版號、bump 類型、發布提交 SHA、標籤、兩個 workflow 的 run id 與結論、GitHub Release 資產數與**發行說明是否等於 CHANGELOG 區段**、npm `dist-tags`、`npx` 輸出，以及未執行或未通過的項目。不得只說「完成」。
 
 ### 7. 失敗處理
 
@@ -203,6 +245,8 @@ work_dir="$(mktemp -d)"; cd "$work_dir" && npm init -y > /dev/null && npm instal
 | npm 已發佈該版號 | **不可**重推或移動標籤；改為 bump 下一個 patch 版號重跑流程 |
 | npm workflow 失敗（ENEEDAUTH、資產逾時等） | 先確認 npm 上的 trusted publisher 設定（`npm trust list @willh/mgit`，workflow 檔名必須是 `npm.yml`），修正後用 `gh run rerun <run_id> --failed` 重跑，不需重建置 |
 | 標籤已存在但內容不符 | 停止並回報，不要覆蓋既有標籤與 release |
+| Release notes 與 CHANGELOG 不一致 | `scripts/verify-release-notes.sh "$version" --tag "$release_tag" --fix` 覆寫並重新驗證；不得改用 commit log 產生的說明 |
+| CHANGELOG 缺少本次版本區段 | release workflow 會在 `prepare` 階段失敗；補上區段後重新提交並移動標籤（僅限 npm 尚未發佈該版號） |
 | 只想重跑 CI | `gh run rerun <run_id> --failed` |
 
 ---
@@ -212,6 +256,8 @@ work_dir="$(mktemp -d)"; cd "$work_dir" && npm init -y > /dev/null && npm instal
 - 只在 `main` 分支、工作區乾淨、且該 commit 的 CI 成功時發行。
 - 版本一律用 `scripts/bump-version.sh` 更新；`Cargo.toml`、`Cargo.lock`、`npm/package.json` 與標籤四者必須完全一致。
 - 發行動作只有一個：推送 `vX.Y.Z` 標籤。**不得手動 `npm publish`**，也不得自行上傳發行檔。
+- 每個版本發行前都必須在 `CHANGELOG.md` 建立對應區段，且與版本檔一起提交；缺少區段時不得發行。
+- GitHub Release 的發行說明必須等於 `CHANGELOG.md` 區段加安裝說明；不得只依賴 `--generate-notes` 或 commit log，發佈後必須用 `scripts/verify-release-notes.sh` 驗證，不一致就用 `--fix` 修正並重新驗證。
 - npm 已發佈的版號不可重用、不可覆蓋、不可移動標籤。
 - 未取得兩個 workflow 的成功結論與 registry/npx 實測結果前，不得宣稱發行完成。
 - 不虛構版號、run id、資產數量、測試結果或 provenance 狀態。

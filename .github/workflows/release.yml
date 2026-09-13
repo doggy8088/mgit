@@ -81,6 +81,19 @@ jobs:
           } >> "$GITHUB_OUTPUT"
           echo "Releasing mgit $version as $tag (prerelease: $prerelease)"
 
+      - name: Check the CHANGELOG entry
+        shell: bash
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          set -euo pipefail
+          if ! scripts/release-notes.sh "$VERSION" > /dev/null; then
+            echo "::error::CHANGELOG.md has no section for $VERSION."
+            echo "::error::Release notes come from the CHANGELOG, so add the section first (see .agents/skills/bump-and-release)."
+            exit 1
+          fi
+          echo "CHANGELOG.md has a section for $VERSION."
+
       - name: Create the tag for manual runs
         if: github.event_name == 'workflow_dispatch'
         shell: bash
@@ -245,6 +258,24 @@ jobs:
     needs: [prepare, build]
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.prepare.outputs.tag }}
+
+      - name: Build the release notes from the CHANGELOG
+        shell: bash
+        env:
+          VERSION: ${{ needs.prepare.outputs.version }}
+        run: |
+          set -euo pipefail
+          {
+            scripts/release-notes.sh "$VERSION"
+            cat .github/release-install-section.md
+          } > release-notes.md
+          wc -l release-notes.md
+          head -n 5 release-notes.md
+
       - name: Download the artifacts
         uses: actions/download-artifact@v8
         with:
@@ -266,25 +297,10 @@ jobs:
           tag_name: ${{ needs.prepare.outputs.tag }}
           name: mgit ${{ needs.prepare.outputs.version }}
           prerelease: ${{ needs.prepare.outputs.prerelease }}
-          generate_release_notes: true
+          # The release body is the CHANGELOG section of this version plus the
+          # install instructions; commit logs are never used as release notes.
+          body_path: release-notes.md
           fail_on_unmatched_files: true
-          body: |
-            ## Install
-
-            **macOS / Linux**
-
-            ```sh
-            curl -fsSL https://raw.githubusercontent.com/doggy8088/mgit/main/install.sh | sh
-            ```
-
-            **Windows / PowerShell (also macOS and Linux)**
-
-            ```powershell
-            irm https://raw.githubusercontent.com/doggy8088/mgit/main/install.ps1 | iex
-            ```
-
-            Every archive is listed in `SHA256SUMS.txt`; the installers verify the
-            matching `.sha256` file before they touch your `PATH`.
           files: dist/*
 
   verify-release:

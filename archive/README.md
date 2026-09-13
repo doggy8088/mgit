@@ -10,7 +10,7 @@
 | `mgit.ps1` | 舊版 PowerShell 腳本（Windows、PowerShell Core） |
 | `install.sh` | 舊版安裝腳本，直接下載上面的 Bash 腳本 |
 | `install.ps1` | 舊版安裝腳本，直接下載上面的 PowerShell 腳本 |
-| `Makefile` | 舊版的 `install` / `test` / `test-pwsh` 目標 |
+| `Makefile` | 舊版的 `install` / `test` / `test-pwsh` 目標（新版 Makefile 已放回專案根目錄，目標全面更新為 Rust 工作流程） |
 | `README.legacy.md` | 舊版正體中文說明文件 |
 | `README.en.legacy.md` | 舊版英文說明文件 |
 | `assets/` | 舊版說明文件使用的橫幅與截圖 |

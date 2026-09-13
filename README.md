@@ -217,6 +217,7 @@ mgit --ascii                          # 在舊版 Windows 主控台使用純 ASC
 ### 專案結構
 
 ```
+Makefile       常用開發目標（`make help` 可列出全部）
 src/
   main.rs       進入點：解析參數、偵測終端機能力、組裝 App
   cli.rs        命令列解析（純函式，不讀取環境）
@@ -249,6 +250,20 @@ cargo test --all-targets         # 全部測試
 cargo clippy --all-targets -- -D warnings
 cargo fmt --all -- --check
 cargo llvm-cov --all-targets --summary-only    # 覆蓋率（CI 要求 ≥ 90%）
+```
+
+最常用的動作都包成 Makefile 目標，`make` 或 `make help` 可列出全部：
+
+```console
+$ make check                # 與 CI 相同的關卡：fmt --check + clippy -D warnings + 全部測試
+$ make test                 # 只跑測試
+$ make e2e                  # 只跑端對端測試
+$ make lint-scripts         # shellcheck 與 actionlint
+$ make msrv                 # 以 Cargo.toml 宣告的 rust-version 再跑一次測試
+$ make coverage             # 覆蓋率摘要（需先安裝 cargo-llvm-cov）
+$ make package              # 產生 dist/mgit-<target>.tar.gz 與 .sha256（格式與正式發行檔相同）
+$ make bump VERSION=patch   # 版本升級（0.1.0 -> 0.1.1）
+$ make clean                # 清除 target/ 與 dist/
 ```
 
 CI（[`.github/workflows/ci.yml`](.github/workflows/ci.yml)）會在 Ubuntu、macOS、Windows 上執行完整測試，另外檢查 MSRV 1.85、8 個發行目標的交叉編譯、shellcheck 與 actionlint，並強制覆蓋率門檻。

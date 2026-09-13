@@ -217,6 +217,7 @@ The previous release shipped `mgit` (Bash) and `mgit.ps1` (PowerShell); both are
 ### Layout
 
 ```
+Makefile      common development targets (`make help` lists them)
 src/
   main.rs       entry point: parse, detect capabilities, build the App
   cli.rs        argument parsing (pure, never reads the environment)
@@ -249,6 +250,20 @@ cargo test --all-targets
 cargo clippy --all-targets -- -D warnings
 cargo fmt --all -- --check
 cargo llvm-cov --all-targets --summary-only    # coverage (CI requires ≥ 90%)
+```
+
+The most common tasks are wrapped in a Makefile; `make` (or `make help`) lists them all:
+
+```console
+$ make check                # the CI gate: fmt --check + clippy -D warnings + all tests
+$ make test                 # tests only
+$ make e2e                  # end to end tests only
+$ make lint-scripts         # shellcheck and actionlint
+$ make msrv                 # run the tests with the rust-version from Cargo.toml
+$ make coverage             # coverage summary (needs cargo-llvm-cov)
+$ make package              # dist/mgit-<target>.tar.gz plus .sha256, exactly like a release
+$ make bump VERSION=patch   # bump the version (0.1.0 -> 0.1.1)
+$ make clean                # remove target/ and dist/
 ```
 
 CI ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) runs the whole suite on Ubuntu, macOS and Windows, verifies MSRV 1.85, cross compiles all eight release targets, runs shellcheck and actionlint, and enforces the coverage gate.

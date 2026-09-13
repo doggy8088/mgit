@@ -387,3 +387,31 @@ fn parsed_args_are_comparable_and_cloneable() {
     assert_eq!(args, clone);
     assert!(format!("{args:?}").contains("Args"));
 }
+
+#[test]
+fn short_options_with_multibyte_characters_do_not_panic() {
+    // A naive `&text[..2]` slice would split a UTF-8 sequence in half.
+    let args = parse_strs(&["-☃", "status"]).expect("parse");
+    assert_eq!(args.git_args, vec![os("-☃"), os("status")]);
+
+    let err = parse_strs(&["-d☃"]).expect_err("a non numeric depth must be rejected");
+    assert!(err.message().contains("depth"), "{}", err.message());
+
+    let args = parse_strs(&["--depth=2", "-→"]).expect("parse");
+    assert_eq!(args.depth, 2);
+    assert_eq!(args.git_args, vec![os("-→")]);
+}
+
+#[test]
+fn every_documented_short_option_is_recognised() {
+    let args = parse_strs(&["-h"]).expect("parse");
+    assert_eq!(args.mode, Mode::Help);
+    let args = parse_strs(&["-V"]).expect("parse");
+    assert_eq!(args.mode, Mode::Version);
+    let args = parse_strs(&["-l"]).expect("parse");
+    assert_eq!(args.mode, Mode::List);
+    let args = parse_strs(&["-q"]).expect("parse");
+    assert!(args.quiet);
+    let args = parse_strs(&["-k"]).expect("parse");
+    assert!(!args.fail_fast);
+}

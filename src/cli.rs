@@ -189,22 +189,25 @@ where
         }
 
         if text.len() > 1 && text.starts_with('-') {
-            match &text[..2] {
-                "-h" => wants_help = true,
-                "-V" => wants_version = true,
-                "-l" => parsed.mode = Mode::List,
-                "-q" => parsed.quiet = true,
-                "-k" => parsed.fail_fast = false,
-                "-d" => {
-                    let inline = (text.len() > 2).then(|| text[2..].to_owned());
-                    let value = take_value("-d`/`--depth", inline, &mut iter)?;
-                    parsed.depth = parse_depth(&value)?;
-                }
-                _ => {
-                    parsed.git_args.push(arg);
-                    parsed.git_args.extend(iter);
-                    break;
-                }
+            // `text[1..]` is safe: `-` is a single byte.
+            match &text[1..] {
+                "h" => wants_help = true,
+                "V" => wants_version = true,
+                "l" => parsed.mode = Mode::List,
+                "q" => parsed.quiet = true,
+                "k" => parsed.fail_fast = false,
+                short => match short.strip_prefix('d') {
+                    Some(value) => {
+                        let inline = (!value.is_empty()).then(|| value.to_owned());
+                        let value = take_value("-d`/`--depth", inline, &mut iter)?;
+                        parsed.depth = parse_depth(&value)?;
+                    }
+                    None => {
+                        parsed.git_args.push(arg);
+                        parsed.git_args.extend(iter);
+                        break;
+                    }
+                },
             }
             continue;
         }

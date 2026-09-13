@@ -102,7 +102,54 @@ npx --yes @willh/mgit --version
 
 ## 設定 trusted publishing（之後都交給 CI）
 
-### 1. 在 npm 網站設定 publisher
+兩種方式效果完全相同，**建議用 CLI**（可重複、可腳本化）。
+
+前置條件（npm 官方要求）：npm CLI ≥ 11.15.0、對套件有 write 權限、帳號已啟用
+2FA、**套件必須已存在於 registry**，且 `npm trust` 不接受 bypass-2FA 的
+Granular Access Token，必須是互動式登入的 session。
+
+### 方式 A：CLI（建議）
+
+```sh
+npm login                                     # 互動式登入（含 2FA）
+cd npm
+
+# 建立 GitHub Actions trusted publisher
+npm trust github @willh/mgit --file npm.yml --repo doggy8088/mgit --allow-publish
+
+# 驗證設定內容
+npm trust list @willh/mgit
+
+# 收緊權限：等同網頁的 "Require two-factor authentication and disallow tokens"
+npm access set mfa=publish @willh/mgit
+npm access get status @willh/mgit
+```
+
+| 參數 | 說明 |
+| --- | --- |
+| `--file` | `.github/workflows/` 底下的**檔名**（大小寫與 `.yml` 都要完全一致） |
+| `--repo` | `owner/repo`，也就是 `doggy8088/mgit` |
+| `--allow-publish` | 允許這個 publisher 執行 `npm publish` |
+| `--allow-stage-publish` | 只允許 `npm stage publish`（人工審核後才真正上架；兩者只能擇一或併用） |
+| `--env` | 對應 GitHub Environment 名稱（要人工審核時才需要） |
+| `--dry-run` | 只印出將要送出的設定，不做任何變更 |
+
+`--dry-run` 的輸出長這樣（可先確認設定無誤再真正執行）：
+
+```console
+$ npm trust github @willh/mgit --file npm.yml --repo doggy8088/mgit --allow-publish --dry-run
+file: npm.yml
+repository: doggy8088/mgit
+permissions: publish
+```
+
+移除設定：`npm trust list @willh/mgit` 取得 id 後執行
+`npm trust revoke @willh/mgit --id=<trust-id>`。
+
+`mfa=publish` 只限制傳統 token，**trusted publisher 走 OIDC，不受影響**；設定後請
+一併撤銷不再需要的自動化 token。
+
+### 方式 B：npm 網站
 
 `npmjs.com` → **Packages** → `@willh/mgit` → **Settings** → **Trusted publishing** → **Add trusted publisher** → **GitHub Actions**
 
@@ -113,21 +160,17 @@ npx --yes @willh/mgit --version
 | Workflow filename | `npm.yml` |
 | Environment | 留空（要做人工審核時再填，見下方） |
 
+`Settings` → **Publishing access** → **Require two-factor authentication and disallow tokens** → **Update Package Settings**
+
 > 欄位**大小寫必須完全一致**，workflow 檔名要含 `.yml`。這是「Unable to authenticate (ENEEDAUTH)」最常見的原因。
-
-### 2. 收緊發佈權限（強烈建議）
-
-`Settings` → **Publishing access** → 選 **"Require two-factor authentication and disallow tokens"** → **Update Package Settings**
-
-這會讓傳統 token 完全無法發佈，但 trusted publisher 不受影響。之後請移除任何已不再需要的自動化 token。
 
 ### 3. 之後的發佈流程
 
 ```sh
 scripts/bump-version.sh patch            # 2.0.0 -> 2.0.1，三個檔案一起改
-git commit -am "chore(release): 0.1.1"
-git tag -a v0.1.1 -m "mgit 0.1.1"
-git push origin HEAD v0.1.1
+git commit -am "chore(release): 2.0.1"
+git tag -a v2.0.1 -m "mgit 2.0.1"
+git push origin HEAD v2.0.1
 ```
 
 推送標籤後會發生：
@@ -170,7 +213,9 @@ git push origin HEAD v0.1.1
 
 | 症狀 | 原因與解法 |
 | --- | --- |
-| `ENEEDAUTH` / `Unable to authenticate` | npm 上的 workflow 檔名與實際檔案不一致（大小寫、`.yml`）、workflow 缺少 `id-token: write`、`package.json` 的 `repository.url` 與 repo 不符，或使用了 self-hosted runner（目前不支援） |
+| `ENEEDAUTH` / `Unable to authenticate` | npm 上的 workflow 檔名與實際檔案不一致（大小寫、`.yml`）、workflow 缺少 `id-token: write`、`package.json` 的 `repository.url` 與 repo 不符，或使用了 self-hosted runner（目前不支援）。用 `npm trust list @willh/mgit` 可直接比對實際設定 |
+| `npm trust` 要求重新登入或拒絕 token | `npm trust` 需要互動式登入的 session，且不支援 bypass-2FA 的 GAT；先 `npm login` 再執行 |
+| `npm trust` 說套件不存在 | 套件必須先發佈過才能設定 trusted publisher（見本文件開頭說明） |
 | `cannot publish over the previously published versions` | npm 不允許覆蓋已發佈的版本；workflow 會先檢查並跳過，若確定要重發請 bump 版本 |
 | 套件頁面沒有 provenance | 只有透過 trusted publishing（雲端 CI）發佈才會自動產生；本機手動發佈不會有 |
 | workflow 一直在等資產 | 代表 `Release` workflow 失敗或還沒跑完；修好 Release 後重跑 npm workflow 即可 |

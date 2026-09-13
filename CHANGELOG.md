@@ -10,11 +10,24 @@ mgit 的版本變更記錄。格式參考 [Keep a Changelog](https://keepachange
 
 ## [Unreleased]
 
+## [2.0.2] - 2026-09-13
+
 ### 新增
 
-- 新增 `.agents/skills/bump-and-release` 專案技能，可用 `/bump-and-release`、
-  `/bump-and-release minor` 或 `/bump-and-release vX.Y.Z` 完成整段發行流程
-- 新增本變更記錄，並讓 GitHub Release 的發行說明直接取自對應版本區段
+- 新增 `.agents/skills/bump-and-release` 專案技能：`/bump-and-release`、
+  `/bump-and-release minor`、`/bump-and-release vX.Y.Z` 可完成版本升級、品質驗證、
+  標籤推送與發行驗證
+- 新增本變更記錄，並成為 GitHub Release 發行說明的唯一來源
+- 新增 `scripts/release-notes.sh`：取出指定版本的變更記錄區段，缺少區段時以非零結束
+- 新增 `scripts/verify-release-notes.sh`：比對 GitHub Release 說明與變更記錄區段，
+  不一致時可用 `--fix` 覆寫並重新驗證
+
+### 變更
+
+- GitHub Release 的發行說明改由 `CHANGELOG.md` 區段加上安裝說明產生，不再使用自動
+  產生的 commit 清單；`Release` workflow 會在 `prepare` 階段檢查區段是否存在，缺少時
+  在 8 個平台建置前就失敗
+- `v2.0.0` 與 `v2.0.1` 的既有發行說明，已改寫為對應版本的變更記錄區段
 
 ## [2.0.1] - 2026-09-13
 

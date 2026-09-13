@@ -188,7 +188,7 @@ mgit --ascii                          # 在舊版 Windows 主控台使用純 ASC
 | `NO_COLOR` | 設為非空值時關閉顏色（[no-color.org](https://no-color.org/) 慣例） |
 | `CLICOLOR_FORCE` | 設為非空且非 `0` 的值時強制開啟顏色 |
 | `CLICOLOR` | 設為 `0` 時關閉顏色 |
-| `MGIT_VERSION` | 安裝腳本要安裝的版本，例如 `0.1.0`（預設最新版） |
+| `MGIT_VERSION` | 安裝腳本要安裝的版本，例如 `2.0.0`（預設最新版） |
 | `MGIT_INSTALL_DIR` | 安裝腳本的安裝目錄 |
 | `MGIT_DOWNLOAD_BASE` | 安裝腳本的下載來源網址（測試用） |
 
@@ -207,11 +207,11 @@ mgit --ascii                          # 在舊版 Windows 主控台使用純 ASC
 
 ---
 
-## 與舊版（v0.0.x Shell 版）的差異
+## 與舊版（1.0.0 Shell 版）的差異
 
 舊版是 `mgit`（Bash）與 `mgit.ps1`（PowerShell）兩份腳本；完整原檔已封存於 [`archive/`](archive/README.md)。新版本的原則：**預設行為與輸出格式盡量不變**，但把明顯的缺陷修掉。
 
-| 項目 | 舊版 | 新版（0.1.0 起） |
+| 項目 | 舊版（1.0.0） | 新版（2.0.0 起） |
 | --- | --- | --- |
 | 執行形式 | Bash 腳本 + PowerShell 腳本（各自維護） | 單一 Rust 二進位檔，跨平台共用 |
 | 預設指令 | `git status -s` | 相同 |
@@ -275,7 +275,7 @@ $ make lint-scripts         # shellcheck 與 actionlint
 $ make msrv                 # 以 Cargo.toml 宣告的 rust-version 再跑一次測試
 $ make coverage             # 覆蓋率摘要（需先安裝 cargo-llvm-cov）
 $ make package              # 產生 dist/mgit-<target>.tar.gz 與 .sha256（格式與正式發行檔相同）
-$ make bump VERSION=patch   # 版本升級（0.1.0 -> 0.1.1）
+$ make bump VERSION=patch   # 版本升級（2.0.0 -> 2.0.1）
 $ make clean                # 清除 target/ 與 dist/
 ```
 
@@ -284,17 +284,17 @@ npm 包裝套件有自己的測試與打包流程，發佈方式見 [npm/PUBLISH
 ```console
 $ make npm-test              # 執行包裝套件測試（node --test）
 $ make npm-pack              # 以目前平台打包出可試裝的 tarball
-$ npm i -g ./npm/willh-mgit-0.1.0.tgz && mgit --version
+$ npm i -g ./npm/willh-mgit-2.0.0.tgz && mgit --version
 ```
 
 CI（[`.github/workflows/ci.yml`](.github/workflows/ci.yml)）會在 Ubuntu、macOS、Windows 上執行完整測試，另外檢查 MSRV 1.85、8 個發行目標的交叉編譯、shellcheck 與 actionlint，並強制覆蓋率門檻。
 
 ### 版本與發行
 
-版本從 `0.1.0` 起，遵循 [SemVer](https://semver.org/)；`Cargo.toml`、`Cargo.lock`、`npm/package.json` 與 git 標籤四者必須一致。
+版本從 `2.0.0` 起（舊版 Shell 實作最後一版是 `1.0.0`），遵循 [SemVer](https://semver.org/)；`Cargo.toml`、`Cargo.lock`、`npm/package.json` 與 git 標籤四者必須一致。
 
 ```sh
-scripts/bump-version.sh patch      # 0.1.0 -> 0.1.1（同步 Cargo.toml、Cargo.lock、npm/package.json）
+scripts/bump-version.sh patch      # 2.0.0 -> 2.0.1（同步 Cargo.toml、Cargo.lock、npm/package.json）
 scripts/bump-version.sh minor      # 0.1.1 -> 0.2.0
 scripts/bump-version.sh 1.0.0-rc.1 # 指定版本
 scripts/bump-version.sh --dry-run patch

@@ -25,7 +25,7 @@ USAGE:
     install.sh [OPTIONS]
 
 OPTIONS:
-    -v, --version <VERSION>     Release to install, for example 0.1.0 (default: latest)
+    -v, --version <VERSION>     Release to install, for example 2.0.0 (default: latest)
     -d, --dir <DIRECTORY>       Directory that receives the binary
         --download-base <URL>   Base URL of the release assets (for testing)
         --dry-run               Print the plan and exit without downloading

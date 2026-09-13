@@ -188,7 +188,7 @@ Results are aggregated: every repository runs by default (`--keep-going`) and th
 | `NO_COLOR` | Disables color when set to a non empty value ([no-color.org](https://no-color.org/)) |
 | `CLICOLOR_FORCE` | Forces color when set to a non empty value other than `0` |
 | `CLICOLOR` | `0` disables color |
-| `MGIT_VERSION` | Release to install, for example `0.1.0` (default: the latest one) |
+| `MGIT_VERSION` | Release to install, for example `2.0.0` (default: the latest one) |
 | `MGIT_INSTALL_DIR` | Install directory used by the installers |
 | `MGIT_DOWNLOAD_BASE` | Base URL the installers download from (used by the tests) |
 
@@ -207,11 +207,11 @@ Precedence: command line → `MGIT_*` → `CLICOLOR_FORCE` → `NO_COLOR` → te
 
 ---
 
-## Differences from the v0.0.x shell version
+## Differences from the 1.0.0 shell version
 
 The previous release shipped `mgit` (Bash) and `mgit.ps1` (PowerShell); both are archived in [`archive/`](archive/README.md). The new version keeps the default behaviour and the output format and fixes the rough edges:
 
-| Topic | Old | New (from 0.1.0) |
+| Topic | Old (1.0.0) | New (from 2.0.0) |
 | --- | --- | --- |
 | Implementation | Bash script + PowerShell script | One Rust binary shared by every platform |
 | Default command | `git status -s` | unchanged |
@@ -275,7 +275,7 @@ $ make lint-scripts         # shellcheck and actionlint
 $ make msrv                 # run the tests with the rust-version from Cargo.toml
 $ make coverage             # coverage summary (needs cargo-llvm-cov)
 $ make package              # dist/mgit-<target>.tar.gz plus .sha256, exactly like a release
-$ make bump VERSION=patch   # bump the version (0.1.0 -> 0.1.1)
+$ make bump VERSION=patch   # bump the version (2.0.0 -> 2.0.1)
 $ make clean                # remove target/ and dist/
 ```
 
@@ -284,17 +284,17 @@ The npm wrapper has its own tests and packaging flow, described in [npm/PUBLISHI
 ```console
 $ make npm-test              # run the wrapper tests (node --test)
 $ make npm-pack              # build an installable tarball for this machine
-$ npm i -g ./npm/willh-mgit-0.1.0.tgz && mgit --version
+$ npm i -g ./npm/willh-mgit-2.0.0.tgz && mgit --version
 ```
 
 CI ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) runs the whole suite on Ubuntu, macOS and Windows, verifies MSRV 1.85, cross compiles all eight release targets, runs shellcheck and actionlint, and enforces the coverage gate.
 
 ### Versioning and releases
 
-Versions follow [SemVer](https://semver.org/) and start at `0.1.0`. `Cargo.toml`, `Cargo.lock`, `npm/package.json` and the git tag must all agree.
+Versions follow [SemVer](https://semver.org/) and start at `2.0.0` (the last shell implementation was `1.0.0`). `Cargo.toml`, `Cargo.lock`, `npm/package.json` and the git tag must all agree.
 
 ```sh
-scripts/bump-version.sh patch      # 0.1.0 -> 0.1.1 (Cargo.toml, Cargo.lock, npm/package.json)
+scripts/bump-version.sh patch      # 2.0.0 -> 2.0.1 (Cargo.toml, Cargo.lock, npm/package.json)
 scripts/bump-version.sh minor      # 0.1.1 -> 0.2.0
 scripts/bump-version.sh 1.0.0-rc.1 # explicit version
 scripts/bump-version.sh --dry-run patch

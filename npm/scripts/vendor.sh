@@ -7,7 +7,7 @@
 # The archives are the assets of a GitHub release. Download them first, for
 # example:
 #
-#   gh release download v0.1.0 --dir assets \
+#   gh release download v2.0.0 --dir assets \
 #     --pattern '*.tar.gz' --pattern '*.zip' --pattern '*.sha256'
 #   npm/scripts/vendor.sh assets
 #

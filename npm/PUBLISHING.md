@@ -33,8 +33,8 @@
 
 ```sh
 # 版本已由 scripts/bump-version.sh 同步（Cargo.toml、Cargo.lock、npm/package.json）
-git tag -a v0.1.0 -m "mgit 0.1.0"
-git push origin v0.1.0
+git tag -a v2.0.0 -m "mgit 2.0.0"
+git push origin v2.0.0
 ```
 
 到 GitHub Actions 確認 `Release` workflow 完成，且 Release 頁面已出現 8 個平台的封存檔、對應的 `.sha256` 與 `SHA256SUMS.txt`。
@@ -42,7 +42,7 @@ git push origin v0.1.0
 ### 2. 取回資產並 vendoring
 
 ```sh
-gh release download v0.1.0 --dir assets \
+gh release download v2.0.0 --dir assets \
   --pattern '*.tar.gz' --pattern '*.zip' --pattern '*.sha256'
 
 npm/scripts/vendor.sh assets         # 預設處理 6 個平台，逐一驗證 SHA-256
@@ -73,9 +73,9 @@ node -e "console.log(require('./npm/package.json').version)"
 ```sh
 cd npm
 npm test                     # 25 個測試
-npm pack                     # 產生 willh-mgit-0.1.0.tgz
-npm install -g ./willh-mgit-0.1.0.tgz
-mgit --version               # 應該印出 mgit 0.1.0
+npm pack                     # 產生 willh-mgit-2.0.0.tgz
+npm install -g ./willh-mgit-2.0.0.tgz
+mgit --version               # 應該印出 mgit 2.0.0
 npm uninstall -g @willh/mgit
 ```
 
@@ -124,7 +124,7 @@ npx --yes @willh/mgit --version
 ### 3. 之後的發佈流程
 
 ```sh
-scripts/bump-version.sh patch            # 0.1.0 -> 0.1.1，三個檔案一起改
+scripts/bump-version.sh patch            # 2.0.0 -> 2.0.1，三個檔案一起改
 git commit -am "chore(release): 0.1.1"
 git tag -a v0.1.1 -m "mgit 0.1.1"
 git push origin HEAD v0.1.1
@@ -135,7 +135,7 @@ git push origin HEAD v0.1.1
 1. `Release` workflow：驗證版本 → 跑測試 → 建置 8 個平台 → 發佈 GitHub Release（含檢查碼）
 2. `Publish to npm` workflow：等待 Release 資產齊全 → 下載並驗證 → vendoring → 跑套件測試 → `npm publish`（自動產生 provenance）
 
-> **第一次推送標籤時（v0.1.0）**：此時套件尚未在 registry 上，npm 也還不能設定 trusted publisher，所以 npm workflow 會**自動跳過**（印出提示並以成功結束，不會是紅燈）。等手動發佈完並設好 trusted publisher，之後的版本就會全自動。
+> **第一次推送標籤時（v2.0.0）**：此時套件尚未在 registry 上，npm 也還不能設定 trusted publisher，所以 npm workflow 會**自動跳過**（印出提示並以成功結束，不會是紅燈）。等手動發佈完並設好 trusted publisher，之後的版本就會全自動。
 
 也可以手動只發佈 npm：Actions → **Publish to npm** → **Run workflow**（可指定版本；未指定時使用最新標籤）。
 

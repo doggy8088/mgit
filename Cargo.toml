@@ -1,6 +1,6 @@
 [package]
 name = "mgit"
-version = "0.1.0"
+version = "2.0.0"
 edition = "2024"
 rust-version = "1.85"
 description = "Run the same git command in every Git repository under the current directory"

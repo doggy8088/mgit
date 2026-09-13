@@ -297,6 +297,40 @@ fn lock_version(lock: &str) -> String {
     panic!("the lock file has no mgit package");
 }
 
+/// The version of a copied `Cargo.toml`.
+fn manifest_version(manifest: &std::path::Path) -> String {
+    read(manifest)
+        .lines()
+        .find_map(|line| line.trim().strip_prefix("version = "))
+        .map(|value| value.trim().trim_matches('"').to_owned())
+        .expect("Cargo.toml needs a version")
+}
+
+/// The version that `bump-version.sh <part>` produces, so that the tests keep
+/// working when the repository version changes.
+fn next_version(current: &str, part: &str) -> String {
+    let base = current.split('-').next().expect("a base version");
+    let mut numbers: Vec<u64> = base
+        .split('.')
+        .map(|number| number.parse().expect("a numeric version part"))
+        .collect();
+    assert_eq!(numbers.len(), 3, "{current} must be MAJOR.MINOR.PATCH");
+    match part {
+        "major" => {
+            numbers[0] += 1;
+            numbers[1] = 0;
+            numbers[2] = 0;
+        }
+        "minor" => {
+            numbers[1] += 1;
+            numbers[2] = 0;
+        }
+        "patch" => numbers[2] += 1,
+        other => panic!("unknown version part {other}"),
+    }
+    format!("{}.{}.{}", numbers[0], numbers[1], numbers[2])
+}
+
 #[test]
 fn bump_version_explains_itself() {
     if !sh_available() {
@@ -345,7 +379,7 @@ fn bump_version_rejects_invalid_versions() {
         );
     }
     assert!(
-        read(&manifest).contains("version = \"0.1.0\""),
+        read(&manifest).contains(&format!("version = \"{}\"", manifest_version(&manifest))),
         "the manifest must be untouched"
     );
 }
@@ -357,6 +391,8 @@ fn bump_version_dry_run_writes_nothing() {
     }
     let (_temp, manifest, lock) = manifest_copy();
     let before = read(&manifest);
+    let current = manifest_version(&manifest);
+    let expected = next_version(&current, "patch");
     let path = bump_script();
     let (code, out, err) = output(
         "sh",
@@ -369,9 +405,9 @@ fn bump_version_dry_run_writes_nothing() {
         ],
     );
     assert_eq!(code, 0, "{err}");
-    assert!(out.contains("0.1.0 -> 0.1.1"), "{out}");
+    assert!(out.contains(&format!("{current} -> {expected}")), "{out}");
     assert_eq!(read(&manifest), before);
-    assert!(read(&lock).contains("version = \"0.1.0\""));
+    assert!(read(&lock).contains(&format!("version = \"{current}\"")));
 }
 
 #[test]
@@ -382,50 +418,32 @@ fn bump_version_updates_the_manifest_and_the_lock() {
     let (_temp, manifest, lock) = manifest_copy();
     let path = bump_script();
     let manifest_argument = manifest.to_str().expect("utf-8 path").to_owned();
+    let start = manifest_version(&manifest);
 
-    let (code, out, err) = output(
-        "sh",
-        &[
-            path.to_str().expect("utf-8 path"),
-            "--manifest",
-            &manifest_argument,
-            "minor",
-        ],
-    );
-    assert_eq!(code, 0, "{err}");
-    assert!(out.contains("0.1.0 -> 0.2.0"), "{out}");
-    assert!(read(&manifest).contains("version = \"0.2.0\""));
-    assert_eq!(lock_version(&read(&lock)), "0.2.0");
-    assert_eq!(npm_version(&manifest), "0.2.0");
+    let mut expected = String::new();
+    for part in ["minor", "patch", "major"] {
+        let current = manifest_version(&manifest);
+        expected = next_version(&current, part);
 
-    let (code, out, err) = output(
-        "sh",
-        &[
-            path.to_str().expect("utf-8 path"),
-            "--manifest",
-            &manifest_argument,
-            "patch",
-        ],
-    );
-    assert_eq!(code, 0, "{err}");
-    assert!(out.contains("0.2.0 -> 0.2.1"), "{out}");
-    assert!(read(&manifest).contains("version = \"0.2.1\""));
-    assert_eq!(lock_version(&read(&lock)), "0.2.1");
-    assert_eq!(npm_version(&manifest), "0.2.1");
+        let (code, out, err) = output(
+            "sh",
+            &[
+                path.to_str().expect("utf-8 path"),
+                "--manifest",
+                &manifest_argument,
+                part,
+            ],
+        );
+        assert_eq!(code, 0, "{err}");
+        assert!(out.contains(&format!("{current} -> {expected}")), "{out}");
+        assert!(read(&manifest).contains(&format!("version = \"{expected}\"")));
+        assert_eq!(lock_version(&read(&lock)), expected);
+        assert_eq!(npm_version(&manifest), expected);
+    }
 
-    let (code, _, err) = output(
-        "sh",
-        &[
-            path.to_str().expect("utf-8 path"),
-            "--manifest",
-            &manifest_argument,
-            "major",
-        ],
-    );
-    assert_eq!(code, 0, "{err}");
-    assert!(read(&manifest).contains("version = \"1.0.0\""));
-    assert_eq!(lock_version(&read(&lock)), "1.0.0");
-    assert_eq!(npm_version(&manifest), "1.0.0");
+    // A major bump resets the lower parts.
+    assert!(expected.ends_with(".0.0"), "{expected}");
+    assert_ne!(start, expected);
 }
 
 #[test]
@@ -457,6 +475,7 @@ fn bump_version_refuses_to_repeat_itself() {
         return;
     }
     let (_temp, manifest, _lock) = manifest_copy();
+    let current = manifest_version(&manifest);
     let path = bump_script();
     let (code, _, err) = output(
         "sh",
@@ -464,7 +483,7 @@ fn bump_version_refuses_to_repeat_itself() {
             path.to_str().expect("utf-8 path"),
             "--manifest",
             manifest.to_str().expect("utf-8 path"),
-            "0.1.0",
+            &current,
         ],
     );
     assert_eq!(code, 1);
@@ -485,6 +504,8 @@ fn bump_version_keeps_the_rest_of_the_manifest() {
         .join("npm")
         .join("package.json");
     let original_npm = read(&npm_manifest);
+    let current = manifest_version(&manifest);
+    let expected = next_version(&current, "patch");
     let path = bump_script();
     let (code, _, err) = output(
         "sh",
@@ -498,20 +519,27 @@ fn bump_version_keeps_the_rest_of_the_manifest() {
     assert_eq!(code, 0, "{err}");
 
     // Only the version lines may change.
-    let expected_manifest = original_manifest.replace("version = \"0.1.0\"", "version = \"0.1.1\"");
+    let expected_manifest = original_manifest.replace(
+        &format!("version = \"{current}\""),
+        &format!("version = \"{expected}\""),
+    );
+    assert_ne!(expected_manifest, original_manifest);
     assert_eq!(read_normalized(&manifest), expected_manifest);
 
     let mut expected_lines: Vec<String> =
         original_lock.lines().map(|line| line.to_owned()).collect();
     for line in expected_lines.iter_mut() {
-        if *line == "version = \"0.1.0\"" {
-            *line = "version = \"0.1.1\"".to_owned();
+        if *line == format!("version = \"{current}\"") {
+            *line = format!("version = \"{expected}\"");
         }
     }
     let expected_lock = expected_lines.join("\n") + "\n";
     assert_eq!(read_normalized(&lock), expected_lock);
 
-    let expected_npm = original_npm.replace("\"version\": \"0.1.0\"", "\"version\": \"0.1.1\"");
+    let expected_npm = original_npm.replace(
+        &format!("\"version\": \"{current}\""),
+        &format!("\"version\": \"{expected}\""),
+    );
     assert_eq!(read_normalized(&npm_manifest), expected_npm);
     assert_ne!(
         original_npm, expected_npm,
@@ -538,6 +566,8 @@ fn bump_version_handles_crlf_manifests() {
     }
     let original_manifest = read(&manifest);
     let original_npm = read(&npm_manifest);
+    let current = manifest_version(&manifest);
+    let expected = next_version(&current, "patch");
 
     let path = bump_script();
     let (code, out, err) = output(
@@ -551,18 +581,24 @@ fn bump_version_handles_crlf_manifests() {
     );
 
     assert_eq!(code, 0, "{err}");
-    assert!(out.contains("0.1.0 -> 0.1.1"), "{out}");
-    assert!(read(&manifest).contains("version = \"0.1.1\""));
-    assert_eq!(lock_version(&read_normalized(&lock)), "0.1.1");
-    assert_eq!(npm_version(&manifest), "0.1.1");
+    assert!(out.contains(&format!("{current} -> {expected}")), "{out}");
+    assert!(read(&manifest).contains(&format!("version = \"{expected}\"")));
+    assert_eq!(lock_version(&read_normalized(&lock)), expected);
+    assert_eq!(npm_version(&manifest), expected);
 
     // Only the version line changes, whichever line endings awk happens to keep.
     assert_eq!(
         read_normalized(&manifest),
-        normalize(&original_manifest).replace("version = \"0.1.0\"", "version = \"0.1.1\"")
+        normalize(&original_manifest).replace(
+            &format!("version = \"{current}\""),
+            &format!("version = \"{expected}\"")
+        )
     );
     assert_eq!(
         read_normalized(&npm_manifest),
-        normalize(&original_npm).replace("\"version\": \"0.1.0\"", "\"version\": \"0.1.1\"")
+        normalize(&original_npm).replace(
+            &format!("\"version\": \"{current}\""),
+            &format!("\"version\": \"{expected}\"")
+        )
     );
 }

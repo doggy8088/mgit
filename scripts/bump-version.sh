@@ -2,7 +2,7 @@
 #
 # Bump the mgit version in Cargo.toml and Cargo.lock.
 #
-#   scripts/bump-version.sh patch          # 0.1.0 -> 0.1.1
+#   scripts/bump-version.sh patch          # 2.0.0 -> 2.0.1
 #   scripts/bump-version.sh minor          # 0.1.1 -> 0.2.0
 #   scripts/bump-version.sh major          # 0.2.0 -> 1.0.0
 #   scripts/bump-version.sh 1.0.0-rc.1     # explicit SemVer version

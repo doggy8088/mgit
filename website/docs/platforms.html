@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>跨平台行為 — mgit 2.0.2</title>
 <meta name="description" content="Windows 主控台、locale、SIGPIPE 與 git 的尋找方式">
-<link rel="alternate" hreflang="en" href="../en/docs/platforms.html">
 <link rel="stylesheet" href="../assets/site.css">
 <meta name="color-scheme" content="light">
 </head>
@@ -28,11 +27,11 @@
 </span>
 </div></header>
 <main id="main">
-<div class="shell doc"><nav class="docnav" aria-label="章節"><p class="docnav__title"><span>記錄本 · mgit 2.0.2</span></p><div class="docnav__list"><a class="docnav__item" href="install.html"><span class="docnav__ch">CH 01</span><span>安裝</span></a><a class="docnav__item" href="options.html"><span class="docnav__ch">CH 02</span><span>選項</span></a><a class="docnav__item" href="output.html"><span class="docnav__ch">CH 03</span><span>輸出與行為</span></a><a class="docnav__item" href="discovery.html"><span class="docnav__ch">CH 04</span><span>它怎麼找儲存庫</span></a><a class="docnav__item" href="exit-codes.html"><span class="docnav__ch">CH 05</span><span>結束代碼與環境變數</span></a><a class="docnav__item" href="platforms.html" aria-current="page"><span class="docnav__ch">CH 06</span><span>跨平台行為</span></a><a class="docnav__item" href="changes.html"><span class="docnav__ch">CH 07</span><span>版本、發行與 npm</span></a></div></nav><article class="docmain"><header class="docmain__head"><h1 class="docmain__title">跨平台行為</h1><p class="docmain__intro">Windows 主控台、locale、SIGPIPE 與 git 的尋找方式</p></header><div class="prose"><h2>三個作業系統上的行為</h2>
+<div class="shell doc"><nav class="docnav" aria-label="章節"><p class="docnav__title"><span>記錄本 · mgit 2.0.2</span></p><div class="docnav__list"><a class="docnav__item" href="install.html"><span class="docnav__ch">CH 01</span><span>安裝</span></a><a class="docnav__item" href="options.html"><span class="docnav__ch">CH 02</span><span>選項</span></a><a class="docnav__item" href="output.html"><span class="docnav__ch">CH 03</span><span>輸出與行為</span></a><a class="docnav__item" href="discovery.html"><span class="docnav__ch">CH 04</span><span>它怎麼找儲存庫</span></a><a class="docnav__item" href="exit-codes.html"><span class="docnav__ch">CH 05</span><span>結束代碼與環境變數</span></a><a class="docnav__item" href="platforms.html" aria-current="page"><span class="docnav__ch">CH 06</span><span>跨平台行為</span></a><a class="docnav__item" href="changes.html"><span class="docnav__ch">CH 07</span><span>版本、發行與 npm</span></a></div></nav><article class="docmain"><header class="docmain__head"><h1 class="docmain__title">跨平台行為</h1><p class="docmain__intro">Windows 主控台、locale、SIGPIPE 與 git 的尋找方式</p></header><nav class="toc" aria-label="本章內容"><p class="toc__title">本章內容</p><div class="toc__list"><a class="toc__item" data-level="2" href="#sec-1"><span>三個作業系統上的行為</span></a><a class="toc__item" data-level="2" href="#sec-2"><span>Windows 的兩個細節</span></a><a class="toc__item" data-level="2" href="#sec-3"><span>管線</span></a></div></nav><div class="prose"><h2 id="sec-1">三個作業系統上的行為</h2>
 <table class="table"><thead><tr><th>情境</th><th>行為</th></tr></thead><tbody><tr><td>輸出被重導向（pipe、檔案、CI 日誌）</td><td>自動關閉顏色，只輸出純文字</td></tr><tr><td>Windows <code>cmd.exe</code>／PowerShell 5.1</td><td>啟動時嘗試開啟虛擬終端（VT）模式讓 ANSI 顏色生效；開不起來就自動停用顏色</td></tr><tr><td>Windows 主控台代碼頁不是 UTF-8</td><td>自動改用 ASCII 符號（<code>Folder: … | Branch: …</code>），避免 emoji 變亂碼</td></tr><tr><td>PowerShell 7、Windows Terminal、macOS、Linux</td><td>使用 Unicode 符號（<code>📂</code>、<code>│</code>、<code>✗</code>、<code>─</code>）</td></tr><tr><td>POSIX locale 非 UTF-8（<code>LANG=C</code>）</td><td>自動改用 ASCII 符號，可用 <code>MGIT_ASCII=0</code> 強制回復 Unicode</td></tr><tr><td><code>NO_COLOR</code>／<code>CLICOLOR_FORCE</code></td><td>遵循社群慣例（見環境變數一章）</td></tr><tr><td><code>mgit … | head</code></td><td>還原 <code>SIGPIPE</code> 預設行為，管線中斷時安靜結束，不會噴出 panic 訊息</td></tr><tr><td>Windows 上的 git</td><td>透過 <code>PATH</code>（含 <code>PATHEXT</code>）尋找 <code>git.exe</code>，也可以用 <code>MGIT_GIT</code> 指定完整路徑</td></tr></tbody></table>
-<h2>Windows 的兩個細節</h2>
+<h2 id="sec-2">Windows 的兩個細節</h2>
 <ul><li>啟動時會嘗試開啟 VT 模式；開不起來就自動關閉顏色，不會輸出看不懂的跳脫序列。</li><li>主控台代碼頁不是 UTF-8 時自動改用 ASCII 符號，可用 <code>MGIT_ASCII=0</code> 覆寫。</li></ul>
-<h2>管線</h2>
+<h2 id="sec-3">管線</h2>
 <p><code>mgit … | head</code> 會還原 <code>SIGPIPE</code> 的預設行為，管線中斷時安靜結束，不會噴出 panic 訊息。</p></div><nav class="pager"><a href="exit-codes.html"><span>上一章 · CH 05</span>結束代碼與環境變數</a><a class="pager__next" href="changes.html"><span>下一章 · CH 07</span>版本、發行與 npm</a></nav></article></div>
 </main>
 <footer class="foot"><div class="shell foot__inner">

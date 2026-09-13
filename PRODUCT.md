@@ -62,6 +62,7 @@ README 另外記錄了自動化會用到的行為（結束代碼彙總、摘要�
 - **測試資產**：`tests/` 10 個檔案（純函式、檔案系統走訪、假 GitRunner 的流程控制、真實 git 整合、直接執行編譯後二進位的 E2E、安裝腳本測試），`npm/test/` 3 個檔案（node --test）；CI 強制覆蓋率 ≥ 90%。
 - **安裝入口**：`install.sh`（POSIX sh）與 `install.ps1`（PowerShell），是真的在使用的入口，不是文件樣板。
 - **封存素材**：`archive/assets/banner.jpg`、`archive/assets/screenshot.jpg`、`archive/website/assets/og-image-v2.png`，以及 `archive/website/index.html`／`style.css`（1.0 網站原樣封存）。**使用者未確認這些素材可重用**；若要沿用，需先確認畫面與文案是否仍與 2.x 相符。
+- **網站示意影像**：`website/assets/plates/` 的三張照片是 **AI 生成**的示意影像（生成 prompt 以 JPEG 註解內嵌於檔案，並附同名 `.prompt.txt`），用來交代這個譬喻的來源；頁面上標示為「示意影像 · AI 生成，不是產品照片」。示範資料與它們是兩件事：資料是真实 session 錄下來的，照片只是氛圍。
 - **不存在、也不得捏造**：使用者見證、客戶案例、下載數或採用數字、效能 benchmark、付費方案、roadmap 承諾。
 
 ## Product Principles

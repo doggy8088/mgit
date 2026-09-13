@@ -1,0 +1,11 @@
+Use case: product-mockup
+Asset type: paper texture plate for a website about a multi-channel strip-chart recorder
+Primary request: one large sheet of chart-recorder paper photographed straight down, filling the frame edge to edge
+Scene/backdrop: the paper alone; no desk, no props, no hands
+Subject: uncoated white chart paper with a very fine pale grey grid and a slightly heavier grey rule every fifth line, printed with real ink on real stock
+Style/medium: high-resolution macro photograph, visible paper fibre and surface grain, matte uncoated stock, no gloss
+Composition/framing: perfectly flat top-down view, even lighting corner to corner, no perspective, no vignette, no sheet edges inside the frame
+Lighting/mood: flat even neutral studio light, no shadow, no hotspot
+Color palette: cool paper white with pale grey grid lines; no colour at all
+Constraints: monochrome grey grid only, no colour, no pink, no red, no blue, no text, no numbers, no logos, no pens, no handwriting, no shadow; texture must stay calm enough that body text can be read over it
+Avoid: watermarks, vignette, creases, stains, coffee rings, dramatic lighting, colour cast

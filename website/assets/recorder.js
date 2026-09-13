@@ -144,17 +144,6 @@
     for (var i = 0; i <= lanes; i++) {
       var gy = geom.top + laneH * i;
       grid.appendChild(el("line", { x1: geom.left, y1: gy, x2: geom.right, y2: gy, class: "lane__rule" }));
-      if (i < lanes) {
-        grid.appendChild(
-          el("line", {
-            x1: geom.left,
-            y1: geom.top + laneH * (i + 0.25),
-            x2: geom.right,
-            y2: geom.top + laneH * (i + 0.25),
-            class: "lane__baseline"
-          })
-        );
-      }
     }
     svg.appendChild(grid);
 

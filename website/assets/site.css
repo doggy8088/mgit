@@ -36,9 +36,9 @@
   /* Paper -------------------------------------------------------------- */
   --paper: #f5f6f4;
   --paper-deep: #eceeea;
-  --grid-fine: #efa8b4;
-  --grid-bold: #dd8d9a;
-  --grid-log: #ecd2d6;
+  --rule-hair: #e8ebe9;
+  --rule: #d7dcda;
+  --rule-strong: #bcc4c2;
   --window: #ffffff;
 
   /* Ink ---------------------------------------------------------------- */
@@ -113,7 +113,7 @@ body {
 
 /* Browser surfaces belong to the system too. */
 ::selection {
-  background: #f7d8dd;
+  background: #dce7ee;
   color: var(--ink);
 }
 
@@ -125,7 +125,7 @@ body {
 
 * {
   caret-color: var(--alarm);
-  scrollbar-color: var(--grid-bold) transparent;
+  scrollbar-color: var(--rule) transparent;
   scrollbar-width: thin;
 }
 
@@ -139,7 +139,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--grid-bold);
+  background: var(--rule-strong);
   border: 4px solid var(--paper);
   border-radius: 8px;
 }
@@ -253,7 +253,7 @@ button {
 
 .prose h3 {
   font-family: var(--display);
-  font-size: 1.125rem;
+  font-size: 1.25rem;
   margin-top: var(--s5);
   margin-bottom: var(--s2);
 }
@@ -291,23 +291,55 @@ button {
    ========================================================================== */
 
 /* Chart paper: 8px fine grid with a heavier rule every fifth line. */
-.paper-chart {
-  background-color: var(--paper);
-  background-image:
-    repeating-linear-gradient(to right, var(--grid-bold) 0 1px, transparent 1px 40px),
-    repeating-linear-gradient(to bottom, var(--grid-bold) 0 1px, transparent 1px 40px),
-    repeating-linear-gradient(to right, var(--grid-fine) 0 1px, transparent 1px 8px),
-    repeating-linear-gradient(to bottom, var(--grid-fine) 0 1px, transparent 1px 8px);
-}
-
-/* Logbook paper: same stock, coarser and quieter, for reading. */
+/* The reading surface is plain paper. The 1mm/5mm grid is the instrument's own
+   material and stays inside the strip; prose never has structure lines running
+   through it. What carries the world instead: the section rules, the margin
+   rule, the dotted list rules and the engraved plate. */
+.paper-chart,
 .paper-log {
   background-color: var(--paper);
+  background-image: none;
+}
+
+/* The instrument's paper window, where the pens draw. A printed chart, not
+   graph paper: the field is clear, one whisper of a rule every 40px, and the
+   scale lives as ticks along the two edges. Nothing competes with the pens. */
+/* Real paper under a paper-coloured scrim: the fibre and its slight unevenness
+   come through at about a fifth strength, the page's own paper colour stays,
+   and the printed rule draws on top. No competing line, no tinted box. */
+.strip {
+  background-color: var(--paper);
+  background-image: repeating-linear-gradient(
+      to bottom,
+      var(--rule-hair) 0 1px,
+      transparent 1px 40px
+    ),
+    linear-gradient(rgba(245, 246, 244, 0.78), rgba(245, 246, 244, 0.78)),
+    url("plates/chart-paper.jpg");
+  background-size: auto, auto, 1200px auto;
+}
+
+.strip::before,
+.strip::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 12px;
+  pointer-events: none;
   background-image: repeating-linear-gradient(
     to bottom,
-    var(--grid-log) 0 1px,
-    transparent 1px 48px
+    var(--rule-strong) 0 1px,
+    transparent 1px 40px
   );
+}
+
+.strip::before {
+  left: 0;
+}
+
+.strip::after {
+  right: 0;
 }
 
 
@@ -400,8 +432,22 @@ button {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: var(--s2);
-  max-width: 62ch;
   margin-bottom: var(--s3);
+}
+
+/* The command is the page's action, not prose: it gets the room it needs
+   instead of the reading measure. */
+.paperhead .window {
+  max-width: min(100%, 940px);
+}
+
+.paperhead__title,
+.paperhead .lede {
+  max-width: 34ch;
+}
+
+.paperhead .lede {
+  max-width: 46ch;
 }
 
 .paperhead > * {
@@ -418,7 +464,6 @@ button {
 
 .paperhead .window {
   margin-top: var(--s1);
-  max-width: 100%;
 }
 
 .instrument__note {
@@ -464,7 +509,7 @@ button {
 
 .legend__row {
   padding-block: 0.3rem;
-  border-bottom: var(--hair) dotted var(--grid-bold);
+  border-bottom: var(--hair) dotted var(--rule);
 }
 
 .legend__row:last-child {
@@ -514,7 +559,6 @@ button {
 .strip {
   position: relative;
   min-height: clamp(280px, 36vh, 380px);
-  background: var(--paper);
 }
 
 .strip__svg {
@@ -607,7 +651,7 @@ button {
 }
 
 .vocab__word:not(.is-active)::before {
-  background: var(--grid-bold);
+  background: var(--rule);
 }
 
 .strip .replay {
@@ -657,14 +701,9 @@ button {
 
 /* The strip itself: lane rules, the traces, the carriage, printed marks. */
 .lane__rule {
-  stroke: var(--grid-bold);
+  stroke: var(--rule);
   stroke-width: 1;
   stroke-dasharray: 2 6;
-}
-
-.lane__baseline {
-  stroke: var(--grid-fine);
-  stroke-width: 1;
 }
 
 .trace {
@@ -891,11 +930,20 @@ button {
 .runlog__body {
   padding: var(--s2) var(--s3);
   font-family: var(--mono);
-  font-size: 0.8125rem;
-  line-height: 1.65;
+  font-size: 0.78125rem;
+  line-height: 1.7;
   white-space: pre;
   overflow-x: auto;
   color: var(--ink);
+}
+
+.runlog__hint {
+  display: none;
+  margin: 0;
+  padding: 0.35rem var(--s3) var(--s2);
+  font-size: 0.75rem;
+  color: var(--ink-3);
+  border-top: var(--hair) dotted var(--rule);
 }
 
 .runlog__body .rule {
@@ -1064,7 +1112,7 @@ button {
 .table td {
   text-align: left;
   padding: 0.6rem var(--s3) 0.6rem 0;
-  border-bottom: var(--hair) solid var(--grid-bold);
+  border-bottom: var(--hair) solid var(--rule);
   vertical-align: baseline;
 }
 
@@ -1137,6 +1185,82 @@ button {
    Install procedures
    ========================================================================== */
 
+/* A photographic plate: the world's own object, printed as a figure. */
+.plate-photo {
+  margin: 0;
+}
+
+.plate-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: var(--hair) solid var(--ink);
+  background: var(--paper-deep);
+}
+
+.plate-photo figcaption {
+  display: grid;
+  gap: 0.3rem;
+  padding-top: var(--s2);
+  max-width: 72ch;
+  font-size: 0.9375rem;
+  color: var(--ink-2);
+}
+
+.plate-photo .label {
+  color: var(--ink-3);
+}
+
+.plate-photo--wide img {
+  max-height: 560px;
+  object-fit: cover;
+}
+
+.cmdline {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s2);
+  padding-block: 0.45rem;
+  border-bottom: var(--hair) solid var(--rule);
+}
+
+.cmdline__text {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  color: var(--ink);
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.cmdline__note {
+  flex: none;
+  font-size: 0.75rem;
+  color: var(--ink-3);
+  letter-spacing: 0.04em;
+}
+
+.switch--ghost {
+  border: 0;
+  background: none;
+  box-shadow: none;
+  padding: 0.15rem 0.25rem;
+  color: var(--ink-3);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.switch--ghost:hover {
+  background: none;
+  color: var(--ink);
+}
+
+.switch--ghost[data-copied="true"] {
+  background: none;
+  color: var(--blue);
+}
+
 .proc {
   display: grid;
   gap: var(--s3);
@@ -1180,7 +1304,7 @@ button {
   align-items: baseline;
   gap: var(--s3);
   padding-block: var(--s3);
-  border-bottom: var(--hair) solid var(--grid-bold);
+  border-bottom: var(--hair) solid var(--rule);
   text-decoration: none;
   color: var(--ink);
   transition: background 140ms ease-out;
@@ -1272,7 +1396,7 @@ button {
 
 .doc {
   display: grid;
-  grid-template-columns: minmax(220px, 264px) 1fr;
+  grid-template-columns: minmax(200px, 264px) 1fr;
   gap: 0 var(--s6);
   align-items: start;
   padding-block: var(--s4) var(--s6);
@@ -1314,7 +1438,7 @@ button {
   text-decoration: none;
   color: var(--ink-2);
   font-size: 0.9375rem;
-  border-bottom: var(--hair) dotted var(--grid-bold);
+  border-bottom: var(--hair) dotted var(--rule);
 }
 
 .docnav__item:hover {
@@ -1348,6 +1472,99 @@ button {
   min-width: 0;
 }
 
+/* The margin index: the chapter's own sections, held beside the text. */
+.toc {
+  min-width: 0;
+}
+
+.toc__title {
+  font-stretch: 108%;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--ink-3);
+  padding-bottom: var(--s2);
+  border-bottom: var(--hair) solid var(--ink);
+  margin-bottom: var(--s2);
+}
+
+.toc__list {
+  display: grid;
+  gap: 0.1rem;
+}
+
+.toc__item {
+  display: block;
+  padding: 0.4rem 0.4rem 0.4rem 0.3rem;
+  border-bottom: var(--hair) dotted var(--rule);
+  text-decoration: none;
+  color: var(--ink-2);
+  font-size: 0.9375rem;
+  line-height: 1.4;
+}
+
+.toc__item:hover,
+.toc__item:focus-visible {
+  background: var(--window);
+  color: var(--ink);
+}
+
+.toc__item[data-level="3"] {
+  font-size: 0.875rem;
+  color: var(--ink-3);
+  padding-left: 0.3rem;
+}
+
+/* The margin index only exists where there is a real margin: the text column
+   keeps its measure, the index takes what is left. */
+@media (min-width: 1280px) {
+  .docmain {
+    display: grid;
+    grid-template-columns: var(--measure) 232px;
+    grid-template-rows: auto auto auto;
+    column-gap: var(--s4);
+    justify-content: space-between;
+    align-items: start;
+  }
+
+  .docmain__head {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+
+  .prose {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .toc {
+    grid-column: 2;
+    grid-row: 2;
+    position: sticky;
+    top: var(--s2);
+  }
+
+  .pager {
+    grid-column: 1 / -1;
+    grid-row: 3;
+  }
+}
+
+/* Narrow: the index sits above the text as a compact list. */
+@media (max-width: 1279px) {
+  .toc {
+    border-top: var(--hair) solid var(--ink);
+    border-bottom: var(--hair) solid var(--ink);
+    padding-block: var(--s2);
+    margin-bottom: var(--s4);
+  }
+
+  .toc__list {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+}
+
 .docmain__head {
   border-bottom: 2px solid var(--ink);
   padding-bottom: var(--s3);
@@ -1362,9 +1579,10 @@ button {
 }
 
 .docmain__intro {
-  font-size: 1.125rem;
+  font-size: 1.1875rem;
+  line-height: 1.55;
   color: var(--ink-2);
-  max-width: 62ch;
+  max-width: 58ch;
 }
 
 .pager {
@@ -1405,6 +1623,14 @@ button {
 /* ============================================================================
    Wide-screen adjustments and the printed strip at width
    ========================================================================== */
+
+/* Between the docs collapse and the wide desktop, the chapter rail narrows so
+   the text column keeps its measure and the margin index still has room. */
+@media (min-width: 1101px) and (max-width: 1349px) {
+  .doc {
+    grid-template-columns: 200px minmax(0, 1fr);
+  }
+}
 
 @media (max-width: 1100px) {
   .doc {
@@ -1476,6 +1702,10 @@ button {
     align-items: flex-start;
   }
 
+  .paperhead .window .label {
+    display: none;
+  }
+
   .legend__row,
   .legend__head {
     grid-template-columns: 2.7rem 1fr;
@@ -1499,6 +1729,14 @@ button {
 
   .runlog__body,
   .window__cmd {
+    font-size: 0.6875rem;
+  }
+
+  .runlog__hint {
+    display: block;
+  }
+
+  .cmdline__text {
     font-size: 0.75rem;
   }
 

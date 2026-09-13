@@ -126,10 +126,10 @@ npm-test: ## Run the npm wrapper tests (node --test, uses the Rust binary when i
 	cd npm && $(NPM) test
 
 npm-vendor: ## Vendor this machine's archive from dist/ into npm/vendor (run `make package` first)
-	npm/scripts/vendor.sh $(DIST) $(TARGET)
+	npm/scripts/vendor.sh $(DIST) host
 
 npm-pack: ## Build the local npm tarball from dist/ (the release flow is in npm/PUBLISHING.md)
-	npm/scripts/vendor.sh $(DIST) $(TARGET)
+	npm/scripts/vendor.sh $(DIST) host
 	cp LICENSE npm/LICENSE
 	cd npm && $(NPM) pack
 

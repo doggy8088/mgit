@@ -201,16 +201,27 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          target=$(rustc -vV | sed -n 's/^host: //p')
-          mkdir -p dist staging
-          cp target/release/mgit staging/mgit
-          tar -czf "dist/mgit-${target}.tar.gz" -C staging mgit
-          if command -v sha256sum > /dev/null 2>&1; then
-            (cd dist && sha256sum "mgit-${target}.tar.gz" > "mgit-${target}.tar.gz.sha256")
-          else
-            (cd dist && shasum -a 256 "mgit-${target}.tar.gz" > "mgit-${target}.tar.gz.sha256")
+          # Package exactly the asset that the installer asks for. The mapping
+          # lives in npm/scripts/vendor.sh: on Linux it is the musl build.
+          target=$(sh npm/scripts/vendor.sh --host-target)
+          case "$target" in
+            *-unknown-linux-musl)
+              sudo apt-get update -qq
+              sudo apt-get install -y -qq musl-tools
+              ;;
+          esac
+          if [ "$target" != "$(rustc -vV | sed -n 's/^host: //p')" ]; then
+            rustup target add "$target"
           fi
-          echo "target=${target}" >> "$GITHUB_ENV"
+          cargo build --release --locked --target "$target"
+          mkdir -p dist
+          tar -czf "dist/mgit-$target.tar.gz" -C "target/$target/release" mgit
+          if command -v sha256sum > /dev/null 2>&1; then
+            (cd dist && sha256sum "mgit-$target.tar.gz" > "mgit-$target.tar.gz.sha256")
+          else
+            (cd dist && shasum -a 256 "mgit-$target.tar.gz" > "mgit-$target.tar.gz.sha256")
+          fi
+          echo "target=$target" >> "$GITHUB_ENV"
 
       - name: Package a release for the local server (windows)
         if: runner.os == 'Windows'
@@ -333,20 +344,22 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          target=$(rustc -vV | sed -n 's/^host: //p')
-          mkdir -p dist staging
-          cargo build --release --locked
-          cp target/release/mgit staging/mgit
-          tar -czf "dist/mgit-${target}.tar.gz" -C staging mgit
-          (cd dist && sha256sum "mgit-${target}.tar.gz" > "mgit-${target}.tar.gz.sha256")
+          # The launcher looks for the musl build on Linux, so vendor that one.
+          target=$(sh npm/scripts/vendor.sh --host-target)
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq musl-tools
+          rustup target add "$target"
+          cargo build --release --locked --target "$target"
+          mkdir -p dist
+          tar -czf "dist/mgit-$target.tar.gz" -C "target/$target/release" mgit
+          (cd dist && sha256sum "mgit-$target.tar.gz" > "mgit-$target.tar.gz.sha256")
 
       - name: Vendor, pack and install the package
         if: runner.os == 'Linux'
         shell: bash
         run: |
           set -euo pipefail
-          target=$(rustc -vV | sed -n 's/^host: //p')
-          sh npm/scripts/vendor.sh dist "$target"
+          sh npm/scripts/vendor.sh dist host
           cp LICENSE npm/LICENSE
           cd npm
           npm pack --json > pack.json

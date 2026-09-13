@@ -88,6 +88,9 @@ fn mgit(root: &Path) -> Command {
         "MGIT_COLOR",
         "MGIT_ASCII",
         "MGIT_GIT",
+        // The CI runners set these and they take precedence over LANG.
+        "LC_ALL",
+        "LC_CTYPE",
     ] {
         command.env_remove(name);
     }
@@ -463,9 +466,15 @@ fn ascii_glyphs_can_be_forced() {
         run.out
     );
 
-    let lossy = run_command(mgit(temp.path()).env("LANG", "C"));
-    assert!(lossy.out.is_ascii(), "{:?}", lossy.out);
+    // A POSIX locale without UTF-8 falls back to the ASCII glyphs. Windows
+    // consoles are judged by their code page instead, so this part is Unix only.
+    #[cfg(unix)]
+    {
+        let lossy = run_command(mgit(temp.path()).env("LANG", "C"));
+        assert!(lossy.out.is_ascii(), "{:?}", lossy.out);
+    }
 
+    // MGIT_ASCII=0 wins over every heuristic, on every platform.
     let forced = run_command(mgit(temp.path()).env("LANG", "C").env("MGIT_ASCII", "0"));
     assert!(forced.out.contains('📂'), "{:?}", forced.out);
 }

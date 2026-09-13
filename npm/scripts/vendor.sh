@@ -26,16 +26,39 @@ all_targets="x86_64-apple-darwin aarch64-apple-darwin \
 x86_64-unknown-linux-musl aarch64-unknown-linux-musl \
 x86_64-pc-windows-msvc aarch64-pc-windows-msvc"
 
+# The release target that belongs to this machine, using the same mapping as
+# install.sh: Linux runs the statically linked musl build.
+host_target() {
+    uname_s=$(uname -s 2> /dev/null || echo unknown)
+    uname_m=$(uname -m 2> /dev/null || echo unknown)
+
+    case "$uname_m" in
+        x86_64 | amd64 | AMD64) architecture=x86_64 ;;
+        arm64 | aarch64 | ARM64) architecture=aarch64 ;;
+        *) die "unsupported architecture: $uname_m" ;;
+    esac
+
+    case "$uname_s" in
+        Darwin) printf '%s\n' "$architecture-apple-darwin" ;;
+        Linux) printf '%s\n' "$architecture-unknown-linux-musl" ;;
+        MINGW* | MSYS* | CYGWIN*) printf '%s\n' "$architecture-pc-windows-msvc" ;;
+        *) die "unsupported operating system: $uname_s" ;;
+    esac
+}
+
 usage() {
     cat <<'USAGE'
 Vendor the mgit release archives into npm/vendor/<target>/.
 
 USAGE:
     npm/scripts/vendor.sh <archive-directory> [target...]
+    npm/scripts/vendor.sh --host-target      Print the bundled target of this machine
+    npm/scripts/vendor.sh --help
 
 ARGUMENTS:
     <archive-directory>   Directory that holds the release archives
-    target...             Release targets to vendor (default: every bundled target)
+    target...             Release targets to vendor, `host` for this machine
+                          (default: every bundled target)
 
 TARGETS:
     x86_64-apple-darwin, aarch64-apple-darwin,
@@ -57,6 +80,10 @@ if [ $# -ge 1 ]; then
     case "$1" in
         -h | --help)
             usage
+            exit 0
+            ;;
+        --host-target)
+            host_target
             exit 0
             ;;
     esac
@@ -112,6 +139,10 @@ verify_checksum() {
 mkdir -p "$vendor_directory"
 
 for target in $targets; do
+    if [ "$target" = "host" ]; then
+        target=$(host_target)
+    fi
+
     case " $all_targets " in
         *" $target "*) ;;
         *) die "unknown target: $target" ;;

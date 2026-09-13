@@ -710,7 +710,7 @@
       "name": "Strip Chart",
       "kind": "custom",
       "refersTo": "instrument-frame",
-      "description": "The instrument: three pen weights on chart paper with lane rules, drawn from the page's own run record.",
+      "description": "The instrument: three pens in two stroke weights (2.2px clean and dirty, 2.6px failed) on the chart-paper texture with lane dividers, drawn from the page's own run record.",
       "html": "<div class=\"ds-strip\"><svg class=\"ds-strip__svg\" viewBox=\"0 0 320 120\" preserveAspectRatio=\"none\" role=\"presentation\" aria-hidden=\"true\" focusable=\"false\"><line x1=\"0\" y1=\"20\" x2=\"320\" y2=\"20\" class=\"ds-lane__rule\"/><line x1=\"0\" y1=\"60\" x2=\"320\" y2=\"60\" class=\"ds-lane__rule\"/><line x1=\"0\" y1=\"100\" x2=\"320\" y2=\"100\" class=\"ds-lane__rule\"/><path d=\"M 0 20 L 320 20\" class=\"ds-trace ds-trace--clean\"/><path d=\"M 0 60 C 10 60, 10 34, 24 34 L 60 34 C 74 34, 74 60, 88 60 L 320 60\" class=\"ds-trace ds-trace--dirty\"/><path d=\"M 0 100 C 120 100, 120 52, 140 52 L 170 52 C 182 52, 182 116, 200 116 C 226 116, 240 88, 262 96 C 286 100, 300 100, 320 100\" class=\"ds-trace ds-trace--failed\"/><g class=\"ds-mark--flag\"><path d=\"M 54 34 l 5 -5 l 0 10 z\"/></g><g class=\"ds-mark--cross\"><path d=\"M 164 94 L 176 106 M 176 94 L 164 106\"/></g><text x=\"180\" y=\"112\" class=\"ds-tick--alarm\">128</text></svg><p class=\"ds-strip__foot\"><span class=\"ds-vocab__word ds-vocab__word--clean\">乾淨</span><span class=\"ds-vocab__word ds-vocab__word--failed\">失敗</span><span class=\"ds-strip__exit\"><b>exit 128</b> · 6 repositories, 5 succeeded, 1 failed</span></p></div>",
       "css": ".ds-strip { position: relative; min-height: 180px; background-color: var(--paper); background-image: repeating-linear-gradient(to bottom, var(--rule) 0 1px, transparent 1px 40px), linear-gradient(rgba(245, 246, 244, 0.78), rgba(245, 246, 244, 0.78)), url(\"assets/plates/chart-paper.jpg\"); background-size: auto, auto, 1200px auto; border: var(--hair) solid var(--ink); padding: 8px; } .ds-strip::before, .ds-strip::after { content: \"\"; position: absolute; top: 0; bottom: 0; width: 12px; pointer-events: none; background-image: repeating-linear-gradient(to bottom, var(--rule-strong) 0 1px, transparent 1px 40px); } .ds-strip::before { left: 0; } .ds-strip::after { right: 0; } .ds-strip__svg { position: absolute; inset: 0; width: 100%; height: 100%; } .ds-lane__rule { stroke: var(--rule-strong); stroke-width: 1; stroke-dasharray: 2 6; } .ds-trace { fill: none; stroke-linecap: round; stroke-linejoin: round; } .ds-trace--clean { stroke: var(--blue); stroke-width: 2.2; } .ds-trace--dirty { stroke: var(--ink); stroke-width: 2.2; } .ds-trace--failed { stroke: var(--alarm); stroke-width: 2.6; } .ds-mark--flag path { fill: var(--ink); } .ds-mark--cross path { fill: none; stroke: var(--alarm); stroke-width: 1.8; stroke-linecap: round; } .ds-tick--alarm { font-family: var(--mono); font-size: 12px; font-weight: 700; fill: var(--alarm); } .ds-strip__foot { position: absolute; left: 24px; right: 24px; bottom: 16px; display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin: 0; } .ds-vocab__word { font-family: var(--mono); font-size: 0.75rem; color: var(--ink-2); } .ds-vocab__word::before { content: \"\"; display: inline-block; width: 10px; height: 2px; margin-right: 0.45rem; vertical-align: 0.28em; background: var(--ink-3); } .ds-vocab__word--clean::before { background: var(--blue); } .ds-vocab__word--failed::before { background: var(--alarm); } .ds-strip__exit { font-family: var(--mono); font-size: 0.8125rem; color: var(--ink); } .ds-strip__exit b { font-weight: 700; }"
     },
@@ -849,7 +849,7 @@
       },
       {
         "name": "The Instrument-Grid Rule",
-        "body": "Chart paper is the strip's material, not the page's: a photographed sheet laid under the strip at about a fifth strength, a 1px printed rule every 40px, and 40px ticks down both edges. Reading surfaces carry their structure through rules — 2px dividers, dotted 1px hairlines, the margin rule — never through a ruled pattern under text; the page's own ground may carry a material texture at a whisper, but never a grid.",
+        "body": "Chart paper is the strip's material, not the page's: a photographed sheet whose grain is re-laid on the token tone at σ 4.4 (no scrim), a 1px printed rule every 40px, and 40px ticks down both edges. Reading surfaces carry their structure through rules — 2px dividers, dotted 1px hairlines, the margin rule — never through a ruled pattern under text; the page's own ground may carry a material texture at a whisper, but never a grid.",
         "section": "colors"
       },
       {
@@ -893,8 +893,8 @@
         "section": "layout"
       },
       {
-        "name": "The Two-Shadows Rule",
-        "body": "The depth vocabulary is these five values, full stop. A new shadow needs a printing reason — a lifted sheet, a seated plate, a punched hole — and decoration is not one.",
+        "name": "The Shadow-Vocabulary Rule",
+        "body": "The depth vocabulary is these five effects, full stop — one of them (the keycap) in two states. A new shadow needs a printing reason — a lifted sheet, a seated plate, a punched hole — and decoration is not one; the language switch's 2px inset underline is a state mark, not a sixth depth.",
         "section": "elevation & depth"
       },
       {
@@ -916,7 +916,7 @@
       "Do pair every failure with a mark and a word (failed pen + cross + `exit 128`), and print the whole five-word state vocabulary once per strip.",
       "Do set display-size CJK in the `--display` stack so it lands in \"mgit Display\", and extend the 155-character subset when new headline copy appears.",
       "Do print a command as a `.cmdline` on the paper with the text-only ghost switch; give the official install commands the graphite window (`window--plate`) as the page's one primary action, and let verification and build lines keep the white punched window.",
-      "Do ration the graphite: the install window is the page's one heaviest action, the lane legend is the wide frame's dark mass (≥621px, reverting to paper at ≤620px where it would swallow the screen), and every recorded session's bar is graphite so the session announces itself before it is read.",
+      "Do ration the graphite: the official install commands are the page's one primary action — five graphite windows on each landing (one in the hero, four in the install band: install.sh, install.ps1, `npm install -g @willh/mgit`, `npx @willh/mgit`) and three in each docs install chapter — the lane legend is the wide frame's dark mass (≥621px, reverting to paper at ≤620px where it would swallow the screen), and every recorded session's bar is graphite so the session announces itself before it is read.",
       "Do keep numbers plain and self-describing: `01`–`08` for chapters, `01`–`06` for lanes, the command itself (`mgit pull`) where a run needs a name.",
       "Do print a rule set as a `rules` list: CSS columns own the two balanced columns, each `li` owns only its own text and a 1px hairline.",
       "Do keep the margin index in step with the chapter's own h2/h3 headings (`sec-1`, `sec-2`, … in document order) so the index and the page can never disagree.",

@@ -20,7 +20,7 @@ INSTALL_PS = "irm https://raw.githubusercontent.com/doggy8088/mgit/main/install.
 CHAPTERS = [
     (
         "use-cases",
-        "CH 01",
+        "01",
         "使用情境",
         "When to use it",
         "為什麼會有 mgit：散落各處、彼此互相參考、又沒有用 submodule 的 repo",
@@ -28,7 +28,7 @@ CHAPTERS = [
     ),
     (
         "install",
-        "CH 02",
+        "02",
         "安裝",
         "Install",
         "三種安裝方式、驗證檢查碼，以及從原始碼建置",
@@ -36,7 +36,7 @@ CHAPTERS = [
     ),
     (
         "options",
-        "CH 03",
+        "03",
         "選項",
         "Options",
         "十三個選項、解析規則與常用範例",
@@ -44,7 +44,7 @@ CHAPTERS = [
     ),
     (
         "output",
-        "CH 04",
+        "04",
         "輸出與行為",
         "Output and behavior",
         "標題格式、安靜的儲存庫、摘要與顏色政策",
@@ -52,7 +52,7 @@ CHAPTERS = [
     ),
     (
         "discovery",
-        "CH 05",
+        "05",
         "它怎麼找儲存庫",
         "Repository discovery",
         "深度、worktree、submodule、symlink 與跨平台一致的排序",
@@ -60,7 +60,7 @@ CHAPTERS = [
     ),
     (
         "exit-codes",
-        "CH 06",
+        "06",
         "結束代碼與環境變數",
         "Exit codes and environment",
         "成敗如何回報，環境如何覆寫預設值",
@@ -68,7 +68,7 @@ CHAPTERS = [
     ),
     (
         "platforms",
-        "CH 07",
+        "07",
         "跨平台行為",
         "Cross-platform behavior",
         "Windows 主控台、locale、SIGPIPE 與 git 的尋找方式",
@@ -76,7 +76,7 @@ CHAPTERS = [
     ),
     (
         "changes",
-        "CH 08",
+        "08",
         "版本、發行與 npm",
         "Versions, releases and npm",
         "與 1.0 的差異、標籤驅動的發行流程與 npm 套件",
@@ -87,7 +87,7 @@ CHAPTERS = [
 UI = {
     "zh": {
         "skip": "跳至主要內容",
-        "docs": "記錄本",
+        "docs": "文件",
         "github": "GitHub",
         "releases": "發行檔",
         "npm": "npm",
@@ -102,7 +102,7 @@ UI = {
     },
     "en": {
         "skip": "Skip to content",
-        "docs": "Logbook",
+        "docs": "Docs",
         "github": "GitHub",
         "releases": "Releases",
         "npm": "npm",
@@ -141,11 +141,16 @@ def esc(text):
     return html.escape(text, quote=False)
 
 
-def window(command, lang, label=None):
+def window(command, lang, label=None, plate=False):
+    """A punched window around one command.
+
+    `plate=True` is reserved for the official install commands: the page's one
+    primary action, printed on the instrument's graphite.
+    """
     t = UI[lang]
     head = '<span class="label">' + esc(label) + "</span>" if label else ""
     return (
-        '<div class="window">'
+        '<div class="window' + (" window--plate" if plate else "") + '">'
         + head
         + '<span class="window__cmd">'
         + esc(command)
@@ -335,7 +340,6 @@ def head(lang, root, *, counterpart=None):
             '<header class="head"><div class="shell head__inner">',
             '<a class="wordmark" href="' + home + '">',
             '<span class="wordmark__mark">mgit</span>',
-            '<span class="wordmark__spec">v' + VERSION + " · MIT · 8 targets</span>",
             "</a>",
             '<nav class="head__links">',
             '<a href="' + docs_home + '">' + esc(t["docs"]) + "</a>",

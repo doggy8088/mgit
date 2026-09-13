@@ -13,10 +13,9 @@
 <header class="head"><div class="shell head__inner">
 <a class="wordmark" href="../../en/index.html">
 <span class="wordmark__mark">mgit</span>
-<span class="wordmark__spec">v2.0.2 · MIT · 8 targets</span>
 </a>
 <nav class="head__links">
-<a href="../../en/docs/">Logbook</a>
+<a href="../../en/docs/">Docs</a>
 <a href="https://github.com/doggy8088/mgit">GitHub</a>
 <a href="https://github.com/doggy8088/mgit/releases">Releases</a>
 <a href="https://www.npmjs.com/package/@willh/mgit">npm</a>
@@ -27,9 +26,9 @@
 </span>
 </div></header>
 <main id="main">
-<div class="shell doc"><nav class="docnav" aria-label="Chapters"><p class="docnav__title"><span>Logbook · mgit 2.0.2</span></p><div class="docnav__list"><a class="docnav__item" href="use-cases.html"><span class="docnav__ch">CH 01</span><span>When to use it</span></a><a class="docnav__item" href="install.html"><span class="docnav__ch">CH 02</span><span>Install</span></a><a class="docnav__item" href="options.html"><span class="docnav__ch">CH 03</span><span>Options</span></a><a class="docnav__item" href="output.html" aria-current="page"><span class="docnav__ch">CH 04</span><span>Output and behavior</span></a><a class="docnav__item" href="discovery.html"><span class="docnav__ch">CH 05</span><span>Repository discovery</span></a><a class="docnav__item" href="exit-codes.html"><span class="docnav__ch">CH 06</span><span>Exit codes and environment</span></a><a class="docnav__item" href="platforms.html"><span class="docnav__ch">CH 07</span><span>Cross-platform behavior</span></a><a class="docnav__item" href="changes.html"><span class="docnav__ch">CH 08</span><span>Versions, releases and npm</span></a></div></nav><article class="docmain"><header class="docmain__head"><h1 class="docmain__title">Output and behavior</h1><p class="docmain__intro">Headers, quiet repositories, the summary and the color policy</p></header><nav class="toc" aria-label="On this page"><p class="toc__title">On this page</p><div class="toc__list"><a class="toc__item" data-level="2" href="#sec-1"><span>One section per repository</span></a><a class="toc__item" data-level="2" href="#sec-2"><span>When a repository fails</span></a><a class="toc__item" data-level="2" href="#sec-3"><span>The summary and standard output</span></a><a class="toc__item" data-level="2" href="#sec-4"><span>Color and glyphs</span></a></div></nav><div class="prose"><h2 id="sec-1">One section per repository</h2>
+<div class="shell doc"><nav class="docnav" aria-label="Chapters"><p class="docnav__title"><span>Docs · mgit 2.0.2</span></p><div class="docnav__list"><a class="docnav__item" href="use-cases.html"><span class="docnav__ch">01</span><span>When to use it</span></a><a class="docnav__item" href="install.html"><span class="docnav__ch">02</span><span>Install</span></a><a class="docnav__item" href="options.html"><span class="docnav__ch">03</span><span>Options</span></a><a class="docnav__item" href="output.html" aria-current="page"><span class="docnav__ch">04</span><span>Output and behavior</span></a><a class="docnav__item" href="discovery.html"><span class="docnav__ch">05</span><span>Repository discovery</span></a><a class="docnav__item" href="exit-codes.html"><span class="docnav__ch">06</span><span>Exit codes and environment</span></a><a class="docnav__item" href="platforms.html"><span class="docnav__ch">07</span><span>Cross-platform behavior</span></a><a class="docnav__item" href="changes.html"><span class="docnav__ch">08</span><span>Versions, releases and npm</span></a></div></nav><article class="docmain"><header class="docmain__head"><h1 class="docmain__title">Output and behavior</h1><p class="docmain__intro">Headers, quiet repositories, the summary and the color policy</p></header><nav class="toc" aria-label="On this page"><p class="toc__title">On this page</p><div class="toc__list"><a class="toc__item" data-level="2" href="#sec-1"><span>One section per repository</span></a><a class="toc__item" data-level="2" href="#sec-2"><span>When a repository fails</span></a><a class="toc__item" data-level="2" href="#sec-3"><span>The summary and standard output</span></a><a class="toc__item" data-level="2" href="#sec-4"><span>Color and glyphs</span></a></div></nav><div class="prose"><h2 id="sec-1">One section per repository</h2>
 <p>80 <code>=</code> and one <code>📂 Folder: … │ Branch: …</code>, then git's own output; a clean repository shows the header alone.</p>
-<div class="runlog"><div class="runlog__bar"><span>RUN A · mgit --summary</span><span>exit 0 · 6 succeeded</span></div><div class="runlog__body"><span class="rule">================================================================================</span>
+<div class="runlog"><div class="runlog__bar"><span>mgit --summary</span><span>exit 0 · 6 succeeded</span></div><div class="runlog__body"><span class="rule">================================================================================</span>
 <span class="folder">📂 Folder: api-gateway │ Branch: main</span>
 <span class="rule">================================================================================</span>
 <span class="quiet"> </span>
@@ -58,7 +57,7 @@
 <span class="sum">mgit: 6 repositories, 6 succeeded</span></div><p class="runlog__hint">← scrolls sideways</p></div>
 <h2 id="sec-2">When a repository fails</h2>
 <p>Every repository runs by default (<code>--keep-going</code>); the summary lists each failure with its code and the run ends on the <b>first</b> one. <code>--fail-fast</code> stops there instead.</p>
-<div class="runlog"><div class="runlog__bar"><span>RUN B · mgit pull</span><span>exit 128 · 5 succeeded, 1 failed</span></div><div class="runlog__body"><span class="rule">================================================================================</span>
+<div class="runlog"><div class="runlog__bar"><span>mgit pull</span><span>exit 128 · 5 succeeded, 1 failed</span></div><div class="runlog__body"><span class="rule">================================================================================</span>
 <span class="folder">📂 Folder: api-gateway │ Branch: main</span>
 <span class="rule">================================================================================</span>
 <span class="">Already up to date.</span>
@@ -95,7 +94,7 @@
 <h2 id="sec-3">The summary and standard output</h2>
 <p>The summary goes to <b>standard error</b>, so <code>mgit status -s &gt; status.txt</code> stays clean. <code>--summary</code> always prints it, and <code>--quiet</code> keeps git's own output only.</p>
 <h2 id="sec-4">Color and glyphs</h2>
-<ul><li>When output is redirected, or with <code>--color=never</code> / <code>NO_COLOR</code>, no ANSI escapes are emitted at all.</li><li><code>--ascii</code>, or a non UTF-8 environment, uses <code>Folder: … | Branch: …</code> with identical behaviour.</li><li>Color is never the only carrier: headers, glyphs and the summary all read on their own.</li></ul></div><nav class="pager"><a href="options.html"><span>Previous chapter · CH 03</span>Options</a><a class="pager__next" href="discovery.html"><span>Next chapter · CH 05</span>Repository discovery</a></nav></article></div>
+<ul><li>When output is redirected, or with <code>--color=never</code> / <code>NO_COLOR</code>, no ANSI escapes are emitted at all.</li><li><code>--ascii</code>, or a non UTF-8 environment, uses <code>Folder: … | Branch: …</code> with identical behaviour.</li><li>Color is never the only carrier: headers, glyphs and the summary all read on their own.</li></ul></div><nav class="pager"><a href="options.html"><span>Previous chapter · 03</span>Options</a><a class="pager__next" href="discovery.html"><span>Next chapter · 05</span>Repository discovery</a></nav></article></div>
 </main>
 <footer class="foot"><div class="shell foot__inner">
 <dl class="foot__group"><dt>Release</dt>

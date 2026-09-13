@@ -317,7 +317,7 @@ button {
   background-color: var(--paper);
   background-image: repeating-linear-gradient(
       to bottom,
-      var(--rule-hair) 0 1px,
+      var(--rule) 0 1px,
       transparent 1px 40px
     ),
     linear-gradient(rgba(245, 246, 244, 0.78), rgba(245, 246, 244, 0.78)),
@@ -382,14 +382,6 @@ button {
   line-height: 1;
 }
 
-.wordmark__spec {
-  font-family: var(--mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.04em;
-  color: var(--ink-3);
-  text-transform: uppercase;
-}
-
 .head__links {
   display: flex;
   align-items: center;
@@ -426,8 +418,9 @@ button {
 }
 
 .lang a[aria-current="true"] {
-  background: var(--ink);
-  color: var(--paper);
+  color: var(--ink);
+  font-weight: 700;
+  box-shadow: inset 0 -2px 0 var(--ink);
 }
 
 /* ============================================================================
@@ -449,7 +442,7 @@ button {
 
 .paperhead__title,
 .paperhead .lede {
-  max-width: 34ch;
+  max-width: 38ch;
 }
 
 .paperhead .lede {
@@ -462,10 +455,11 @@ button {
 
 .paperhead__title {
   font-family: var(--display);
-  font-size: clamp(1.85rem, 3.2vw, 2.6rem);
-  font-stretch: 106%;
-  letter-spacing: -0.018em;
-  line-height: 1.06;
+  font-size: clamp(2rem, 3.55vw, 3.0625rem);
+  font-stretch: 108%;
+  font-weight: 700;
+  letter-spacing: -0.024em;
+  line-height: 1.02;
 }
 
 .paperhead .window {
@@ -570,9 +564,48 @@ button {
   font-weight: 600;
 }
 
+/* The channel strip is the instrument's own panel: the same lacquered graphite
+   as the plates. It gives the hero one dark mass, and it is the lane list of a
+   recorder, not a paragraph — the pens stay on clean paper next to it. */
+.legend {
+  background-color: var(--plate);
+  background-image: linear-gradient(rgba(25, 26, 29, 0.88), rgba(25, 26, 29, 0.88)),
+    url("plates/graphite-plate.jpg");
+  background-size: auto, 900px auto;
+  color: var(--plate-ink);
+}
+
+.legend__head {
+  border-bottom-color: var(--plate-rule);
+}
+
+.legend__head .label,
+.legend__ch,
+.legend__meta,
+.legend__meta b,
+.legend__state[data-state="clean"] {
+  color: var(--plate-dim);
+}
+
+.legend__name {
+  color: var(--plate-ink);
+}
+
+.legend__row {
+  border-bottom-color: var(--plate-rule-soft);
+}
+
+.legend__state[data-state="dirty"] {
+  color: var(--plate-ink);
+}
+
+.legend__state[data-state="failed"] {
+  color: var(--plate-alarm);
+}
+
 .strip {
   position: relative;
-  min-height: clamp(280px, 36vh, 380px);
+  min-height: clamp(240px, 30vh, 320px);
 }
 
 .strip__svg {
@@ -715,14 +748,14 @@ button {
 
 /* The strip itself: lane rules, the traces, the carriage, printed marks. */
 .lane__rule {
-  stroke: var(--rule);
+  stroke: var(--rule-strong);
   stroke-width: 1;
   stroke-dasharray: 2 6;
 }
 
 .trace {
   fill: none;
-  stroke-width: 1.6;
+  stroke-width: 2.2;
   stroke-linecap: round;
   stroke-linejoin: round;
   transition: opacity 160ms ease-out;
@@ -730,7 +763,7 @@ button {
 
 .trace--clean {
   stroke: var(--blue);
-  stroke-width: 1.5;
+  stroke-width: 2.2;
 }
 
 .trace--dirty {
@@ -739,7 +772,7 @@ button {
 
 .trace--failed {
   stroke: var(--alarm);
-  stroke-width: 1.9;
+  stroke-width: 2.6;
 }
 
 .is-linking .trace {
@@ -819,6 +852,54 @@ button {
   flex: none;
 }
 
+/* The official install commands are the page's one primary action, so they get
+   the plate material; every other command on the site stays on paper. */
+.window--plate {
+  background-color: var(--plate);
+  background-image: linear-gradient(rgba(25, 26, 29, 0.88), rgba(25, 26, 29, 0.88)),
+    url("plates/graphite-plate.jpg");
+  background-size: auto, 900px auto;
+  border-color: var(--plate);
+  box-shadow: 0 22px 44px -36px rgba(21, 22, 26, 0.95);
+}
+
+.window--plate .window__cmd {
+  color: var(--plate-ink);
+  scrollbar-color: var(--plate-rule) transparent;
+}
+
+.window--plate .label {
+  color: var(--plate-dim);
+}
+
+.window--plate .switch {
+  border-color: var(--plate-rule);
+  background: transparent;
+  color: var(--plate-ink);
+  box-shadow: none;
+}
+
+.window--plate .switch:hover {
+  background: rgba(237, 237, 232, 0.12);
+}
+
+.window--plate .switch:active {
+  background: rgba(237, 237, 232, 0.2);
+}
+
+.window--plate .switch[data-copied="true"] {
+  background: var(--plate-ink);
+  color: var(--plate);
+}
+
+/* The page's focus ring is blue, which disappears on graphite: everything that
+   sits on a plate takes the plate's own light tone instead. */
+.window--plate .switch:focus-visible,
+.plate a:focus-visible,
+.foot a:focus-visible {
+  outline-color: var(--plate-blue);
+}
+
 .switch {
   flex: none;
   display: inline-flex;
@@ -879,16 +960,18 @@ button {
 
 .band__title {
   font-family: var(--display);
-  font-size: clamp(1.75rem, 3.2vw, 2.75rem);
+  font-size: clamp(1.5rem, 2.5vw, 2.25rem);
   font-stretch: 104%;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.016em;
 }
 
 .band__intro {
   margin-top: var(--s2);
-  font-size: clamp(1.0625rem, 1.4vw, 1.1875rem);
+  font-size: 1.0625rem;
+  line-height: 1.6;
   color: var(--ink-2);
-  max-width: var(--measure);
+  max-width: 74ch;
+  text-wrap: pretty;
 }
 
 .split {
@@ -923,7 +1006,7 @@ button {
 
 /* Printed run log: the real terminal output, framed as a recorded session. */
 .runlog {
-  border: var(--hair) solid var(--ink);
+  border: 2px solid var(--ink);
   background: var(--window);
 }
 
@@ -933,12 +1016,20 @@ button {
   justify-content: space-between;
   gap: var(--s2);
   padding: 0.4rem 0.75rem;
-  border-bottom: var(--hair) solid var(--ink);
+  border-bottom: var(--hair) solid var(--plate);
   font-family: var(--mono);
   font-size: 0.75rem;
   letter-spacing: 0.04em;
-  color: var(--ink-2);
-  background: var(--paper);
+  color: var(--plate-ink);
+  background-color: var(--plate);
+}
+
+.runlog__bar > span:first-child {
+  font-weight: 700;
+}
+
+.runlog__bar > span:last-child {
+  color: var(--plate-dim);
 }
 
 .runlog__body {
@@ -961,7 +1052,7 @@ button {
 }
 
 .runlog__body .rule {
-  color: #a8545f;
+  color: var(--ink-3);
 }
 
 .runlog__body .folder {
@@ -1249,15 +1340,16 @@ button {
   display: flex;
   align-items: baseline;
   gap: var(--s2);
-  padding-block: 0.45rem;
-  border-bottom: var(--hair) solid var(--rule);
+  padding-block: 0.5rem;
+  border-bottom: var(--hair) solid var(--rule-strong);
 }
 
 .cmdline__text {
   flex: 1;
   min-width: 0;
   font-family: var(--mono);
-  font-size: 0.8125rem;
+  font-size: 0.9375rem;
+  font-weight: 500;
   color: var(--ink);
   overflow-x: auto;
   white-space: pre;
@@ -1320,7 +1412,7 @@ button {
 }
 
 /* ============================================================================
-   Logbook index
+   Docs index
    ========================================================================== */
 
 .logbook {
@@ -1614,7 +1706,8 @@ button {
   font-size: 1.1875rem;
   line-height: 1.55;
   color: var(--ink-2);
-  max-width: 58ch;
+  max-width: 64ch;
+  text-wrap: pretty;
 }
 
 .pager {
@@ -1724,6 +1817,43 @@ button {
 
   .legend__row {
     padding-block: 0.5rem;
+  }
+
+  /* The channel strip's graphite is a composition device: it gives the wide
+     frame one dark mass beside the paper. Stacked full-width on a phone it
+     would swallow the screen, so at this size the panel goes back to paper. */
+  .legend {
+    background-color: var(--paper);
+    background-image: none;
+    color: var(--ink);
+  }
+
+  .legend__head {
+    border-bottom-color: var(--ink);
+  }
+
+  .legend__head .label,
+  .legend__ch,
+  .legend__meta,
+  .legend__meta b,
+  .legend__state[data-state="clean"] {
+    color: var(--ink-3);
+  }
+
+  .legend__name {
+    color: var(--ink);
+  }
+
+  .legend__row {
+    border-bottom-color: var(--rule);
+  }
+
+  .legend__state[data-state="dirty"] {
+    color: var(--ink-2);
+  }
+
+  .legend__state[data-state="failed"] {
+    color: var(--alarm);
   }
 
   .strip {

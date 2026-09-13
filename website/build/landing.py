@@ -31,45 +31,45 @@ WORKSPACE = "/tmp/mgit-mixed"
 
 # mgit --summary → exit 0, 6 succeeded; web-console carries an unstaged change.
 RUN_CALM = {
-    "id": "RUN A",
+    "id": "mgit --summary",
     "command": "mgit --summary",
     "exit": 0,
     "summary": "6 repositories, 6 succeeded",
     "channels": [
-        {"ch": "CH 01", "name": "api-gateway", "branch": "main", "state": "clean", "changes": 0,
+        {"ch": "01", "name": "api-gateway", "branch": "main", "state": "clean", "changes": 0,
          "detail": "沒有任何輸出", "detail_en": "no output at all"},
-        {"ch": "CH 02", "name": "billing-worker", "branch": "main", "state": "clean", "changes": 0,
+        {"ch": "02", "name": "billing-worker", "branch": "main", "state": "clean", "changes": 0,
          "detail": "沒有任何輸出", "detail_en": "no output at all"},
-        {"ch": "CH 03", "name": "docs-site", "branch": "main", "state": "clean", "changes": 0,
+        {"ch": "03", "name": "docs-site", "branch": "main", "state": "clean", "changes": 0,
          "detail": "沒有任何輸出", "detail_en": "no output at all"},
-        {"ch": "CH 04", "name": "infra-scripts", "branch": "main", "state": "clean", "changes": 0,
+        {"ch": "04", "name": "infra-scripts", "branch": "main", "state": "clean", "changes": 0,
          "detail": "沒有任何輸出", "detail_en": "no output at all"},
-        {"ch": "CH 05", "name": "web-console", "branch": "main", "state": "dirty", "changes": 1,
+        {"ch": "05", "name": "web-console", "branch": "main", "state": "dirty", "changes": 1,
          "detail": "M src/main.rs", "detail_en": "M src/main.rs"},
-        {"ch": "CH 06", "name": "web-console-hotfix", "branch": "hotfix", "state": "clean", "changes": 0,
+        {"ch": "06", "name": "web-console-hotfix", "branch": "hotfix", "state": "clean", "changes": 0,
          "detail": "worktree · 沒有任何輸出", "detail_en": "worktree · no output at all"},
     ],
 }
 
 # mgit pull → exit 128, 5 succeeded, 1 failed: one pen spikes, five stay flat.
 RUN_PULL = {
-    "id": "RUN B",
+    "id": "mgit pull",
     "command": "mgit pull",
     "exit": 128,
     "summary": "6 repositories, 5 succeeded, 1 failed",
     "channels": [
-        {"ch": "CH 01", "name": "api-gateway", "branch": "main", "state": "clean", "changes": 0,
+        {"ch": "01", "name": "api-gateway", "branch": "main", "state": "clean", "changes": 0,
          "detail": "already up to date", "detail_en": "already up to date"},
-        {"ch": "CH 02", "name": "billing-worker", "branch": "main", "state": "clean", "changes": 0,
+        {"ch": "02", "name": "billing-worker", "branch": "main", "state": "clean", "changes": 0,
          "detail": "already up to date", "detail_en": "already up to date"},
-        {"ch": "CH 03", "name": "docs-site", "branch": "main", "state": "clean", "changes": 0,
+        {"ch": "03", "name": "docs-site", "branch": "main", "state": "clean", "changes": 0,
          "detail": "already up to date", "detail_en": "already up to date"},
-        {"ch": "CH 04", "name": "infra-scripts", "branch": "main", "state": "clean", "changes": 0,
+        {"ch": "04", "name": "infra-scripts", "branch": "main", "state": "clean", "changes": 0,
          "detail": "already up to date", "detail_en": "already up to date"},
-        {"ch": "CH 05", "name": "web-console", "branch": "main", "state": "failed", "code": 128,
+        {"ch": "05", "name": "web-console", "branch": "main", "state": "failed", "code": 128,
          "detail": "cannot pull with rebase: unstaged changes",
          "detail_en": "cannot pull with rebase: unstaged changes"},
-        {"ch": "CH 06", "name": "web-console-hotfix", "branch": "hotfix", "state": "clean", "changes": 0,
+        {"ch": "06", "name": "web-console-hotfix", "branch": "hotfix", "state": "clean", "changes": 0,
          "detail": "already up to date", "detail_en": "already up to date"},
     ],
 }
@@ -82,7 +82,7 @@ STATE_WORD = {
 
 def legend(run_key, channels, lang):
     zh = lang == "zh"
-    head = ("通道", "儲存庫 · 分支", "狀態") if zh else ("Channel", "Repository · branch", "State")
+    head = ("#", "儲存庫 · 分支", "狀態") if zh else ("#", "Repository · branch", "State")
     rows = []
     for lane, channel in enumerate(channels):
         state = channel["state"]
@@ -205,7 +205,7 @@ def build(lang, captures):
             "the same way. A clean repository stays quiet, and the run ends on one exit code."
         )
         + "</p>"
-        + window(INSTALL_SH, lang, label="macOS · Linux")
+        + window(INSTALL_SH, lang, label="macOS · Linux", plate=True)
         + '<p class="paperhead__case">'
         + (
             "經典用法：散在同一個工作目錄、彼此互相參考的多個 repo——不用 <code>git submodule</code> 也能一起管。"
@@ -218,7 +218,7 @@ def build(lang, captures):
         + instrument(
             lang,
             run_pull,
-            "RUN B · mgit pull",
+            "mgit pull",
             (
                 "示範工作台 " + WORKSPACE + " · 6 個儲存庫 · 錄製於 2026-09-14"
                 if zh
@@ -230,10 +230,10 @@ def build(lang, captures):
         + '<p class="instrument__note">'
         + (
             "真實 session：<code>mgit pull</code> 在 <code>/tmp/mgit-mixed</code>（6 個 repo）的錄製結果；"
-            "CH 05 的尖峰就是失敗的那一次。"
+            "<code>web-console</code> 那一條的尖峰就是失敗的那一次。"
             if zh
             else "A real session: <code>mgit pull</code> recorded in <code>/tmp/mgit-mixed</code> (six "
-            "repositories); the spike on CH 05 is the one that failed."
+            "repositories); the spike on <code>web-console</code> is the one that failed."
         )
         + "</p></div></section>"
     )
@@ -368,16 +368,15 @@ def build(lang, captures):
         + esc("一份可以信的報告" if zh else "A report you can act on")
         + '</h2><p class="band__intro">'
         + (
-            "乾淨的 repo 只印標題。摘要走 stderr，所以 <code>mgit status -s &gt; status.txt</code> 永遠乾淨。"
+            "摘要走 stderr：<code>mgit status -s &gt; status.txt</code> 永遠乾淨。"
             if zh
-            else "A clean repository prints its header and nothing else. The summary goes to stderr, so "
-            "<code>mgit status -s &gt; status.txt</code> stays clean."
+            else "The summary goes to stderr: <code>mgit status -s &gt; status.txt</code> stays clean."
         )
         + "</p></div></div>"
         + instrument(
             lang,
             run_calm,
-            "RUN A · mgit --summary",
+            "mgit --summary",
             (
                 "同一個工作台 · 只讀狀態 · 錄製於 2026-09-14"
                 if zh
@@ -387,8 +386,8 @@ def build(lang, captures):
             {"clean", "dirty"},
         )
         + '<div class="split" style="margin-top:var(--s5)">'
-        + runlog("RUN B · mgit pull", "exit 128 · 5 succeeded, 1 failed", captures["run_pull"], lang)
-        + runlog("RUN A · mgit --summary", "exit 0 · 6 succeeded", captures["run_calm"], lang)
+        + runlog("mgit pull", "exit 128 · 5 succeeded, 1 failed", captures["run_pull"], lang)
+        + runlog("mgit --summary", "exit 0 · 6 succeeded", captures["run_calm"], lang)
         + "</div>"
         '<p class="note__label label" style="margin-top:var(--s5)">'
         + esc("跑完之後：摘要與結束代碼" if zh else "After the run: the summary and the exit code")
@@ -446,7 +445,7 @@ def build(lang, captures):
             + '</span><span class="proc__note">'
             + esc(note)
             + "</span></div>"
-            + "".join(window(command, lang, label=name) for command in commands)
+            + "".join(window(command, lang, label=name, plate=True) for command in commands)
             + "</div>"
         )
 
@@ -559,7 +558,7 @@ def build(lang, captures):
         '<section class="band" aria-labelledby="log-title"><div class="shell">'
         '<div class="band__head"><div>'
         '<h2 class="band__title" id="log-title">'
-        + esc("記錄本" if zh else "The logbook")
+        + esc("文件" if zh else "Docs")
         + '</h2><p class="band__intro">'
         + (
             "八章：為什麼用它、怎麼裝、每個選項、每個結束代碼、每個平台差異。"

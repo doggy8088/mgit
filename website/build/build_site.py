@@ -61,7 +61,7 @@ def docnav(lang, current):
         '<nav class="docnav" aria-label="'
         + ("章節" if zh else "Chapters")
         + '"><p class="docnav__title"><span>'
-        + ("記錄本 · mgit " if zh else "Logbook · mgit ")
+        + ("文件 · mgit " if zh else "Docs · mgit ")
         + VERSION
         + "</span></p><div class=\"docnav__list\">"
         + "".join(items)
@@ -223,7 +223,7 @@ def main():
         body = (
             '<div class="shell band"><div class="band__head"><div>'
             '<h1 class="band__title">'
-            + esc("記錄本" if zh else "Logbook")
+            + esc("文件" if zh else "Docs")
             + '</h1><p class="band__intro">'
             + esc(
                 "八章：為什麼用它、怎麼裝、每個選項、每個結束代碼、每個平台差異。"
@@ -246,7 +246,7 @@ def main():
                 page(
                     lang=lang,
                     root=root,
-                    title=("記錄本" if zh else "Logbook") + " — mgit " + VERSION,
+                    title=("文件" if zh else "Docs") + " — mgit " + VERSION,
                     description="mgit 的文件：安裝、選項、輸出、找儲存庫、結束代碼、跨平台與發行。"
                     if zh
                     else "mgit documentation: install, options, output, discovery, exit codes, platforms and releases.",

@@ -1,4 +1,4 @@
-"""Logbook chapters (Read surface). Real content, taken from the project README."""
+"""Documentation chapters (Read surface). Real content, taken from the project README."""
 
 from common import (
     cmdline,
@@ -223,9 +223,9 @@ def chapter(slug, lang, captures):
                 "SHA-256, then install, offering to add the directory to <code>PATH</code>.",
             )
         )
-        body.append(("window", (INSTALL_SH, "macOS · Linux")))
-        body.append(("window", (INSTALL_PS, "Windows PowerShell")))
-        body.append(("window", ("npm install -g @willh/mgit", "npm")))
+        body.append(("window", (INSTALL_SH, "macOS · Linux", True)))
+        body.append(("window", (INSTALL_PS, "Windows PowerShell", True)))
+        body.append(("window", ("npm install -g @willh/mgit", "npm", True)))
         body.append(("cmdline", ("npx @willh/mgit", "npx")))
         body.append(
             (
@@ -332,7 +332,7 @@ def chapter(slug, lang, captures):
                 "clean repository shows the header alone.",
             )
         )
-        body.append(("runlog", ("RUN A · mgit --summary", "exit 0 · 6 succeeded", captures["run_calm"])))
+        body.append(("runlog", ("mgit --summary", "exit 0 · 6 succeeded", captures["run_calm"])))
         body.append(("h2", "失敗的那一次" if zh else "When a repository fails"))
         body.append(
             (
@@ -345,7 +345,7 @@ def chapter(slug, lang, captures):
                 "stops there instead.",
             )
         )
-        body.append(("runlog", ("RUN B · mgit pull", "exit 128 · 5 succeeded, 1 failed", captures["run_pull"])))
+        body.append(("runlog", ("mgit pull", "exit 128 · 5 succeeded, 1 failed", captures["run_pull"])))
         body.append(("h2", "摘要與標準輸出" if zh else "The summary and standard output"))
         body.append(
             (
@@ -602,8 +602,8 @@ def render(blocks, lang):
             headers, rows = value
             out.append(table(headers, rows))
         elif kind == "window":
-            command, label = value
-            out.append(window(command, lang, label=label))
+            command, label = value[0], value[1]
+            out.append(window(command, lang, label=label, plate=len(value) > 2 and bool(value[2])))
         elif kind == "cmdline":
             command, label = value
             out.append(cmdline(command, lang, label=label))

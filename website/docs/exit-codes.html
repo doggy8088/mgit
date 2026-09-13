@@ -13,10 +13,9 @@
 <header class="head"><div class="shell head__inner">
 <a class="wordmark" href="../index.html">
 <span class="wordmark__mark">mgit</span>
-<span class="wordmark__spec">v2.0.2 · MIT · 8 targets</span>
 </a>
 <nav class="head__links">
-<a href="../docs/">記錄本</a>
+<a href="../docs/">文件</a>
 <a href="https://github.com/doggy8088/mgit">GitHub</a>
 <a href="https://github.com/doggy8088/mgit/releases">發行檔</a>
 <a href="https://www.npmjs.com/package/@willh/mgit">npm</a>
@@ -27,7 +26,7 @@
 </span>
 </div></header>
 <main id="main">
-<div class="shell doc"><nav class="docnav" aria-label="章節"><p class="docnav__title"><span>記錄本 · mgit 2.0.2</span></p><div class="docnav__list"><a class="docnav__item" href="use-cases.html"><span class="docnav__ch">CH 01</span><span>使用情境</span></a><a class="docnav__item" href="install.html"><span class="docnav__ch">CH 02</span><span>安裝</span></a><a class="docnav__item" href="options.html"><span class="docnav__ch">CH 03</span><span>選項</span></a><a class="docnav__item" href="output.html"><span class="docnav__ch">CH 04</span><span>輸出與行為</span></a><a class="docnav__item" href="discovery.html"><span class="docnav__ch">CH 05</span><span>它怎麼找儲存庫</span></a><a class="docnav__item" href="exit-codes.html" aria-current="page"><span class="docnav__ch">CH 06</span><span>結束代碼與環境變數</span></a><a class="docnav__item" href="platforms.html"><span class="docnav__ch">CH 07</span><span>跨平台行為</span></a><a class="docnav__item" href="changes.html"><span class="docnav__ch">CH 08</span><span>版本、發行與 npm</span></a></div></nav><article class="docmain"><header class="docmain__head"><h1 class="docmain__title">結束代碼與環境變數</h1><p class="docmain__intro">成敗如何回報，環境如何覆寫預設值</p></header><nav class="toc" aria-label="本章內容"><p class="toc__title">本章內容</p><div class="toc__list"><a class="toc__item" data-level="2" href="#sec-1"><span>結束代碼</span></a><a class="toc__item" data-level="2" href="#sec-2"><span>環境變數</span></a></div></nav><div class="prose"><h2 id="sec-1">結束代碼</h2>
+<div class="shell doc"><nav class="docnav" aria-label="章節"><p class="docnav__title"><span>文件 · mgit 2.0.2</span></p><div class="docnav__list"><a class="docnav__item" href="use-cases.html"><span class="docnav__ch">01</span><span>使用情境</span></a><a class="docnav__item" href="install.html"><span class="docnav__ch">02</span><span>安裝</span></a><a class="docnav__item" href="options.html"><span class="docnav__ch">03</span><span>選項</span></a><a class="docnav__item" href="output.html"><span class="docnav__ch">04</span><span>輸出與行為</span></a><a class="docnav__item" href="discovery.html"><span class="docnav__ch">05</span><span>它怎麼找儲存庫</span></a><a class="docnav__item" href="exit-codes.html" aria-current="page"><span class="docnav__ch">06</span><span>結束代碼與環境變數</span></a><a class="docnav__item" href="platforms.html"><span class="docnav__ch">07</span><span>跨平台行為</span></a><a class="docnav__item" href="changes.html"><span class="docnav__ch">08</span><span>版本、發行與 npm</span></a></div></nav><article class="docmain"><header class="docmain__head"><h1 class="docmain__title">結束代碼與環境變數</h1><p class="docmain__intro">成敗如何回報，環境如何覆寫預設值</p></header><nav class="toc" aria-label="本章內容"><p class="toc__title">本章內容</p><div class="toc__list"><a class="toc__item" data-level="2" href="#sec-1"><span>結束代碼</span></a><a class="toc__item" data-level="2" href="#sec-2"><span>環境變數</span></a></div></nav><div class="prose"><h2 id="sec-1">結束代碼</h2>
 <table class="table"><thead><tr><th>Code</th><th>意義</th></tr></thead><tbody><tr><td>0</td><td>所有儲存庫都成功（或搭配 <code>--allow-empty</code> 且找不到儲存庫）</td></tr><tr><td>1</td><td>有儲存庫失敗，或找不到任何儲存庫</td></tr><tr><td>2</td><td>命令列參數無法解析</td></tr><tr><td>127</td><td>找不到或無法執行 <code>git</code></td></tr><tr><td>130</td><td>被 Ctrl+C（<code>SIGINT</code>／<code>SIGTERM</code>）中斷</td></tr><tr><td>其他</td><td>第一個失敗的 git 指令所回傳的結束代碼會原樣成為 mgit 的結束代碼</td></tr></tbody></table>
 <p>多個儲存庫的結果會被彙總：預設全部跑完（<code>--keep-going</code>），並以<b>第一個失敗</b>的結束代碼作為整體結果；摘要寫到標準錯誤，不會汙染標準輸出。</p>
 <h2 id="sec-2">環境變數</h2>
@@ -35,7 +34,7 @@
 <p>優先順序：命令列選項 → <code>MGIT_*</code> → <code>CLICOLOR_FORCE</code> → <code>NO_COLOR</code> → 終端機偵測。</p>
 <div class="cmdline"><span class="cmdline__text">NO_COLOR=1 mgit status</span><span class="cmdline__note"># 強制關閉顏色</span><button type="button" class="switch switch--ghost" data-copy="NO_COLOR=1 mgit status" data-label-copied="已複製" data-label-failed="請手動複製"><span data-copy-label aria-live="polite">複製</span></button></div>
 <div class="cmdline"><span class="cmdline__text">MGIT_ASCII=0 mgit</span><span class="cmdline__note"># LANG=C 時仍用 Unicode 符號</span><button type="button" class="switch switch--ghost" data-copy="MGIT_ASCII=0 mgit" data-label-copied="已複製" data-label-failed="請手動複製"><span data-copy-label aria-live="polite">複製</span></button></div>
-<div class="cmdline"><span class="cmdline__text">MGIT_GIT=/usr/local/bin/git mgit fetch</span><span class="cmdline__note"># 指定 git</span><button type="button" class="switch switch--ghost" data-copy="MGIT_GIT=/usr/local/bin/git mgit fetch" data-label-copied="已複製" data-label-failed="請手動複製"><span data-copy-label aria-live="polite">複製</span></button></div></div><nav class="pager"><a href="discovery.html"><span>上一章 · CH 05</span>它怎麼找儲存庫</a><a class="pager__next" href="platforms.html"><span>下一章 · CH 07</span>跨平台行為</a></nav></article></div>
+<div class="cmdline"><span class="cmdline__text">MGIT_GIT=/usr/local/bin/git mgit fetch</span><span class="cmdline__note"># 指定 git</span><button type="button" class="switch switch--ghost" data-copy="MGIT_GIT=/usr/local/bin/git mgit fetch" data-label-copied="已複製" data-label-failed="請手動複製"><span data-copy-label aria-live="polite">複製</span></button></div></div><nav class="pager"><a href="discovery.html"><span>上一章 · 05</span>它怎麼找儲存庫</a><a class="pager__next" href="platforms.html"><span>下一章 · 07</span>跨平台行為</a></nav></article></div>
 </main>
 <footer class="foot"><div class="shell foot__inner">
 <dl class="foot__group"><dt>發行</dt>

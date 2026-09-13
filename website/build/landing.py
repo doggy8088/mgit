@@ -391,7 +391,7 @@ def build(lang, captures):
         + runlog("RUN A · mgit --summary", "exit 0 · 6 succeeded", captures["run_calm"], lang)
         + "</div>"
         '<p class="note__label label" style="margin-top:var(--s5)">'
-        + esc("紙尾的結算" if zh else "The totals band")
+        + esc("跑完之後：摘要與結束代碼" if zh else "After the run: the summary and the exit code")
         + '</p><p class="prose">'
         + (
             "失敗的那次把出事的 repo 與代碼寫進摘要（<code>✗ web-console (exit code 128)</code>），"
@@ -542,7 +542,7 @@ def build(lang, captures):
         )
         + "</p></div></div>"
         + plate(
-            "校正表" if zh else "Calibration",
+            "實測數字" if zh else "Measured numbers",
             "mgit " + VERSION,
             plate_figures(
                 [(term, '<span class="plate__value">' + value + "</span>", note) for term, value, note in figures]

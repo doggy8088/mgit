@@ -180,6 +180,29 @@ def instrument(lang, run, caption, meta, exit_line, active):
     )
 
 
+def localized_runs(lang):
+    """The page's own record carries both languages; a page ships only its own.
+
+    An EN page must not carry Chinese strings inside its data blob even when
+    nothing renders them, so the English tree is free of CJK outside the two
+    words a reader actually sees (the language switch and the copyright name).
+    """
+    runs = {"a": RUN_CALM, "b": RUN_PULL}
+    if lang == "zh":
+        return runs
+    out = {}
+    for key, run in runs.items():
+        run_copy = dict(run)
+        channels = []
+        for channel in run["channels"]:
+            channel_copy = {k: v for k, v in channel.items() if k != "detail_en"}
+            channel_copy["detail"] = channel["detail_en"]
+            channels.append(channel_copy)
+        run_copy["channels"] = channels
+        out[key] = run_copy
+    return out
+
+
 def build(lang, captures):
     zh = lang == "zh"
     run_calm = dict(RUN_CALM, key="a")
@@ -572,4 +595,4 @@ def build(lang, captures):
         + "</nav></div></section>"
     )
 
-    return "\n".join(parts), {"a": RUN_CALM, "b": RUN_PULL}
+    return "\n".join(parts), localized_runs(lang)

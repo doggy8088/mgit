@@ -135,18 +135,18 @@
       "ink-3": {
         "role": "neutral",
         "displayName": "Graphite 3",
-        "canonical": "#666870",
+        "canonical": "#616369",
         "tonalRamp": [
-          "#090b11",
-          "#24262d",
-          "#43454c",
-          "#64666e",
-          "#878991",
-          "#abadb6",
-          "#d1d4dd",
-          "#eceef7"
+          "#0a0b0f",
+          "#25262b",
+          "#43454a",
+          "#64666c",
+          "#87898f",
+          "#abaeb4",
+          "#d2d4db",
+          "#eceef5"
         ],
-        "usage": "12px chrome and quiet lines: labels, captions, lane and chapter numbers, spec stamps, the command-line note, dimmed vocabulary words, the runlog's rule and quiet lines, the strip's ticks. Held darker than flat paper would need because the fibre is real: worst case over ±2.2σ of the stock is 4.75:1, 5.13:1 against the token paper."
+        "usage": "12px chrome and quiet lines: labels, captions, lane and chapter numbers, spec stamps, the command-line note, dimmed vocabulary words, the runlog's rule and quiet lines, the strip's ticks. Set against the measured darkest grain (226/255, not a ±2σ estimate): 4.64:1 there, 5.51:1 on the token paper."
       },
       "blue": {
         "role": "primary",
@@ -635,8 +635,8 @@
       },
       {
         "name": "ink-3-contrast",
-        "value": "#666870: 4.75:1 against the darkest fibre (worst case over ±2.2 sigma), 5.13:1 against the token paper; the other 8 foregrounds are 5.9:1 or better in their worst case",
-        "note": "The token moved from #6d7076 because 12px chrome has to clear AA against the darkest part of the stock, not against the flat token."
+        "value": "#616369: 4.64:1 against the measured darkest grain (226/255), 4.90:1 against the 0.1 percentile (232.5), 5.51:1 against the token paper",
+        "note": "The token moved from #6d7076 to #666870 to #616369 as the material became real: the fibre's tail is heavier than a Gaussian, so the check uses the measured darkest pixel, not a ±2σ estimate."
       },
       {
         "name": "contrast-and-overflow",
@@ -645,8 +645,8 @@
       },
       {
         "name": "axe-a11y",
-        "value": "docs chapter 0 violations; landing 0 violations (273 color-contrast incomplete)",
-        "note": "Run with agent-browser a11y."
+        "value": "landing, /en/, docs/use-cases.html and docs/output.html: violations 0 (was landing 2, docs 1)",
+        "note": "scrollable-region-focusable and landmark-unique are fixed; color-contrast stays incomplete because axe cannot resolve background images, so contrast is checked by the worst-case material calculation."
       },
       {
         "name": "links-and-css",
@@ -702,6 +702,21 @@
         "name": "evidence",
         "value": "six review screenshots re-taken",
         "note": "Stored outside the site tree."
+      },
+      {
+        "name": "scroll-tab-stops",
+        "value": "landing at 1440: all 16 scrollable regions tabindex=-1 (none overflow); at 620: 6 tabindex=0, exactly the 6 that overflow; at 390: 10 tabindex=0, exactly the 10 that overflow",
+        "note": "initScrollers() measures scrollWidth/clientWidth on .runlog__body, .window__cmd and .cmdline__text, re-checks 150ms after a resize, and keeps data-scrollable on the runlog frame."
+      },
+      {
+        "name": "verified-this-pass",
+        "value": "330 in-site links resolve; contrast+overflow 0 violations at 1440/1000/620/390 across landing, EN, docs/install, docs/use-cases, docs/output; axe 0 violations on four pages; Lighthouse landing desktop 100/100/100/100 (56 passed / 0 failed); six evidence screenshots re-taken; page heights unchanged (desktop 8716, mobile 12256)",
+        "note": "Local previews through python3 -m http.server cache CSS/JS: verify in a fresh browser session or with a hard reload, or the old values get measured."
+      },
+      {
+        "name": "localized-run-records",
+        "value": "zh landing blob: each repository entry carries both detail and detail_en (30 CJK characters in the blob); EN landing blob: entries carry branch / ch / changes / code / detail / name / state only, with 0 CJK characters",
+        "note": "landing.py localized_runs() drops detail_en and replaces detail with it for the English tree; the EN source tree scans clean of CJK outside the language switch and the copyright name."
       }
     ]
   },
@@ -710,7 +725,7 @@
       "name": "Strip Chart",
       "kind": "custom",
       "refersTo": "instrument-frame",
-      "description": "The instrument: three pens in two stroke weights (2.2px clean and dirty, 2.6px failed) on the chart-paper texture with lane dividers, drawn from the page's own run record.",
+      "description": "The instrument: three pens in two stroke weights (2.2px clean and dirty, 2.6px failed) on the chart-paper texture with lane dividers, drawn from the page's own run record; each language's page ships only its own record (the EN blob carries no Chinese data fields - landing.py localized_runs()).",
       "html": "<div class=\"ds-strip\"><svg class=\"ds-strip__svg\" viewBox=\"0 0 320 120\" preserveAspectRatio=\"none\" role=\"presentation\" aria-hidden=\"true\" focusable=\"false\"><line x1=\"0\" y1=\"20\" x2=\"320\" y2=\"20\" class=\"ds-lane__rule\"/><line x1=\"0\" y1=\"60\" x2=\"320\" y2=\"60\" class=\"ds-lane__rule\"/><line x1=\"0\" y1=\"100\" x2=\"320\" y2=\"100\" class=\"ds-lane__rule\"/><path d=\"M 0 20 L 320 20\" class=\"ds-trace ds-trace--clean\"/><path d=\"M 0 60 C 10 60, 10 34, 24 34 L 60 34 C 74 34, 74 60, 88 60 L 320 60\" class=\"ds-trace ds-trace--dirty\"/><path d=\"M 0 100 C 120 100, 120 52, 140 52 L 170 52 C 182 52, 182 116, 200 116 C 226 116, 240 88, 262 96 C 286 100, 300 100, 320 100\" class=\"ds-trace ds-trace--failed\"/><g class=\"ds-mark--flag\"><path d=\"M 54 34 l 5 -5 l 0 10 z\"/></g><g class=\"ds-mark--cross\"><path d=\"M 164 94 L 176 106 M 176 94 L 164 106\"/></g><text x=\"180\" y=\"112\" class=\"ds-tick--alarm\">128</text></svg><p class=\"ds-strip__foot\"><span class=\"ds-vocab__word ds-vocab__word--clean\">乾淨</span><span class=\"ds-vocab__word ds-vocab__word--failed\">失敗</span><span class=\"ds-strip__exit\"><b>exit 128</b> · 6 repositories, 5 succeeded, 1 failed</span></p></div>",
       "css": ".ds-strip { position: relative; min-height: 180px; background-color: var(--paper); background-image: repeating-linear-gradient(to bottom, var(--rule) 0 1px, transparent 1px 40px), linear-gradient(rgba(245, 246, 244, 0.78), rgba(245, 246, 244, 0.78)), url(\"assets/plates/chart-paper.jpg\"); background-size: auto, auto, 1200px auto; border: var(--hair) solid var(--ink); padding: 8px; } .ds-strip::before, .ds-strip::after { content: \"\"; position: absolute; top: 0; bottom: 0; width: 12px; pointer-events: none; background-image: repeating-linear-gradient(to bottom, var(--rule-strong) 0 1px, transparent 1px 40px); } .ds-strip::before { left: 0; } .ds-strip::after { right: 0; } .ds-strip__svg { position: absolute; inset: 0; width: 100%; height: 100%; } .ds-lane__rule { stroke: var(--rule-strong); stroke-width: 1; stroke-dasharray: 2 6; } .ds-trace { fill: none; stroke-linecap: round; stroke-linejoin: round; } .ds-trace--clean { stroke: var(--blue); stroke-width: 2.2; } .ds-trace--dirty { stroke: var(--ink); stroke-width: 2.2; } .ds-trace--failed { stroke: var(--alarm); stroke-width: 2.6; } .ds-mark--flag path { fill: var(--ink); } .ds-mark--cross path { fill: none; stroke: var(--alarm); stroke-width: 1.8; stroke-linecap: round; } .ds-tick--alarm { font-family: var(--mono); font-size: 12px; font-weight: 700; fill: var(--alarm); } .ds-strip__foot { position: absolute; left: 24px; right: 24px; bottom: 16px; display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin: 0; } .ds-vocab__word { font-family: var(--mono); font-size: 0.75rem; color: var(--ink-2); } .ds-vocab__word::before { content: \"\"; display: inline-block; width: 10px; height: 2px; margin-right: 0.45rem; vertical-align: 0.28em; background: var(--ink-3); } .ds-vocab__word--clean::before { background: var(--blue); } .ds-vocab__word--failed::before { background: var(--alarm); } .ds-strip__exit { font-family: var(--mono); font-size: 0.8125rem; color: var(--ink); } .ds-strip__exit b { font-weight: 700; }"
     },
@@ -766,7 +781,7 @@
       "name": "Recorded Runlog",
       "kind": "custom",
       "refersTo": "runlog",
-      "description": "A printed frame for a real terminal session: 2px ink frame, graphite bar (texture, Plate Ivory command at 700), white mono body at 0.78125rem/1.7; the hint appears only when the measured body actually overflows.",
+      "description": "A printed frame for a real terminal session: 2px ink frame, graphite bar (texture, Plate Ivory command at 700), white mono body at 0.78125rem/1.7 in a named group; tabindex flips with real overflow and the hint appears only then.",
       "html": "<div class=\"ds-runlog\"><div class=\"ds-runlog__bar\"><span class=\"ds-runlog__title\">mgit pull</span><span>exit 128 · 5 succeeded, 1 failed</span></div><div class=\"ds-runlog__body\"><span class=\"ds-rule\">================================================================================</span>\n<span class=\"ds-folder\">📂 Folder: web-console │ Branch: main</span>\n<span class=\"ds-rule\">================================================================================</span>\n<span class=\"ds-err\">error: cannot pull with rebase: You have unstaged changes.</span>\n<span class=\"ds-quiet\"> </span>\n<span class=\"ds-sum\">mgit: 6 repositories, 5 succeeded, 1 failed</span>\n<span class=\"ds-err\">  ✗ web-console (exit code 128)</span></div></div>",
       "css": ".ds-runlog { border: 2px solid var(--ink); background: var(--window); } .ds-runlog__bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0.4rem 0.75rem; background-color: var(--plate); background-image: url(\"assets/plates/graphite-plate.jpg\"); background-size: 900px auto; color: var(--plate-ink); border-bottom: var(--hair) solid var(--plate); font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.04em; } .ds-runlog__title { font-weight: 700; } .ds-runlog__bar > span:last-child { color: var(--plate-dim); } .ds-runlog__body { padding: 16px 24px; font-family: var(--mono); font-size: 0.78125rem; line-height: 1.7; white-space: pre; overflow-x: auto; color: var(--ink); } .ds-runlog__hint { display: none; margin: 0; padding: 0.35rem 24px 16px; font-size: 0.75rem; color: var(--ink-3); border-top: var(--hair) dotted var(--rule); } .ds-runlog[data-scrollable=\"true\"] .ds-runlog__hint { display: block; } .ds-rule { color: var(--ink-3); } .ds-folder { color: var(--ink); font-weight: 500; } .ds-quiet { color: var(--ink-3); } .ds-err { color: var(--alarm); } .ds-sum { color: var(--ink-2); }"
     },
@@ -798,8 +813,8 @@
       "name": "Command Line with Ghost Switch",
       "kind": "custom",
       "refersTo": "cmdline",
-      "description": "Commands printed straight onto the paper: one mono line, an optional platform note, a 1px Rule Grey rule, and a text-only copy switch.",
-      "html": "<div class=\"ds-cmdline\"><span class=\"ds-cmdline__text\">cargo build --release</span><span class=\"ds-cmdline__note\">cargo</span><button type=\"button\" class=\"ds-ghost\"><span>複製</span></button></div>",
+      "description": "Commands printed straight onto the paper: one mono line (markup ships tabindex=0), an optional platform note, a 1px Strong Rule Grey rule, and a text-only copy switch.",
+      "html": "<div class=\"ds-cmdline\"><span class=\"ds-cmdline__text\" tabindex=\"0\">cargo build --release</span><span class=\"ds-cmdline__note\">cargo</span><button type=\"button\" class=\"ds-ghost\"><span>複製</span></button></div>",
       "css": ".ds-cmdline { display: flex; align-items: baseline; gap: 16px; padding-block: 0.5rem; border-bottom: var(--hair) solid var(--rule-strong); } .ds-cmdline__text { flex: 1; min-width: 0; font-family: var(--mono); font-size: 0.9375rem; font-weight: 500; color: var(--ink); white-space: pre; overflow-x: auto; } .ds-cmdline__note { flex: none; font-size: 0.75rem; color: var(--ink-3); letter-spacing: 0.04em; } .ds-ghost { flex: none; border: 0; background: none; box-shadow: none; padding: 0.15rem 0.25rem; color: var(--ink-3); text-decoration: underline; text-underline-offset: 0.2em; font-family: var(--sans); font-stretch: 108%; font-weight: 600; font-size: 0.75rem; letter-spacing: 0.11em; text-transform: uppercase; cursor: pointer; transition: color 140ms ease-out; } .ds-ghost:hover { color: var(--ink); } .ds-ghost:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; border-radius: 1px; } .ds-ghost[data-copied=\"true\"] { color: var(--blue); }"
     },
     {
@@ -924,7 +939,8 @@
       "Do hold every gap to the 8px unit: 112px between bands, 48px from a band head to its content, 24–32px inside groups.",
       "Do keep corners square, and express state as inversion (Graphite/Paper) or a punched white opening.",
       "Do honor reduced motion by settling the strip to its final state — drawn traces, visible marks, parked carriage — rather than suppressing the drawing.",
-      "Do theme the browser surfaces (selection, caret, scrollbars, focus ring) from the same palette; all four already ship themed."
+      "Do theme the browser surfaces (selection, caret, scrollbars, focus ring) from the same palette; all four already ship themed, and the ring turns Plate Blue on graphite.",
+      "Do name every landmark (`網站`, `文件章節`, `章節`, `本章內容`, `章節切換`) and give a scrollable region a tab stop only when it actually overflows — `initScrollers()` measures each command line and runlog body and flips `tabindex` between 0 and -1, so the keyboard never stops on a line that already fits."
     ],
     "donts": [
       "Don't carry text, borders or state on a rule, and don't use the rule greys as anything but hairline, tick, separator or scrollbar.",

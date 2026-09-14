@@ -230,9 +230,9 @@ def main():
             + esc("文件" if zh else "Docs")
             + '</h1><p class="band__intro">'
             + esc(
-                "八章：為什麼用它、怎麼裝、每個選項、每個結束代碼、每個平台差異。"
+                "為什麼用它、怎麼裝、每個選項、每個結束代碼、每個平台差異。"
                 if zh
-                else "Eight chapters: why, how to install, every option, every exit code, every platform difference."
+                else "Why, how to install, every option, every exit code, every platform difference."
             )
             + "</p></div></div>"
             '<nav class="logbook" aria-label="'

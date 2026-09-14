@@ -584,9 +584,9 @@ def build(lang, captures):
         + esc("文件" if zh else "Docs")
         + '</h2><p class="band__intro">'
         + (
-            "八章：為什麼用它、怎麼裝、每個選項、每個結束代碼、每個平台差異。"
+            "為什麼用它、怎麼裝、每個選項、每個結束代碼、每個平台差異。"
             if zh
-            else "Eight chapters: why, how to install, every option, every exit code, every platform difference."
+            else "Why, how to install, every option, every exit code, every platform difference."
         )
         + '</p></div></div><nav class="logbook" aria-label="'
         + ("文件章節" if zh else "Docs chapters")

@@ -124,13 +124,34 @@
     return Math.round(at * SWEEP_MS * 0.94);
   }
 
+  /* The pens draw into the chart's own box, not into the strip itself: the
+     labels are printed on chips at the strip's head and foot, and where the
+     strip stacks the sheet gives the chart a row of its own between them, so
+     the box that is measured can never be a box a chip sits on. On the wide
+     panel the wrapper is transparent to layout and the strip is the chart. */
+  function fieldFor(strip) {
+    var field = strip.querySelector(".strip__field");
+    if (field) return field;
+    field = document.createElement("div");
+    field.className = "strip__field";
+    strip.insertBefore(field, strip.firstChild);
+    return field;
+  }
+
   function drawStrip(strip, runs) {
     var key = strip.getAttribute("data-strip");
     var run = runs && runs[key];
     if (!run) return null;
 
-    var width = Math.max(320, Math.round(strip.clientWidth));
-    var height = Math.max(200, Math.round(strip.clientHeight));
+    var field = fieldFor(strip);
+    strip.classList.add("is-drawn");
+
+    /* The chart's box: where the sheet stacks, the field is a row of its own
+       and that row is what the pens are scaled to; on the wide panel the field
+       is not a box at all, and the strip is the chart, as it always was. */
+    var box = field.clientHeight > 0 ? field : strip;
+    var width = Math.max(320, Math.round(box.clientWidth));
+    var height = Math.max(200, Math.round(box.clientHeight));
     var geom = {
       top: Math.round(height * 0.16),
       bottom: Math.round(height * 0.9),
@@ -197,9 +218,9 @@
       node.style.opacity = "0";
     });
 
-    var old = strip.querySelector("svg.strip__svg");
-    if (old && old.parentNode === strip) strip.removeChild(old);
-    strip.insertBefore(svg, strip.firstChild);
+    var old = field.querySelector("svg.strip__svg");
+    if (old) field.removeChild(old);
+    field.appendChild(svg);
 
     return { svg: svg, traces: traces, carriage: carriage, geom: geom, width: width, reduced: prefersReducedMotion() };
   }

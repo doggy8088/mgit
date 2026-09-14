@@ -728,6 +728,16 @@ button {
   min-height: clamp(240px, 30vh, 320px);
 }
 
+/* The chart's own box, and the box the printed labels must stay out of. On the
+   wide panel it is not a box at all: the wrapper is transparent to layout, so
+   the drawing sits in the strip exactly as it always has. Where the labels
+   cannot stay clear of the chart, the sheet gives it a row between them (see
+   the sheet block at the width rules below), and that row is what the pens are
+   scaled to. */
+.strip__field {
+  display: contents;
+}
+
 .strip__svg {
   position: absolute;
   inset: 0;
@@ -1948,6 +1958,10 @@ button {
     padding-bottom: var(--s1);
   }
 
+  /* Stacked, the strip is a full-width sheet rather than a panel beside the
+     legend, and it is shorter than a panel's worth of labels: see the sheet
+     block below, which the stacked range shares. Without script there is no
+     chart, so the sheet keeps its old height and its printed chips. */
   .strip {
     min-height: 300px;
   }
@@ -1964,6 +1978,59 @@ button {
   .plate__row {
     grid-template-columns: 1fr;
     gap: var(--s1);
+  }
+}
+
+/* The strip's sheet, wherever the printed labels cannot stay clear of the
+   chart. Two ranges need it. Stacked under 901px the strip is a full-width
+   sheet whose caption and foot sit on the first and last lanes; on the
+   901–1279px panel the strip column is narrow enough that the foot wraps to two
+   rows, which leaves its vocabulary chip's top edge 16px inside the last lane.
+   Either way the sheet prints in three bands — caption, chart, foot — and the
+   chart is given a row of its own between them, the box the recorder measures,
+   so no chip can cover a lane. From 1280px up the panel's foot fits on one row
+   again and the sheet keeps the drawing and the pixels it has always had. */
+@media (max-width: 1279px) {
+  .strip.is-drawn {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    padding-block: var(--s2);
+  }
+
+  .strip.is-drawn .strip__caption {
+    order: 1;
+    position: static;
+    margin-inline: var(--s3);
+  }
+
+  .strip.is-drawn .strip__field {
+    order: 2;
+    display: block;
+    position: relative;
+    /* The chart's row: the sheet's slack lands here, so the labels stay at the
+       sheet's head and foot and the chart takes what is left. The floor is the
+       stacked sheet's own — 74% of it is the ruled band, so six lanes stand
+       ~31px apart on a phone, enough for the failure's excursion, its cross and
+       its exit code. */
+    flex: 1 1 auto;
+    min-height: clamp(250px, 38vw, 300px);
+    margin-top: var(--s2);
+  }
+
+  .strip.is-drawn .strip__foot {
+    order: 3;
+    position: static;
+    margin: var(--s2) var(--s3) 0;
+  }
+}
+
+/* On the panel the sheet does not grow: its row is the legend's height, and all
+   of the slack goes to the chart. The floor there is the phone's own row, which
+   still leaves the last lane 59px clear of the foot. */
+@media (min-width: 901px) and (max-width: 1279px) {
+  .strip.is-drawn .strip__field {
+    min-height: 250px;
   }
 }
 
@@ -2015,6 +2082,12 @@ button {
 
   .strip {
     min-height: 340px;
+  }
+
+  /* On a phone the sheet's own margin is the small step. */
+  .strip.is-drawn .strip__caption,
+  .strip.is-drawn .strip__foot {
+    margin-inline: var(--s2);
   }
 
   .head__inner {

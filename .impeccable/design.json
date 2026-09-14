@@ -828,9 +828,9 @@
         "purpose": "Carriage head and block travel left to right across the same 2400ms."
       },
       {
-        "name": "mark-fade",
-        "value": "260ms linear at 1968ms delay",
-        "purpose": "Flag, cross and exit-code ticks appear after 82% of the sweep."
+        "name": "mark-stamp",
+        "value": "opacity 260ms linear, delayed by stampDelay(x) = round((1 - (1 - fraction)^(1/3)) x 2400ms x 0.94), fraction = (x - left)/span",
+        "purpose": "A mark waits off the paper (inline opacity 0) and is stamped when the carriage passes its x, then stays for good; a mark with no data-stamp-x falls back to 1968ms (0.82 x SWEEP_MS). Measured: 678ms for the hero's cross, 698ms for its exit code, within a millisecond of the formula."
       },
       {
         "name": "carriage-fade",
@@ -863,9 +863,14 @@
         "purpose": "The theme is a material change, not an animation; only the keycap's background/colour transition (140ms ease-out) and its press (90ms) move."
       },
       {
+        "name": "print-settle",
+        "value": "beforeprint -> settle() for every drawn strip",
+        "purpose": "Printing never fires the IntersectionObserver, so a drawn page is settled - marks stamped, carriage parked - before it goes to paper."
+      },
+      {
         "name": "reduced-motion",
         "value": "0.001ms !important on animation and transition; JS settle()",
-        "purpose": "Reduced motion settles to the final state: traces drawn, marks visible, carriage parked and hidden; replay re-settles."
+        "purpose": "Reduced motion settles to the final state: traces drawn, marks stamped, carriage parked and hidden; replay re-settles, and beforeprint settles too."
       }
     ],
     "breakpoints": [
@@ -891,6 +896,16 @@
       {
         "name": "instrument-stack",
         "value": "900px"
+      },
+      {
+        "name": "strip-field",
+        "value": "1279/1280px",
+        "note": "At <=1279px the drawn strip becomes a three-band sheet (caption, chart, foot) with the chart in a row of its own; from 1280px the wrapper is display: contents and the strip is the chart, as it has always been. Crossing the pair is a deliberate step in trace scale: the field measures ~314px at 1279 and the whole 444.5px panel at 1280."
+      },
+      {
+        "name": "strip-field-panel",
+        "value": "(min-width: 901px) and (max-width: 1279px)",
+        "note": "The panel sheet does not grow: the chart row floors at 250px and the strip's height is still the legend's."
       },
       {
         "name": "compact",
@@ -1106,8 +1121,8 @@
       },
       {
         "name": "page-height",
-        "value": "desktop 8716px; mobile 12256px; hero h1 still one line at 1440",
-        "note": "At 1440 and 390 respectively."
+        "value": "desktop 8716px; mobile 12591px after the strip's sheet fix (12256 before); hero h1 still one line at 1440",
+        "note": "At 1440 and 390 respectively; the desktop height did not move."
       },
       {
         "name": "type-ladder",
@@ -1177,7 +1192,7 @@
       {
         "name": "theme-geometry",
         "value": "Both themes measure identical geometry across 388 leaf nodes; page heights 8716 / 12256 unchanged; the dark footer's hairline is inset 0 1px 0 rather than a border-top; the header went from 75.98 to exactly 76px (132 at 390)",
-        "note": "A border-top on the dark footer made the dark document one pixel taller and shifted the whole footer, so the hairline moved inside the box."
+        "note": "A border-top on the dark footer made the dark document one pixel taller and shifted the whole footer, so the hairline moved inside the box. The strip's sheet fix later moved the 390px page height to 12591; both themes remain identical."
       },
       {
         "name": "light-theme-pair-diff",
@@ -1210,6 +1225,31 @@
         "note": "Known and un-fixed: the difference is negligible and was left alone. Recorded as a defect the build carries, not as a design-system rule."
       },
       {
+        "name": "field-clearance",
+        "value": "Foot-top to the lowest lane baseline: 59-62px across 901 / 1024 (was -16.2 and -18.2 before the fix), 62-69px across 1100 / 1200 / 1279, 29-31px at >=1280 (unchanged)",
+        "note": "Where the chips cannot stay clear, the sheet prints caption / chart / foot and gives the chart a row of its own; the foot's two-row wrap used to sit 16px inside the last lane at 901-1279."
+      },
+      {
+        "name": "strip-390-sheet",
+        "value": "At 390px: strip 340 -> 517px, the chart's field 117-367px, lane baselines 172/203/234/265/296/327; the three chips and the field do not intersect; blocked ink per lane 0; the failed lane's visible alarm pixels 6 -> 969; drawn page height 12256 -> 12591px",
+        "note": "Before the fix the failure's cross and its exit 128 were completely covered on the phone; every lane now shows all of its ink."
+      },
+      {
+        "name": "strip-panel-parity",
+        "value": ">=1280: 1440 light, 1280 light and 1440 dark all mean|Δ| = 0, max Δ = 0, differing pixels 0 against the pre-fix render",
+        "note": "The wide panel keeps the drawing, the pixels and the geometry it has always had."
+      },
+      {
+        "name": "sheet-pass-axe",
+        "value": "380-1440px, both themes, zh and EN (plus 901 / 1024 re-checked): no horizontal overflow and no chip over a lane; axe at 390 / 901 / 1024 / 1100 / 1440 x light/dark: 0 violations",
+        "note": "Progressive enhancement: without script there is no field, and the sheet keeps its old height and printed chips."
+      },
+      {
+        "name": "mark-stamp-timings",
+        "value": "Hero cross 678ms, exit code 698ms (within 1ms of the formula); both still opacity 1 after the sweep; desktop.png and desktop-reduced-motion.png now bit-identical; hero peak alarm pixels 3946 -> 4136",
+        "note": "Before: sweep() set .mark and .tick to opacity 0 and never restored them, so the hero's ✗ and exit 128 vanished once the animation ended - while reduced motion still showed them. settle(), replay and beforeprint all restore opacity 1."
+      },
+      {
         "name": "localized-run-records",
         "value": "zh landing blob: each repository entry carries both detail and detail_en (30 CJK characters in the blob); EN landing blob: entries carry branch / ch / changes / code / detail / name / state only, with 0 CJK characters",
         "note": "landing.py localized_runs() drops detail_en and replaces detail with it for the English tree; the EN source tree scans clean of CJK outside the language switch and the copyright name."
@@ -1221,9 +1261,9 @@
       "name": "Strip Chart",
       "kind": "custom",
       "refersTo": "instrument-frame",
-      "description": "The instrument: three pens in two stroke weights (2.2px clean and dirty, 2.6px failed) on the chart-paper texture with lane dividers, drawn from the page's own run record; each language's page ships only its own record (the EN blob carries no Chinese data fields - landing.py localized_runs()). The strip is a paper object: after dark it re-declares the --sheet-* ramp and keeps this same ground.",
-      "html": "<div class=\"ds-strip\"><svg class=\"ds-strip__svg\" viewBox=\"0 0 320 120\" preserveAspectRatio=\"none\" role=\"presentation\" aria-hidden=\"true\" focusable=\"false\"><line x1=\"0\" y1=\"20\" x2=\"320\" y2=\"20\" class=\"ds-lane__rule\"/><line x1=\"0\" y1=\"60\" x2=\"320\" y2=\"60\" class=\"ds-lane__rule\"/><line x1=\"0\" y1=\"100\" x2=\"320\" y2=\"100\" class=\"ds-lane__rule\"/><path d=\"M 0 20 L 320 20\" class=\"ds-trace ds-trace--clean\"/><path d=\"M 0 60 C 10 60, 10 34, 24 34 L 60 34 C 74 34, 74 60, 88 60 L 320 60\" class=\"ds-trace ds-trace--dirty\"/><path d=\"M 0 100 C 120 100, 120 52, 140 52 L 170 52 C 182 52, 182 116, 200 116 C 226 116, 240 88, 262 96 C 286 100, 300 100, 320 100\" class=\"ds-trace ds-trace--failed\"/><g class=\"ds-mark--flag\"><path d=\"M 54 34 l 5 -5 l 0 10 z\"/></g><g class=\"ds-mark--cross\"><path d=\"M 164 94 L 176 106 M 176 94 L 164 106\"/></g><text x=\"180\" y=\"112\" class=\"ds-tick--alarm\">128</text></svg><p class=\"ds-strip__foot\"><span class=\"ds-vocab__word ds-vocab__word--clean\">乾淨</span><span class=\"ds-vocab__word ds-vocab__word--failed\">失敗</span><span class=\"ds-strip__exit\"><b>exit 128</b> · 6 repositories, 5 succeeded, 1 failed</span></p></div>",
-      "css": ".ds-strip { position: relative; min-height: 180px; background-color: var(--paper); background-image: repeating-linear-gradient(to bottom, var(--rule) 0 1px, transparent 1px 40px), url(\"assets/plates/chart-paper.jpg\"); background-size: auto, 1200px auto; border: var(--hair) solid var(--ink); padding: 8px; } /* dark: the strip re-declares the --sheet-* ramp and keeps this ground — the material never moves with the theme */ .ds-strip::before, .ds-strip::after { content: \"\"; position: absolute; top: 0; bottom: 0; width: 12px; pointer-events: none; background-image: repeating-linear-gradient(to bottom, var(--rule-strong) 0 1px, transparent 1px 40px); } .ds-strip::before { left: 0; } .ds-strip::after { right: 0; } .ds-strip__svg { position: absolute; inset: 0; width: 100%; height: 100%; } .ds-lane__rule { stroke: var(--rule-strong); stroke-width: 1; stroke-dasharray: 2 6; } .ds-trace { fill: none; stroke-linecap: round; stroke-linejoin: round; } .ds-trace--clean { stroke: var(--blue); stroke-width: 2.2; } .ds-trace--dirty { stroke: var(--ink); stroke-width: 2.2; } .ds-trace--failed { stroke: var(--alarm); stroke-width: 2.6; } .ds-mark--flag path { fill: var(--ink); } .ds-mark--cross path { fill: none; stroke: var(--alarm); stroke-width: 1.8; stroke-linecap: round; } .ds-tick--alarm { font-family: var(--mono); font-size: 12px; font-weight: 700; fill: var(--alarm); } .ds-strip__foot { position: absolute; left: 24px; right: 24px; bottom: 16px; display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin: 0; } .ds-vocab__word { font-family: var(--mono); font-size: 0.75rem; color: var(--ink-2); } .ds-vocab__word::before { content: \"\"; display: inline-block; width: 10px; height: 2px; margin-right: 0.45rem; vertical-align: 0.28em; background: var(--ink-3); } .ds-vocab__word--clean::before { background: var(--blue); } .ds-vocab__word--failed::before { background: var(--alarm); } .ds-strip__exit { font-family: var(--mono); font-size: 0.8125rem; color: var(--ink); } .ds-strip__exit b { font-weight: 700; }"
+      "description": "The instrument: three pens in two stroke weights (2.2px clean and dirty, 2.6px failed) on the chart-paper texture with lane dividers, drawn from the page's own run record; each language's page ships only its own record (the EN blob carries no Chinese data fields - landing.py localized_runs()). The strip is a paper object: after dark it re-declares the --sheet-* ramp and keeps this same ground. The pens draw into the chart's own box (.strip__field): the recorder creates it, adds .is-drawn, measures that box for the viewBox and falls back to the strip itself where the wrapper is display: contents (>=1280px, the panel it has always been). Where the printed chips cannot stay clear of a lane (<=1279px) the sheet prints in three bands - caption, chart, foot, all static - and gives the chart a row of its own; clearance measures 59-69px at <=1279px and no lane's ink is ever blocked.",
+      "html": "<div class=\"ds-strip\"><p class=\"ds-strip__caption\"><span class=\"ds-strip__run\">mgit pull</span><span class=\"ds-strip__meta\">main · 1 change</span></p><div class=\"ds-strip__field\"><svg class=\"ds-strip__svg\" viewBox=\"0 0 320 120\" preserveAspectRatio=\"none\" role=\"presentation\" aria-hidden=\"true\" focusable=\"false\"><line x1=\"0\" y1=\"20\" x2=\"320\" y2=\"20\" class=\"ds-lane__rule\"/><line x1=\"0\" y1=\"60\" x2=\"320\" y2=\"60\" class=\"ds-lane__rule\"/><line x1=\"0\" y1=\"100\" x2=\"320\" y2=\"100\" class=\"ds-lane__rule\"/><path d=\"M 0 20 L 320 20\" class=\"ds-trace ds-trace--clean\"/><path d=\"M 0 60 C 10 60, 10 34, 24 34 L 60 34 C 74 34, 74 60, 88 60 L 320 60\" class=\"ds-trace ds-trace--dirty\"/><path d=\"M 0 100 C 120 100, 120 52, 140 52 L 170 52 C 182 52, 182 116, 200 116 C 226 116, 240 88, 262 96 C 286 100, 300 100, 320 100\" class=\"ds-trace ds-trace--failed\"/><g class=\"ds-mark--flag\"><path d=\"M 54 34 l 5 -5 l 0 10 z\"/></g><g class=\"ds-mark--cross\"><path d=\"M 164 94 L 176 106 M 176 94 L 164 106\"/></g><text x=\"180\" y=\"112\" class=\"ds-tick--alarm\">128</text></svg></div><div class=\"ds-strip__foot\"><p class=\"ds-vocab\"><span class=\"ds-vocab__word ds-vocab__word--clean\">乾淨</span><span class=\"ds-vocab__word ds-vocab__word--failed\">失敗</span></p><p class=\"ds-strip__exit\"><b>exit 128</b> · 6 repositories, 5 succeeded, 1 failed</p></div></div>",
+      "css": ".ds-strip { position: relative; min-height: 180px; background-color: var(--paper); background-image: repeating-linear-gradient(to bottom, var(--rule) 0 1px, transparent 1px 40px), url(\"assets/plates/chart-paper.jpg\"); background-size: auto, 1200px auto; border: var(--hair) solid var(--ink); padding: 8px; } /* dark: the strip re-declares the --sheet-* ramp and keeps this ground — the material never moves with the theme */ .ds-strip::before, .ds-strip::after { content: \"\"; position: absolute; top: 0; bottom: 0; width: 12px; pointer-events: none; background-image: repeating-linear-gradient(to bottom, var(--rule-strong) 0 1px, transparent 1px 40px); } .ds-strip::before { left: 0; } .ds-strip::after { right: 0; } /* the chart's own box: what the recorder measures and scales the pens to. Transparent to layout where the chips already stay clear (>=1280px); where they cannot, the sheet media queries below give it a row. */ .ds-strip__field { display: contents; } .ds-strip__caption { position: absolute; left: 24px; top: 16px; display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; } .ds-strip__run { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.04em; background: var(--ink); color: var(--paper); padding: 0.2rem 0.45rem; } .ds-strip__meta { font-size: 0.75rem; letter-spacing: 0.02em; color: var(--ink-3); font-weight: 600; background-color: var(--paper); background-image: url(\"assets/plates/paper-fibre.jpg\"); background-size: 900px auto; padding: 0.1rem 0.3rem; } .ds-strip__svg { position: absolute; inset: 0; width: 100%; height: 100%; } .ds-lane__rule { stroke: var(--rule-strong); stroke-width: 1; stroke-dasharray: 2 6; } .ds-trace { fill: none; stroke-linecap: round; stroke-linejoin: round; } .ds-trace--clean { stroke: var(--blue); stroke-width: 2.2; } .ds-trace--dirty { stroke: var(--ink); stroke-width: 2.2; } .ds-trace--failed { stroke: var(--alarm); stroke-width: 2.6; } .ds-mark--flag path { fill: var(--ink); } .ds-mark--cross path { fill: none; stroke: var(--alarm); stroke-width: 1.8; stroke-linecap: round; } .ds-tick--alarm { font-family: var(--mono); font-size: 12px; font-weight: 700; fill: var(--alarm); } .ds-strip__foot { position: absolute; left: 24px; right: 24px; bottom: 16px; display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin: 0; } .ds-vocab { display: flex; flex-wrap: wrap; gap: 0.35rem 16px; align-items: baseline; margin: 0; background-color: var(--paper); background-image: url(\"assets/plates/paper-fibre.jpg\"); background-size: 900px auto; padding: 0.1rem 0.3rem; } .ds-vocab__word { font-family: var(--mono); font-size: 0.75rem; color: var(--ink-2); } .ds-vocab__word::before { content: \"\"; display: inline-block; width: 10px; height: 2px; margin-right: 0.45rem; vertical-align: 0.28em; background: var(--ink-3); } .ds-vocab__word--clean::before { background: var(--blue); } .ds-vocab__word--failed::before { background: var(--alarm); } .ds-strip__exit { font-family: var(--mono); font-size: 0.8125rem; color: var(--ink); margin: 0; background-color: var(--paper); background-image: url(\"assets/plates/paper-fibre.jpg\"); background-size: 900px auto; padding: 0.1rem 0.3rem; } .ds-strip__exit b { font-weight: 700; } @media (max-width: 1279px) { .ds-strip.is-drawn { display: flex; flex-direction: column; min-height: 0; padding-block: 16px; } .ds-strip.is-drawn .ds-strip__caption { order: 1; position: static; margin-inline: 24px; } .ds-strip.is-drawn .ds-strip__field { order: 2; display: block; position: relative; flex: 1 1 auto; min-height: clamp(250px, 38vw, 300px); margin-top: 16px; } .ds-strip.is-drawn .ds-strip__foot { order: 3; position: static; margin: 16px 24px 0; } } @media (min-width: 901px) and (max-width: 1279px) { .ds-strip.is-drawn .ds-strip__field { min-height: 250px; } } @media (max-width: 620px) { .ds-strip.is-drawn .ds-strip__caption, .ds-strip.is-drawn .ds-strip__foot { margin-inline: 16px; } } /* 1279 -> 1280 is a deliberate step: the trace scale changes once, because the field measures ~314px at 1279 and the whole panel at 1280. */"
     },
     {
       "name": "Punched Window",
@@ -1358,7 +1398,7 @@
       "On paper, commands are printed lines (`.cmdline` with a text-only copy switch) and only a chapter's own action keeps the punched window — white on paper, and after dark the sheet itself, standing on graphite.",
       "A margin index holds the chapter's own sections beside the text at ≥1280px (sticky, 232px) and as a compact list above the prose below that.",
       "Square corners throughout; hierarchy is rule weight (1px hair, 2px structure) and printed marks.",
-      "One authored moment: the carriage sweep that draws the traces in 2400ms, with a replay control and a reduced-motion settle.",
+      "One authored moment: the carriage sweep that draws the traces in 2400ms and stamps each mark as the pen reaches it, with a replay control, a reduced-motion settle and a print settle.",
       "Three type voices: Archivo (variable width) for lettering and text, \"mgit Display\" (a Noto Sans TC subset) for CJK display, JetBrains Mono for data."
     ],
     "rules": [
@@ -1418,6 +1458,11 @@
         "section": "layout"
       },
       {
+        "name": "The Clear-Field Rule",
+        "body": "Labels and pens never share a surface. The strip's 12–13px chips print in bands above and below the chart's own box — the `.strip__field` the recorder measures and scales the pens to — and where the sheet cannot keep them clear (stacked under 901px, and on the panel's narrow 901–1279px column where the foot wraps to two rows) it gives the chart a row of its own rather than letting a chip sit on a lane. The measure is clearance, not luck: 59–69px at ≤1279px, 0 blocked ink in every lane at 390px, and ≥1280 untouched at 29–31px.",
+        "section": "layout"
+      },
+      {
         "name": "The Shadow-Vocabulary Rule",
         "body": "The depth vocabulary is these five effects, full stop — one of them (the keycap) in two states. A new shadow needs a printing reason — a lifted sheet, a seated plate, a punched hole — and decoration is not one; the language switch's 2px inset underline is a state mark, not a sixth depth.",
         "section": "elevation & depth"
@@ -1451,7 +1496,9 @@
       "Do keep commands, paths, repository names, exit codes, plate terms and spec tables in JetBrains Mono; keep prose in Archivo.",
       "Do hold every gap to the 8px unit: 112px between bands, 48px from a band head to its content, 24–32px inside groups.",
       "Do keep corners square, and express state as inversion (Graphite/Paper) or a punched white opening.",
-      "Do honor reduced motion by settling the strip to its final state — drawn traces, visible marks, parked carriage — rather than suppressing the drawing.",
+      "Do keep the printed labels and the drawing in separate space: the recorder draws into the chart's own box (`.strip__field`) and scales the pens to that box, and the sheet gives the chart a row of its own wherever the caption and foot chips would sit on a lane (≤1279px). The measure is clearance, not luck — 59–69px at ≤1279px, 0 blocked ink per lane at 390px, ≥1280 untouched.",
+      "Do let the pen stamp its own marks: a flag, cross or exit code waits off the paper and lands when the carriage reaches its x (the sweep's own ease, inverted), then stays there — and settle them for reduced motion, replay and `beforeprint`, never sweep them back off the sheet.",
+      "Do honor reduced motion by settling the strip to its final state — drawn traces, visible marks, parked carriage — rather than suppressing the drawing, and settle before print, where the observer never fires.",
       "Do theme the browser surfaces (selection, caret, scrollbars, focus ring) from the same palette; all four already ship themed, and the ring turns Plate Blue on graphite — light 5.59 worst case, dark 5.66, where `#0f5c86` would be 2.40.",
       "Do name every landmark (`網站`, `文件章節`, `章節`, `本章內容`, `章節切換`) and give a scrollable region a tab stop only when it actually overflows — `initScrollers()` measures each command line and runlog body and flips `tabindex` between 0 and -1, so the keyboard never stops on a line that already fits."
     ],

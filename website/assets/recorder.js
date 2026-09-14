@@ -268,9 +268,19 @@
   function initStrips() {
     var runs = readRuns();
     if (!runs) return;
+    var drawn = [];
+
+    // A sheet of paper carries its marks whether or not anyone watched the pen
+    // draw them: printing never triggers the sweep, so every drawn strip is
+    // settled (marks stamped, carriage parked) before the page goes to paper.
+    window.addEventListener("beforeprint", function () {
+      drawn.forEach(settle);
+    });
+
     document.querySelectorAll("[data-strip]").forEach(function (strip) {
       var ctx = drawStrip(strip, runs);
       if (!ctx) return;
+      drawn.push(ctx);
 
       var replay = strip.querySelector("[data-replay]");
       if (replay) {

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-09-14T01:30:00+08:00",
+  "generatedAt": "2026-09-14T18:45:00+08:00",
   "title": "Design System: mgit website",
   "extensions": {
     "colorMeta": {
@@ -8,6 +8,7 @@
         "role": "neutral",
         "displayName": "Chart Paper",
         "canonical": "#f5f6f4",
+        "dark": "#191a1d",
         "tonalRamp": [
           "#0b0b0a",
           "#262725",
@@ -18,12 +19,13 @@
           "#d3d4d3",
           "#eeefed"
         ],
-        "usage": "Every page ground; paper-chart and paper-log repaint it over paper-fibre.jpg, whose grain is laid on this exact tone."
+        "usage": "The light page ground and the stock every paper object is made of. paper-chart and paper-log repaint it over paper-fibre.jpg, whose grain is laid on this exact tone; in dark the same two classes repaint the desk instead — --plate under graphite-plate.jpg."
       },
       "paper-deep": {
         "role": "neutral",
         "displayName": "Deep Paper",
         "canonical": "#eceeea",
+        "dark": "#101114",
         "tonalRamp": [
           "#0a0c09",
           "#262724",
@@ -34,7 +36,7 @@
           "#d3d5d1",
           "#edefeb"
         ],
-        "usage": "Pressed state of the copy switch."
+        "usage": "Pressed state of the copy switch in light; #101114 is the pressed step on the dark desk."
       },
       "rule-hair": {
         "role": "tertiary",
@@ -56,6 +58,7 @@
         "role": "tertiary",
         "displayName": "Rule Grey",
         "canonical": "#d7dcda",
+        "dark": "rgba(237, 237, 232, 0.1)",
         "tonalRamp": [
           "#090c0b",
           "#242726",
@@ -66,12 +69,13 @@
           "#d0d5d3",
           "#ebf0ee"
         ],
-        "usage": "The workhorse separator: the strip’s 40px whisper line, dotted 1px hairlines (legend, docs nav, margin index, table rows, runlog scroll hint), the scrollbar track."
+        "usage": "The workhorse separator: the strip’s 40px whisper line, dotted 1px hairlines (legend, docs nav, margin index, table rows, runlog scroll hint), the scrollbar track; in dark it re-resolves to the plate's 0.1-alpha ivory hairline (--plate-rule-soft)."
       },
       "rule-strong": {
         "role": "tertiary",
         "displayName": "Strong Rule Grey",
         "canonical": "#bcc4c2",
+        "dark": "rgba(237, 237, 232, 0.2)",
         "tonalRamp": [
           "#070c0b",
           "#222826",
@@ -82,12 +86,13 @@
           "#ced6d4",
           "#e8f1ee"
         ],
-        "usage": "One step louder: the strip’s lane dividers (dashed 2/6), the strip’s edge ticks, the rule under a command line, and the scrollbar thumb."
+        "usage": "One step louder: the strip’s lane dividers (dashed 2/6), the strip’s edge ticks, the rule under a command line, and the scrollbar thumb; in dark it re-resolves to the plate's 0.2-alpha ivory hairline (--plate-rule)."
       },
       "window": {
         "role": "neutral",
         "displayName": "Punched White",
         "canonical": "#ffffff",
+        "dark": "#22242a",
         "tonalRamp": [
           "#0b0b0b",
           "#262626",
@@ -98,12 +103,13 @@
           "#d4d4d4",
           "#eeeeee"
         ],
-        "usage": "The only white: punched windows on paper, the runlog body, callouts, the replay and language switches, the hovered docs row and the current nav item."
+        "usage": "The only white: punched windows on paper, the runlog body, callouts, the replay and language switches, the hovered docs row and the current nav item. In dark it is --plate-2 — the flat punches and keycaps — while the runlog and the official install window take --sheet-window + paper-fibre, so the page's brightest object is the primary action."
       },
       "ink": {
         "role": "neutral",
         "displayName": "Graphite Ink",
         "canonical": "#15161a",
+        "dark": "#edede8",
         "tonalRamp": [
           "#0a0b0f",
           "#25262a",
@@ -114,12 +120,13 @@
           "#d2d4da",
           "#edeef4"
         ],
-        "usage": "Body and headings, wordmark, 1px frames, run tag, dirty pen, flag mark, dirty vocabulary mark."
+        "usage": "Body and headings, wordmark, 1px frames, run tag, dirty pen, flag mark, dirty vocabulary mark; in dark the desk's ink prints light (Plate Ivory) and the strip re-declares the sheet ink, so the pens keep their own three."
       },
       "ink-2": {
         "role": "neutral",
         "displayName": "Graphite 2",
         "canonical": "#4b4d53",
+        "dark": "#c9c7bf",
         "tonalRamp": [
           "#090b10",
           "#24262c",
@@ -130,12 +137,13 @@
           "#d2d4db",
           "#eceef6"
         ],
-        "usage": "The second voice: hero lede, band intros, case line, instrument note, callout and procedure prose, table heads, rule-list items, band footnotes, docs-row descriptions, docs nav and margin-index items, the language switch's idle link, the vocabulary word default and the interrupted/no-repos swatch, and the runlog summary line. The dirty state word uses it on paper (<=620px) only; on the graphite legend (>=621px) dirty prints in Plate Ivory."
+        "usage": "The second voice: hero lede, band intros, case line, instrument note, callout and procedure prose, table heads, rule-list items, band footnotes, docs-row descriptions, docs nav and margin-index items, the language switch's idle link, the vocabulary word default and the interrupted/no-repos swatch, and the runlog summary line. The dirty state word uses it on paper (<=620px) only; on the graphite legend (>=621px) dirty prints in Plate Ivory. In dark it re-resolves to #c9c7bf."
       },
       "ink-3": {
         "role": "neutral",
         "displayName": "Graphite 3",
         "canonical": "#616369",
+        "dark": "#aeaca4",
         "tonalRamp": [
           "#0a0b0f",
           "#25262b",
@@ -146,12 +154,13 @@
           "#d2d4db",
           "#eceef5"
         ],
-        "usage": "12px chrome and quiet lines: labels, captions, lane and chapter numbers, spec stamps, the command-line note, dimmed vocabulary words, the runlog's rule and quiet lines, the strip's ticks. Set against the measured darkest grain (226/255, not a ±2σ estimate): 4.64:1 there, 5.51:1 on the token paper."
+        "usage": "12px chrome and quiet lines: labels, captions, lane and chapter numbers, spec stamps, the command-line note, dimmed vocabulary words, the runlog's rule and quiet lines, the strip's ticks. Set against the measured darkest grain (226/255, not a ±2σ estimate): 4.64:1 there, 5.51:1 on the token paper. In dark it re-resolves to Plate Dim #aeaca4, measured 5.39 against the desk's lightest grain (52/255)."
       },
       "blue": {
         "role": "primary",
         "displayName": "Link Blue",
         "canonical": "#0f5c86",
+        "dark": "#7fb6d6",
         "tonalRamp": [
           "#000d18",
           "#022a40",
@@ -162,12 +171,13 @@
           "#aadbff",
           "#dff1ff"
         ],
-        "usage": "Links, 2px focus outline, the clean pen (2.2px), the clean swatch, current-chapter hover labels."
+        "usage": "Links, 2px focus outline, the clean pen (2.2px), the clean swatch, current-chapter hover labels; in dark the desk's --blue is Plate Blue #7fb6d6, because #0f5c86 measures 2.40:1 on graphite (Plate Blue measures 5.58 against the desk's lightest grain)."
       },
       "blue-deep": {
         "role": "primary",
         "displayName": "Deep Link Blue",
         "canonical": "#0a3f5c",
+        "dark": "#a5cfe6",
         "tonalRamp": [
           "#000d17",
           "#012a40",
@@ -178,12 +188,13 @@
           "#abdbfd",
           "#dff2ff"
         ],
-        "usage": "Link hover on paper surfaces."
+        "usage": "Link hover on paper surfaces; in dark it re-resolves to Plate Blue Deep #a5cfe6."
       },
       "alarm": {
         "role": "secondary",
         "displayName": "Alarm Red",
         "canonical": "#b01b1b",
+        "dark": "#ea9793",
         "tonalRamp": [
           "#1f0001",
           "#4e0405",
@@ -194,7 +205,7 @@
           "#fec4bc",
           "#fee9e6"
         ],
-        "usage": "Failure only: failed pen (2.6px), cross mark, exit-code tick, failing runlog lines, the failed state word (Alarm on paper, Plate Alarm on the graphite legend). Its two non-failure appearances are pointers, not meaning: the text caret and the current docs chapter square."
+        "usage": "Failure only: failed pen (2.6px), cross mark, exit-code tick, failing runlog lines, the failed state word (Alarm on paper, Plate Alarm on the graphite legend). Its two non-failure appearances are pointers, not meaning: the text caret and the current docs chapter square. In dark the desk's failure ink is Plate Alarm #ea9793 (5.45 against the desk's lightest grain)."
       },
       "plate": {
         "role": "neutral",
@@ -210,7 +221,7 @@
           "#d3d4d8",
           "#edeef3"
         ],
-        "usage": "The dark engraved object (plates and footer); graphite-plate.jpg carries its grain laid on this exact tone, as do the lane legend, the graphite install window and the runlog bar."
+        "usage": "The dark engraved object (plates and footer) in light; in dark the desk itself — body background-color plus graphite-plate.jpg. graphite-plate.jpg carries its grain laid on this exact tone, as do the lane legend, the graphite install window and the runlog bar."
       },
       "plate-2": {
         "role": "neutral",
@@ -226,12 +237,13 @@
           "#d1d4dc",
           "#ebeef7"
         ],
-        "usage": "Declared in the plate family; no shipped rule spends it."
+        "usage": "The dark theme's panel step — legend, plate, footer and runlog bar on graphite-plate-2.jpg (1.12:1 over the desk, the same separation the white window has over paper) — and the flat fill of every punch and keycap (σ 0)."
       },
       "plate-ink": {
         "role": "neutral",
         "displayName": "Plate Ivory",
         "canonical": "#edede8",
+        "dark": "#edede8",
         "tonalRamp": [
           "#0b0b08",
           "#272723",
@@ -248,6 +260,7 @@
         "role": "neutral",
         "displayName": "Plate Dim",
         "canonical": "#a3a199",
+        "dark": "#aeaca4",
         "tonalRamp": [
           "#0d0b06",
           "#282620",
@@ -258,12 +271,13 @@
           "#d6d4cc",
           "#f1efe6"
         ],
-        "usage": "Plate spec stamps, figure captions, footer group titles and colophon; the legend's chrome, its clean word and the runlog bar's meta."
+        "usage": "Plate spec stamps, figure captions, footer group titles and colophon; the legend's chrome, its clean word and the runlog bar's meta. Lifted in dark to #aeaca4 because the panel moved up a step: 4.06 against plate-2's lightest grain before, 4.62 after."
       },
       "plate-blue": {
         "role": "neutral",
         "displayName": "Plate Blue",
         "canonical": "#7fb6d6",
+        "dark": "#7fb6d6",
         "tonalRamp": [
           "#000d16",
           "#032a3d",
@@ -274,12 +288,13 @@
           "#a5ddfe",
           "#def2ff"
         ],
-        "usage": "Links inside plates and the footer; hovers to the literal #a5cfe6."
+        "usage": "Links inside plates and the footer, hovering to --plate-blue-deep #a5cfe6; in dark also the desk's own --blue, the focus ring on graphite (5.66 worst case) and the plate link hover."
       },
       "plate-alarm": {
         "role": "neutral",
         "displayName": "Plate Alarm",
         "canonical": "#e58a86",
+        "dark": "#ea9793",
         "tonalRamp": [
           "#1f0002",
           "#4e030b",
@@ -290,19 +305,389 @@
           "#fec3bf",
           "#fee9e7"
         ],
-        "usage": "The failed state word on a graphite legend (.legend__state[data-state=\"failed\"])."
+        "usage": "The failed state word on a graphite legend (.legend__state[data-state=\"failed\"]). Lifted in dark to #ea9793 for the plate-2 step (4.67 against its lightest grain)."
       },
       "plate-rule": {
         "role": "neutral",
         "displayName": "Plate Hairline",
         "canonical": "rgba(237, 237, 232, 0.2)",
-        "usage": "Engraved hairlines at 0.2 alpha: legend head rule, plate head rule, spec-table header rule, the graphite window's switch border and scrollbar, and the footer colophon rule."
+        "usage": "Engraved hairlines at 0.2 alpha: legend head rule, plate head rule, spec-table header rule, the graphite window's switch border and scrollbar, and the footer colophon rule; in dark it is the desk's --rule-strong and the panel's own border step."
       },
       "plate-rule-soft": {
         "role": "neutral",
         "displayName": "Plate Hairline Soft",
         "canonical": "rgba(237, 237, 232, 0.1)",
-        "usage": "Interior rules at 0.1 alpha: legend row rules, the plate's interior rows, and spec-table row rules."
+        "usage": "Interior rules at 0.1 alpha: legend row rules, the plate's interior rows, and spec-table row rules; in dark it is the desk's --rule and the footer's inset top hairline."
+      },
+      "sheet": {
+        "role": "neutral",
+        "displayName": "Sheet Stock",
+        "canonical": "#f5f6f4",
+        "tonalRamp": [
+          "#0b0b0a",
+          "#262725",
+          "#444544",
+          "#656665",
+          "#888988",
+          "#adaeac",
+          "#d3d4d3",
+          "#eeefed"
+        ],
+        "usage": "The paper objects' ramp: the same values in both themes, re-declared on the strip, the runlog and the official install window in dark. --paper is an alias of it in light."
+      },
+      "sheet-deep": {
+        "role": "neutral",
+        "displayName": "Sheet Deep",
+        "canonical": "#eceeea",
+        "tonalRamp": [
+          "#0a0c09",
+          "#262724",
+          "#444642",
+          "#656763",
+          "#888a86",
+          "#adafab",
+          "#d3d5d1",
+          "#edefeb"
+        ],
+        "usage": "The paper objects' pressed step; alias --paper-deep in light."
+      },
+      "sheet-window": {
+        "role": "neutral",
+        "displayName": "Sheet Window",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#262626",
+          "#454545",
+          "#666666",
+          "#898989",
+          "#aeaeae",
+          "#d4d4d4",
+          "#eeeeee"
+        ],
+        "usage": "The paper objects' white: the runlog body and, after dark, the official install window — the page's brightest object."
+      },
+      "sheet-rule": {
+        "role": "tertiary",
+        "displayName": "Sheet Rule",
+        "canonical": "#d7dcda",
+        "tonalRamp": [
+          "#090c0b",
+          "#242726",
+          "#424644",
+          "#636765",
+          "#868a88",
+          "#aaafad",
+          "#d0d5d3",
+          "#ebf0ee"
+        ],
+        "usage": "The paper objects' hairline; alias --rule in light."
+      },
+      "sheet-rule-strong": {
+        "role": "tertiary",
+        "displayName": "Sheet Rule Strong",
+        "canonical": "#bcc4c2",
+        "tonalRamp": [
+          "#070c0b",
+          "#222826",
+          "#404745",
+          "#616866",
+          "#838b89",
+          "#a8b0ae",
+          "#ced6d4",
+          "#e8f1ee"
+        ],
+        "usage": "The paper objects' heavier hairline (lane dividers, edge ticks, command rule); alias --rule-strong in light."
+      },
+      "sheet-ink": {
+        "role": "neutral",
+        "displayName": "Sheet Ink",
+        "canonical": "#15161a",
+        "tonalRamp": [
+          "#0a0b0f",
+          "#25262a",
+          "#444549",
+          "#64666b",
+          "#87898e",
+          "#acaeb3",
+          "#d2d4da",
+          "#edeef4"
+        ],
+        "usage": "The paper objects' text ink — measured 13.94 against the worst grain of their own stock."
+      },
+      "sheet-ink-2": {
+        "role": "neutral",
+        "displayName": "Sheet Ink 2",
+        "canonical": "#4b4d53",
+        "tonalRamp": [
+          "#090b10",
+          "#24262c",
+          "#43454b",
+          "#64666c",
+          "#878990",
+          "#abaeb5",
+          "#d2d4db",
+          "#eceef6"
+        ],
+        "usage": "The paper objects' second voice; 6.51 against the worst grain."
+      },
+      "sheet-ink-3": {
+        "role": "neutral",
+        "displayName": "Sheet Ink 3",
+        "canonical": "#616369",
+        "tonalRamp": [
+          "#0a0b0f",
+          "#25262b",
+          "#43454a",
+          "#64666c",
+          "#87898f",
+          "#abaeb4",
+          "#d2d4db",
+          "#eceef5"
+        ],
+        "usage": "The paper objects' quiet chrome; 4.63 against the worst grain, and 4.761 on the strip's paper-fibre chips after the chip fix."
+      },
+      "sheet-blue": {
+        "role": "primary",
+        "displayName": "Sheet Blue",
+        "canonical": "#0f5c86",
+        "tonalRamp": [
+          "#000d18",
+          "#022a40",
+          "#064a6e",
+          "#266d98",
+          "#4d91be",
+          "#72b6e5",
+          "#aadbff",
+          "#dff1ff"
+        ],
+        "usage": "The paper objects' action ink: the clean pen, the sheet's links and its focus ring; 5.59 against the worst grain."
+      },
+      "sheet-blue-deep": {
+        "role": "primary",
+        "displayName": "Sheet Blue Deep",
+        "canonical": "#0a3f5c",
+        "tonalRamp": [
+          "#000d17",
+          "#012a40",
+          "#184a67",
+          "#3c6c8b",
+          "#5f90b1",
+          "#83b5d7",
+          "#abdbfd",
+          "#dff2ff"
+        ],
+        "usage": "The paper objects' link hover."
+      },
+      "sheet-alarm": {
+        "role": "secondary",
+        "displayName": "Sheet Alarm",
+        "canonical": "#b01b1b",
+        "tonalRamp": [
+          "#1f0001",
+          "#4e0405",
+          "#840a0d",
+          "#b82522",
+          "#e25147",
+          "#fb887b",
+          "#fec4bc",
+          "#fee9e6"
+        ],
+        "usage": "The paper objects' failure ink: the failed pen, the cross, the exit tick, the failing line, the failed word and the caret; 5.36 against the worst grain."
+      },
+      "sheet-select": {
+        "role": "neutral",
+        "displayName": "Sheet Selection",
+        "canonical": "#dce7ee",
+        "tonalRamp": [
+          "#050c11",
+          "#1f282d",
+          "#3d464c",
+          "#5e686e",
+          "#818b91",
+          "#a5b0b6",
+          "#cbd6dd",
+          "#e5f0f7"
+        ],
+        "usage": "The paper objects' selection wash; --select aliases it in light."
+      },
+      "select": {
+        "role": "neutral",
+        "displayName": "Selection Wash",
+        "canonical": "#dce7ee",
+        "dark": "#14374c",
+        "tonalRamp": [
+          "#050c11",
+          "#1f282d",
+          "#3d464c",
+          "#5e686e",
+          "#818b91",
+          "#a5b0b6",
+          "#cbd6dd",
+          "#e5f0f7"
+        ],
+        "usage": "::selection on paper: link blue on the sheet, and in dark the same blue on graphite (#14374c) under the desk's ink."
+      },
+      "plate-body": {
+        "role": "neutral",
+        "displayName": "Plate Body",
+        "canonical": "#cfcdc6",
+        "tonalRamp": [
+          "#0c0b07",
+          "#282621",
+          "#47453f",
+          "#686660",
+          "#8b8983",
+          "#b0aea7",
+          "#d6d4cd",
+          "#f0eee7"
+        ],
+        "usage": "The plate's long-text step: row definitions and footer lines (formerly the literal #cfcdc6)."
+      },
+      "plate-cell": {
+        "role": "neutral",
+        "displayName": "Plate Cell",
+        "canonical": "#d6d4cd",
+        "tonalRamp": [
+          "#0c0b07",
+          "#282621",
+          "#47453f",
+          "#686660",
+          "#8b8983",
+          "#b0aea7",
+          "#d6d4cd",
+          "#f0eee7"
+        ],
+        "usage": "The spec table's cells (formerly the literal #d6d4cd)."
+      },
+      "plate-blue-deep": {
+        "role": "neutral",
+        "displayName": "Plate Blue Deep",
+        "canonical": "#a5cfe6",
+        "dark": "#a5cfe6",
+        "tonalRamp": [
+          "#000d18",
+          "#002b3c",
+          "#234a5d",
+          "#456c80",
+          "#678fa5",
+          "#8bb5cb",
+          "#b1dbf3",
+          "#dcf2ff"
+        ],
+        "usage": "The plate link hover (formerly the literal #a5cfe6) and, in dark, --blue-deep on the desk."
+      },
+      "paper-dark": {
+        "role": "neutral",
+        "displayName": "Graphite Desk",
+        "canonical": "#191a1d",
+        "theme": "dark",
+        "darkOf": "paper",
+        "usage": "The dark desk's body ground, under graphite-plate.jpg (σ 4.68)."
+      },
+      "paper-deep-dark": {
+        "role": "neutral",
+        "displayName": "Graphite Desk Pressed",
+        "canonical": "#101114",
+        "theme": "dark",
+        "darkOf": "paper-deep",
+        "usage": "The pressed step on the dark desk (switch and theme keycap hover)."
+      },
+      "rule-dark": {
+        "role": "tertiary",
+        "displayName": "Desk Hairline",
+        "canonical": "rgba(237, 237, 232, 0.1)",
+        "theme": "dark",
+        "darkOf": "rule",
+        "usage": "The desk's interior hairline, resolved from --plate-rule-soft."
+      },
+      "rule-strong-dark": {
+        "role": "tertiary",
+        "displayName": "Desk Hairline Strong",
+        "canonical": "rgba(237, 237, 232, 0.2)",
+        "theme": "dark",
+        "darkOf": "rule-strong",
+        "usage": "The desk's structural hairline, resolved from --plate-rule."
+      },
+      "window-dark": {
+        "role": "neutral",
+        "displayName": "Desk Punch",
+        "canonical": "#22242a",
+        "theme": "dark",
+        "darkOf": "window",
+        "usage": "Flat punched windows, keycaps and the replay button on the dark desk (σ 0), and the panel step --plate-2."
+      },
+      "ink-dark": {
+        "role": "neutral",
+        "displayName": "Desk Ink",
+        "canonical": "#edede8",
+        "theme": "dark",
+        "darkOf": "ink",
+        "usage": "The desk's text ink, resolved from --plate-ink; 10.43 against the desk's lightest grain (52/255)."
+      },
+      "ink-2-dark": {
+        "role": "neutral",
+        "displayName": "Desk Ink 2",
+        "canonical": "#c9c7bf",
+        "theme": "dark",
+        "darkOf": "ink-2",
+        "usage": "The desk's second voice; 7.24 against the desk's lightest grain."
+      },
+      "ink-3-dark": {
+        "role": "neutral",
+        "displayName": "Desk Ink 3",
+        "canonical": "#aeaca4",
+        "theme": "dark",
+        "darkOf": "ink-3",
+        "usage": "The desk's quiet chrome, resolved from the dark --plate-dim; 5.39 against the desk's lightest grain."
+      },
+      "blue-dark": {
+        "role": "primary",
+        "displayName": "Desk Link Blue",
+        "canonical": "#7fb6d6",
+        "theme": "dark",
+        "darkOf": "blue",
+        "usage": "The desk's links, focus ring and clean pen swatch, resolved from --plate-blue; 5.58 against the desk's lightest grain."
+      },
+      "blue-deep-dark": {
+        "role": "primary",
+        "displayName": "Desk Link Blue Deep",
+        "canonical": "#a5cfe6",
+        "theme": "dark",
+        "darkOf": "blue-deep",
+        "usage": "The desk's link hover, resolved from --plate-blue-deep."
+      },
+      "alarm-dark": {
+        "role": "secondary",
+        "displayName": "Desk Alarm",
+        "canonical": "#ea9793",
+        "theme": "dark",
+        "darkOf": "alarm",
+        "usage": "The desk's failure ink, resolved from --plate-alarm; 5.45 against the desk's lightest grain."
+      },
+      "plate-dim-dark": {
+        "role": "neutral",
+        "displayName": "Plate Dim (lifted)",
+        "canonical": "#aeaca4",
+        "theme": "dark",
+        "darkOf": "plate-dim",
+        "usage": "Plate Dim lifted one step for the plate-2 panel: 4.06 before, 4.62 after."
+      },
+      "plate-alarm-dark": {
+        "role": "neutral",
+        "displayName": "Plate Alarm (lifted)",
+        "canonical": "#ea9793",
+        "theme": "dark",
+        "darkOf": "plate-alarm",
+        "usage": "Plate Alarm lifted one step for the plate-2 panel: 4.16 before, 4.67 after."
+      },
+      "select-dark": {
+        "role": "neutral",
+        "displayName": "Desk Selection",
+        "canonical": "#14374c",
+        "theme": "dark",
+        "darkOf": "select",
+        "usage": "The selection wash on the dark desk: the same blue as the light one, printed on graphite."
       }
     },
     "typographyMeta": {
@@ -386,32 +771,44 @@
       {
         "name": "lifted-sheet",
         "value": "0 26px 50px -44px rgba(21, 22, 26, 0.65)",
+        "dark": "0 26px 50px -44px rgba(0, 0, 0, 0.95)",
         "purpose": "The instrument frame; the paper lifted off the desk. Used once."
       },
       {
         "name": "seated-plate",
         "value": "0 24px 48px -40px rgba(21, 22, 26, 0.9)",
-        "purpose": "The dark plate and footer object seated into the paper."
+        "dark": "0 24px 48px -40px rgba(0, 0, 0, 0.9)",
+        "purpose": "The dark plate and footer object seated into the paper; in dark, into the graphite desk."
       },
       {
         "name": "punched-window",
         "value": "inset 0 1px 0 rgba(255, 255, 255, 0.9), inset 0 -1px 0 rgba(21, 22, 26, 0.05)",
-        "purpose": "Window and runlog frame read as punched openings."
+        "dark": "inset 0 1px 0 rgba(237, 237, 232, 0.07), inset 0 -1px 0 rgba(0, 0, 0, 0.5)",
+        "purpose": "Window and runlog frame read as punched openings; the dark re-cut keeps the lit lip above and the shadow below."
       },
       {
         "name": "lifted-graphite-window",
         "value": "0 22px 44px -36px rgba(21, 22, 26, 0.95)",
-        "purpose": "The install window on the plate material; the one command that lifts off the page."
+        "dark": "inset 0 1px 0 rgba(255, 255, 255, 0.9), inset 0 -1px 0 rgba(21, 22, 26, 0.05), 0 22px 44px -36px rgba(0, 0, 0, 0.95)",
+        "purpose": "The install window on the plate material; the one command that lifts off the page. In dark it is a paper object with its light bevels and the dark lift."
       },
       {
         "name": "keycap-rest",
         "value": "inset 0 1px 0 rgba(255, 255, 255, 0.85), inset 0 -2px 0 rgba(21, 22, 26, 0.09)",
-        "purpose": "Copy switch at rest."
+        "dark": "inset 0 1px 0 rgba(237, 237, 232, 0.07), inset 0 -2px 0 rgba(0, 0, 0, 0.5)",
+        "purpose": "Copy switch and theme keycap at rest."
       },
       {
         "name": "keycap-pressed",
         "value": "inset 0 2px 0 rgba(21, 22, 26, 0.12)",
+        "dark": "inset 0 2px 0 rgba(0, 0, 0, 0.6)",
         "purpose": "Copy switch while pressed, with translateY(1px)."
+      },
+      {
+        "name": "footer-hairline",
+        "value": "inset 0 1px 0 rgba(237, 237, 232, 0.1)",
+        "theme": "dark",
+        "purpose": "The dark footer's top hairline, drawn inside the box so both themes measure the same geometry (a border-top made the dark page one pixel taller)."
       }
     ],
     "motion": [
@@ -461,6 +858,11 @@
         "purpose": "Legend linkage: other traces to 0.26, the named one lifted to 3.2px."
       },
       {
+        "name": "theme-flip",
+        "value": "none — the attribute swap is instant, nothing cross-fades",
+        "purpose": "The theme is a material change, not an animation; only the keycap's background/colour transition (140ms ease-out) and its press (90ms) move."
+      },
+      {
         "name": "reduced-motion",
         "value": "0.001ms !important on animation and transition; JS settle()",
         "purpose": "Reduced motion settles to the final state: traces drawn, marks visible, carriage parked and hidden; replay re-settles."
@@ -493,6 +895,11 @@
       {
         "name": "compact",
         "value": "620px"
+      },
+      {
+        "name": "head-pair",
+        "value": "560px",
+        "note": "max-width: the theme switch and the language group move to a second head row together, with a zero-height flex item as the break, so the language group is never orphaned; the head measures no orphan row at any width 380-620."
       },
       {
         "name": "shell",
@@ -562,24 +969,47 @@
     "browserSurfaces": {
       "selection": {
         "background": "#dce7ee",
-        "color": "#15161a",
-        "note": "Literal pale-blue wash, untokenized."
+        "dark": "#14374c",
+        "color": "var(--ink)",
+        "note": "Tokenized as --select when the dark theme needed to re-declare it; it prints the theme's own ink on the theme's own ground."
       },
       "caret": {
-        "color": "#b01b1b"
+        "color": "var(--alarm) — #b01b1b light, #ea9793 dark"
       },
       "focus": {
-        "outline": "2px solid #0f5c86",
+        "outline": "2px solid var(--blue) — #0f5c86 light, #7fb6d6 dark",
         "offset": "2px",
-        "radius": "1px"
+        "radius": "1px",
+        "contrast": "light 5.59 worst case, dark 5.66; #0f5c86 on graphite is only 2.40, which is why the ring moves with the desk."
       },
       "scrollbar": {
-        "thumb": "#bcc4c2",
-        "track": "#d7dcda",
+        "thumb": "var(--rule-strong) — #bcc4c2 light, rgba(237, 237, 232, 0.2) dark",
+        "track": "var(--rule) — #d7dcda light, rgba(237, 237, 232, 0.1) dark",
         "size": "12px",
-        "thumbBorder": "4px solid #f5f6f4",
+        "thumbBorder": "4px solid var(--paper) — #f5f6f4 light, #191a1d dark",
         "thumbRadius": "8px"
       }
+    },
+    "theme": {
+      "attribute": "document.documentElement.dataset.theme in {light, dark}",
+      "selector": ":root[data-theme=\"dark\"] (stylesheets); :root carries color-scheme: light, the dark block color-scheme: dark",
+      "meta": "<meta name=\"color-scheme\" content=\"light dark\"> on every page",
+      "storageKey": "mgit-theme",
+      "bootstrap": "website/build/common.py THEME_SCRIPT — an inline <script> in <head> before the stylesheet sets the attribute pre-paint: a stored choice wins, otherwise prefers-color-scheme; nothing may throw, so a blocked localStorage falls back to the system and then to light.",
+      "runtime": "website/assets/recorder.js initTheme() — click toggles, persists, paints aria-pressed, and follows matchMedia('(prefers-color-scheme: dark)') while nothing is stored.",
+      "world": "A material variant, not a hue inversion: the desk and the panel move between paper and graphite, the paper objects re-declare the --sheet-* ramp and stay paper.",
+      "objects": [
+        "strip: #f5f6f4 + chart-paper in both themes",
+        "runlog: #fff + paper-fibre in dark (was --window white + punched bevel)",
+        "window--plate (official install): #fff + paper-fibre in dark — the page's brightest object"
+      ],
+      "flatInDark": [
+        "window:not(.window--plate)",
+        ".lang",
+        ".themeswitch",
+        ".replay"
+      ],
+      "print": "@media print under data-theme=\"dark\" restores --paper #f5f6f4, --ink #15161a, color-scheme: light and the body's paper-fibre ground: print is paper. Known un-fixed nit: .plate still resolves #22242a there against the light press's #191a1d, because the dark surface rules are not wrapped in @media print; the difference is negligible and was left alone."
     },
     "rasterPlates": [
       {
@@ -590,7 +1020,7 @@
         "dimensions": "900x600",
         "bytes": 67727,
         "postProcessed": "make-textures.py — photographed grain re-laid on #f5f6f4 at sigma 3.2/255",
-        "role": "The whole page ground: body background-image at 900px auto, grain only, no scrim.",
+        "role": "The light desk and, in dark, the paper objects' stock: the body ground in light, and the runlog body, the official install window and the strip's three 12-13px chips in dark — at 900px auto, grain only, no scrim.",
         "caption": null
       },
       {
@@ -601,7 +1031,18 @@
         "dimensions": "900x600",
         "bytes": 52810,
         "postProcessed": "make-textures.py — photographed grain re-laid on #191a1d at sigma 4.0/255",
-        "role": "Behind the plate, the footer, the lane legend, the graphite install window and the runlog bar, at 900px auto.",
+        "role": "In light: behind the plate, the footer, the lane legend, the graphite install window and the runlog bar, at 900px auto. In dark: the desk itself, the body's ground.",
+        "caption": null
+      },
+      {
+        "name": "graphite-plate-2",
+        "file": "assets/plates/graphite-plate-2.jpg",
+        "source": "build/texture-sources/graphite-plate.jpg",
+        "provenance": "assets/plates/graphite-plate-2.prompt.txt",
+        "dimensions": "900x600",
+        "bytes": 53058,
+        "postProcessed": "make-textures.py — the same generated plate as graphite-plate.jpg (one photograph, two tones), grain re-laid on #22242a at sigma 4.0/255, one 1.12:1 step off the #191a1d desk",
+        "role": "The dark theme's panels: the lane legend, the plate, the footer and the runlog bar, at 900px auto — the step that keeps a panel an object on an already-dark desk.",
         "caption": null
       },
       {
@@ -612,11 +1053,11 @@
         "dimensions": "1000x667",
         "bytes": 71238,
         "postProcessed": "make-textures.py — photographed grain re-laid on #f5f6f4 at sigma 4.4/255",
-        "role": "The strip's ground at 1200px auto, under the printed 40px rule; also the paper chips under the strip's meta, vocabulary and exit labels.",
+        "role": "The strip's ground at 1200px auto, under the printed 40px rule — both themes, because the strip re-declares the sheet ramp in dark. The three 12-13px chips that used to sit on it moved to paper-fibre so --ink-3 could clear 4.5 against the worst grain.",
         "caption": null
       }
     ],
-    "imageryPolicy": "Backgrounds may add material, and the material has to be visible: each texture's photographed grain is re-laid on the design system's own tone by website/build/make-textures.py (mean = token, only grain varies; paper 3.44/255, graphite 3.9-4.7/255, strip 5.2/255 with its printed rule) and shipped with no scrim. Pictures may not pretend to be the product: every texture is AI-generated, carries its prompt as an embedded JPEG comment and a sibling .prompt.txt, and depicts no object. The run data in the strip is separate from the imagery.",
+    "imageryPolicy": "Backgrounds may add material, and the material has to be visible: each texture's photographed grain is re-laid on the design system's own tone by website/build/make-textures.py (mean = token, only grain varies; paper 3.44/255, graphite 3.9-4.7/255, strip 5.2/255 with its printed rule; the dark theme measures 3.49-5.67 across its material surfaces, every one above 3) and shipped with no scrim. Pictures may not pretend to be the product: every texture is AI-generated, carries its prompt as an embedded JPEG comment and a sibling .prompt.txt, and depicts no object — graphite-plate-2.jpg is the same generated photograph at a second tone, with its own prompt file. The run data in the strip is separate from the imagery.",
     "measurements": [
       {
         "name": "texture-amplitudes",
@@ -625,8 +1066,8 @@
       },
       {
         "name": "texture-files",
-        "value": "paper-fibre 67,727 B (66 KiB), graphite-plate 52,810 B (52 KiB), chart-paper 71,238 B (70 KiB); sources kept in build/texture-sources/",
-        "note": "Each prompt.txt ends with a 'Post-processed:' line pointing at make-textures.py."
+        "value": "paper-fibre 67,727 B (66 KiB), graphite-plate 52,810 B (52 KiB), graphite-plate-2 53,058 B (52 KiB), chart-paper 71,238 B (70 KiB); sources kept in build/texture-sources/",
+        "note": "Each prompt.txt ends with a 'Post-processed:' line pointing at make-textures.py; graphite-plate-2's records that it is the same generated plate at a second tone."
       },
       {
         "name": "graphite-share",
@@ -685,13 +1126,13 @@
       },
       {
         "name": "head-band-height",
-        "value": "76px on one row at 1440 / 1000 / 620; 132px folded to two rows at 390px",
-        "note": "Wordmark + four links + language switch; horizontal overflow 0."
+        "value": "76px on one row at 1440 / 1000 / 620 (75.98px before the theme keycap; exactly 76 after); 132px folded to two rows at 390px",
+        "note": "Wordmark + four links + the 34px theme keycap + the language group; horizontal overflow 0. 561px up keeps one row on the tighter 16px column gap; at <=560px the second row is always the paired theme switch + language group, never an orphan at any width 380-620."
       },
       {
         "name": "legend-panel-revert",
         "value": "621px",
-        "note": "The graphite legend panel holds from 621px up and reverts to paper at <=620px."
+        "note": "The graphite legend panel holds from 621px up and reverts to the surface it stands on at <=620px: paper in light, the bare desk (transparent, grain and all) in dark."
       },
       {
         "name": "section-geometry-1440",
@@ -709,9 +1150,64 @@
         "note": "initScrollers() measures scrollWidth/clientWidth on .runlog__body, .window__cmd and .cmdline__text, re-checks 150ms after a resize, and keeps data-scrollable on the runlog frame."
       },
       {
-        "name": "verified-this-pass",
+        "name": "verified-light-pass",
         "value": "330 in-site links resolve; contrast+overflow 0 violations at 1440/1000/620/390 across landing, EN, docs/install, docs/use-cases, docs/output; axe 0 violations on four pages; Lighthouse landing desktop 100/100/100/100 (56 passed / 0 failed); six evidence screenshots re-taken; page heights unchanged (desktop 8716, mobile 12256)",
-        "note": "Local previews through python3 -m http.server cache CSS/JS: verify in a fresh browser session or with a hard reload, or the old values get measured."
+        "note": "Measured before the theme work. Local previews through python3 -m http.server cache CSS/JS: verify in a fresh browser session or with a hard reload, or the old values get measured."
+      },
+      {
+        "name": "material-sigma-dark",
+        "value": "Material σ in dark (isolation method, 32² clean windows): desk 4.68, legend 3.72, strip 5.67, run-log bar 4.38, install window 3.62, run-log body 3.49, plate 4.39, foot 4.65 — every material surface above 3",
+        "note": "Textures isolated from text and rules with *{color:transparent}. The desk and the panel may never be flat fills in either theme; the punches and keycaps are deliberately flat (σ 0)."
+      },
+      {
+        "name": "dark-contrast",
+        "value": "Against the worst grain in dark: --ink 10.43, --ink-2 7.24, --ink-3 5.39, link 5.58, alarm 5.45; on the panel: plate-ink 8.94, plate-dim 4.62, plate-alarm 4.67, plate-blue 4.78; on the paper objects: sheet-ink 13.94, sheet-ink-2 6.51, sheet-ink-3 4.63, sheet-blue 5.59, sheet-alarm 5.36",
+        "note": "The project's bar is stricter than WCAG's nominal pairing: it measures against the surface's worst grain — the desk's lightest (52/255) and the sheet's darkest (226/255) — not against the token colour."
+      },
+      {
+        "name": "focus-ring-contrast",
+        "value": "Focus ring worst case: light #0f5c86 5.59, dark #7fb6d6 5.66; the counterfactual — #0f5c86 on graphite — is only 2.40",
+        "note": "The ring is drawn with --blue, which is why the desk's ring moves with the desk; on plates it takes Plate Blue."
+      },
+      {
+        "name": "text-audit-12-17px",
+        "value": "Landing, 359 elements of 12-17px text sampled against real material pixels: 1 failure before the chip fix (.strip__meta 4.458), 0 after; docs/index, docs/output and en/docs/use-cases also 0 in dark",
+        "note": "The chip family (.strip__meta, .vocab, .strip__exit) moved from chart-paper to paper-fibre: 4.415 against the worst grain before, 4.761 after."
+      },
+      {
+        "name": "theme-geometry",
+        "value": "Both themes measure identical geometry across 388 leaf nodes; page heights 8716 / 12256 unchanged; the dark footer's hairline is inset 0 1px 0 rather than a border-top; the header went from 75.98 to exactly 76px (132 at 390)",
+        "note": "A border-top on the dark footer made the dark document one pixel taller and shifted the whole footer, so the hairline moved inside the box."
+      },
+      {
+        "name": "light-theme-pair-diff",
+        "value": "Reduced-motion pair diff of the light theme: 1440 mean |Δ| 0.033 with 0.052% of pixels above 8 LSB; 390 mean 0.150 with 0.264%",
+        "note": "The only light-theme movement is the new header control and the three strip chips."
+      },
+      {
+        "name": "theme-overflow",
+        "value": "1440 / 1280 / 1100 / 900 / 620 / 390 × five pages × both themes: horizontal overflow 0",
+        "note": "The header additionally shows no orphan row at any width 380-620."
+      },
+      {
+        "name": "theme-axe-lighthouse",
+        "value": "axe: five pages × both themes, 0 violations. Lighthouse (navigation, desktop): both themes 100 / 100 / 100 / 100",
+        "note": "Run in fresh browser sessions; the local preview caches CSS/JS."
+      },
+      {
+        "name": "theme-reality",
+        "value": "Dark near-white pixels 18.9% against light's 76.5%; coloured pixels dark 0.301% / light 0.296% with an identical hue histogram",
+        "note": "Colour still means data only — the theme moves tone, not hue."
+      },
+      {
+        "name": "theme-behaviour",
+        "value": "No flash of the wrong theme (CDP screencast: frame 0 is already correct); the choice persists across reload; with nothing stored the page follows the system; a throwing localStorage leaves the page working; reduced motion settles the strip; print under data-theme=\"dark\" restores --paper #f5f6f4, --ink #15161a, color-scheme: light and the body's paper-fibre ground",
+        "note": "The attribute is set by the inline head script before the stylesheet, so the first painted frame is already the right paper."
+      },
+      {
+        "name": "print-plate-nit",
+        "value": "In print, .plate renders #22242a under dark against the light press's #191a1d, because the dark surface rules are not wrapped in @media print",
+        "note": "Known and un-fixed: the difference is negligible and was left alone. Recorded as a defect the build carries, not as a design-system rule."
       },
       {
         "name": "localized-run-records",
@@ -725,9 +1221,9 @@
       "name": "Strip Chart",
       "kind": "custom",
       "refersTo": "instrument-frame",
-      "description": "The instrument: three pens in two stroke weights (2.2px clean and dirty, 2.6px failed) on the chart-paper texture with lane dividers, drawn from the page's own run record; each language's page ships only its own record (the EN blob carries no Chinese data fields - landing.py localized_runs()).",
+      "description": "The instrument: three pens in two stroke weights (2.2px clean and dirty, 2.6px failed) on the chart-paper texture with lane dividers, drawn from the page's own run record; each language's page ships only its own record (the EN blob carries no Chinese data fields - landing.py localized_runs()). The strip is a paper object: after dark it re-declares the --sheet-* ramp and keeps this same ground.",
       "html": "<div class=\"ds-strip\"><svg class=\"ds-strip__svg\" viewBox=\"0 0 320 120\" preserveAspectRatio=\"none\" role=\"presentation\" aria-hidden=\"true\" focusable=\"false\"><line x1=\"0\" y1=\"20\" x2=\"320\" y2=\"20\" class=\"ds-lane__rule\"/><line x1=\"0\" y1=\"60\" x2=\"320\" y2=\"60\" class=\"ds-lane__rule\"/><line x1=\"0\" y1=\"100\" x2=\"320\" y2=\"100\" class=\"ds-lane__rule\"/><path d=\"M 0 20 L 320 20\" class=\"ds-trace ds-trace--clean\"/><path d=\"M 0 60 C 10 60, 10 34, 24 34 L 60 34 C 74 34, 74 60, 88 60 L 320 60\" class=\"ds-trace ds-trace--dirty\"/><path d=\"M 0 100 C 120 100, 120 52, 140 52 L 170 52 C 182 52, 182 116, 200 116 C 226 116, 240 88, 262 96 C 286 100, 300 100, 320 100\" class=\"ds-trace ds-trace--failed\"/><g class=\"ds-mark--flag\"><path d=\"M 54 34 l 5 -5 l 0 10 z\"/></g><g class=\"ds-mark--cross\"><path d=\"M 164 94 L 176 106 M 176 94 L 164 106\"/></g><text x=\"180\" y=\"112\" class=\"ds-tick--alarm\">128</text></svg><p class=\"ds-strip__foot\"><span class=\"ds-vocab__word ds-vocab__word--clean\">乾淨</span><span class=\"ds-vocab__word ds-vocab__word--failed\">失敗</span><span class=\"ds-strip__exit\"><b>exit 128</b> · 6 repositories, 5 succeeded, 1 failed</span></p></div>",
-      "css": ".ds-strip { position: relative; min-height: 180px; background-color: var(--paper); background-image: repeating-linear-gradient(to bottom, var(--rule) 0 1px, transparent 1px 40px), linear-gradient(rgba(245, 246, 244, 0.78), rgba(245, 246, 244, 0.78)), url(\"assets/plates/chart-paper.jpg\"); background-size: auto, auto, 1200px auto; border: var(--hair) solid var(--ink); padding: 8px; } .ds-strip::before, .ds-strip::after { content: \"\"; position: absolute; top: 0; bottom: 0; width: 12px; pointer-events: none; background-image: repeating-linear-gradient(to bottom, var(--rule-strong) 0 1px, transparent 1px 40px); } .ds-strip::before { left: 0; } .ds-strip::after { right: 0; } .ds-strip__svg { position: absolute; inset: 0; width: 100%; height: 100%; } .ds-lane__rule { stroke: var(--rule-strong); stroke-width: 1; stroke-dasharray: 2 6; } .ds-trace { fill: none; stroke-linecap: round; stroke-linejoin: round; } .ds-trace--clean { stroke: var(--blue); stroke-width: 2.2; } .ds-trace--dirty { stroke: var(--ink); stroke-width: 2.2; } .ds-trace--failed { stroke: var(--alarm); stroke-width: 2.6; } .ds-mark--flag path { fill: var(--ink); } .ds-mark--cross path { fill: none; stroke: var(--alarm); stroke-width: 1.8; stroke-linecap: round; } .ds-tick--alarm { font-family: var(--mono); font-size: 12px; font-weight: 700; fill: var(--alarm); } .ds-strip__foot { position: absolute; left: 24px; right: 24px; bottom: 16px; display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin: 0; } .ds-vocab__word { font-family: var(--mono); font-size: 0.75rem; color: var(--ink-2); } .ds-vocab__word::before { content: \"\"; display: inline-block; width: 10px; height: 2px; margin-right: 0.45rem; vertical-align: 0.28em; background: var(--ink-3); } .ds-vocab__word--clean::before { background: var(--blue); } .ds-vocab__word--failed::before { background: var(--alarm); } .ds-strip__exit { font-family: var(--mono); font-size: 0.8125rem; color: var(--ink); } .ds-strip__exit b { font-weight: 700; }"
+      "css": ".ds-strip { position: relative; min-height: 180px; background-color: var(--paper); background-image: repeating-linear-gradient(to bottom, var(--rule) 0 1px, transparent 1px 40px), url(\"assets/plates/chart-paper.jpg\"); background-size: auto, 1200px auto; border: var(--hair) solid var(--ink); padding: 8px; } /* dark: the strip re-declares the --sheet-* ramp and keeps this ground — the material never moves with the theme */ .ds-strip::before, .ds-strip::after { content: \"\"; position: absolute; top: 0; bottom: 0; width: 12px; pointer-events: none; background-image: repeating-linear-gradient(to bottom, var(--rule-strong) 0 1px, transparent 1px 40px); } .ds-strip::before { left: 0; } .ds-strip::after { right: 0; } .ds-strip__svg { position: absolute; inset: 0; width: 100%; height: 100%; } .ds-lane__rule { stroke: var(--rule-strong); stroke-width: 1; stroke-dasharray: 2 6; } .ds-trace { fill: none; stroke-linecap: round; stroke-linejoin: round; } .ds-trace--clean { stroke: var(--blue); stroke-width: 2.2; } .ds-trace--dirty { stroke: var(--ink); stroke-width: 2.2; } .ds-trace--failed { stroke: var(--alarm); stroke-width: 2.6; } .ds-mark--flag path { fill: var(--ink); } .ds-mark--cross path { fill: none; stroke: var(--alarm); stroke-width: 1.8; stroke-linecap: round; } .ds-tick--alarm { font-family: var(--mono); font-size: 12px; font-weight: 700; fill: var(--alarm); } .ds-strip__foot { position: absolute; left: 24px; right: 24px; bottom: 16px; display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin: 0; } .ds-vocab__word { font-family: var(--mono); font-size: 0.75rem; color: var(--ink-2); } .ds-vocab__word::before { content: \"\"; display: inline-block; width: 10px; height: 2px; margin-right: 0.45rem; vertical-align: 0.28em; background: var(--ink-3); } .ds-vocab__word--clean::before { background: var(--blue); } .ds-vocab__word--failed::before { background: var(--alarm); } .ds-strip__exit { font-family: var(--mono); font-size: 0.8125rem; color: var(--ink); } .ds-strip__exit b { font-weight: 700; }"
     },
     {
       "name": "Punched Window",
@@ -735,15 +1231,15 @@
       "refersTo": "window",
       "description": "A command printed into a punched white opening with the copy switch at its end; the verification and build lines. Official install commands take the graphite variant instead.",
       "html": "<div class=\"ds-window\"><span class=\"ds-window__label\">macOS · Linux</span><code class=\"ds-window__cmd\">curl -fsSL https://raw.githubusercontent.com/doggy8088/mgit/main/install.sh | sh</code><button class=\"ds-switch\" type=\"button\"><svg class=\"ds-switch__glyph\" viewBox=\"0 0 16 16\" aria-hidden=\"true\" focusable=\"false\"><rect x=\"2.5\" y=\"2.5\" width=\"8\" height=\"11\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.4\"/><path d=\"M5.5 2.5V1h8v11h-1.5\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.4\"/></svg><span>複製</span></button></div>",
-      "css": ".ds-window { display: flex; align-items: center; gap: 16px; min-width: 0; background: var(--window); border: var(--hair) solid var(--ink); padding: 0.55rem 0.65rem 0.55rem 0.75rem; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), inset 0 -1px 0 rgba(21, 22, 26, 0.05); } .ds-window__label { flex: none; font-family: var(--sans); font-stretch: 108%; font-weight: 600; text-transform: uppercase; letter-spacing: 0.11em; font-size: 0.75rem; color: var(--ink-3); } .ds-window__cmd { flex: 1; min-width: 0; font-family: var(--mono); font-size: 0.8125rem; color: var(--ink); overflow-x: auto; white-space: pre; } .ds-switch { flex: none; display: inline-flex; align-items: center; gap: 0.45rem; border: var(--hair) solid var(--ink); background: var(--paper); padding: 0.42rem 0.6rem; font-family: var(--sans); font-stretch: 108%; font-weight: 600; font-size: 0.75rem; letter-spacing: 0.11em; text-transform: uppercase; color: var(--ink); cursor: pointer; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85), inset 0 -2px 0 rgba(21, 22, 26, 0.09); transition: transform 90ms ease-out, background 140ms ease-out; } .ds-switch:hover { background: var(--paper-deep); } .ds-switch:active { transform: translateY(1px); box-shadow: inset 0 2px 0 rgba(21, 22, 26, 0.12); } .ds-switch:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; border-radius: 1px; } .ds-switch__glyph { width: 12px; height: 12px; flex: none; }"
+      "css": ".ds-window { display: flex; align-items: center; gap: 16px; min-width: 0; background: var(--window); border: var(--hair) solid var(--ink); padding: 0.55rem 0.65rem 0.55rem 0.75rem; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), inset 0 -1px 0 rgba(21, 22, 26, 0.05); } /* dark: a flat --plate-2 punch (sigma 0) with the bevel re-cut to inset 0 1px 0 rgba(237, 237, 232, 0.07), inset 0 -1px 0 rgba(0, 0, 0, 0.5) */ .ds-window__label { flex: none; font-family: var(--sans); font-stretch: 108%; font-weight: 600; text-transform: uppercase; letter-spacing: 0.11em; font-size: 0.75rem; color: var(--ink-3); } .ds-window__cmd { flex: 1; min-width: 0; font-family: var(--mono); font-size: 0.8125rem; color: var(--ink); overflow-x: auto; white-space: pre; } .ds-switch { flex: none; display: inline-flex; align-items: center; gap: 0.45rem; border: var(--hair) solid var(--ink); background: var(--paper); padding: 0.42rem 0.6rem; font-family: var(--sans); font-stretch: 108%; font-weight: 600; font-size: 0.75rem; letter-spacing: 0.11em; text-transform: uppercase; color: var(--ink); cursor: pointer; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85), inset 0 -2px 0 rgba(21, 22, 26, 0.09); transition: transform 90ms ease-out, background 140ms ease-out; } .ds-switch:hover { background: var(--paper-deep); } .ds-switch:active { transform: translateY(1px); box-shadow: inset 0 2px 0 rgba(21, 22, 26, 0.12); } .ds-switch:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; border-radius: 1px; } .ds-switch__glyph { width: 12px; height: 12px; flex: none; }"
     },
     {
       "name": "Install Window (graphite)",
       "kind": "custom",
       "refersTo": "window-plate",
-      "description": "The page's one primary action: the official install command on the plate material, with a graphite switch and a Plate Blue focus ring.",
+      "description": "The page's one primary action: the official install command on the plate material, with a graphite switch and a Plate Blue focus ring. After dark the same window is the sheet itself — paper-fibre on #fff, sheet inks, the paper keycap switch — and is the page's brightest object, so the one-heaviest-action invariant survives the flip.",
       "html": "<div class=\"ds-window ds-window--plate\"><span class=\"ds-window__label\">macOS · Linux</span><code class=\"ds-window__cmd\">curl -fsSL https://raw.githubusercontent.com/doggy8088/mgit/main/install.sh | sh</code><button class=\"ds-plate-switch\" type=\"button\"><span>Copy</span></button></div>",
-      "css": ".ds-window--plate { display: flex; align-items: center; gap: 16px; background-color: var(--plate); background-image: linear-gradient(rgba(25, 26, 29, 0.88), rgba(25, 26, 29, 0.88)), url(\"assets/plates/graphite-plate.jpg\"); background-size: auto, 900px auto; border: var(--hair) solid var(--plate); padding: 0.55rem 0.65rem 0.55rem 0.75rem; box-shadow: 0 22px 44px -36px rgba(21, 22, 26, 0.95); } .ds-window--plate .ds-window__label { flex: none; font-family: var(--sans); font-stretch: 108%; font-weight: 600; text-transform: uppercase; letter-spacing: 0.11em; font-size: 0.75rem; color: var(--plate-dim); } .ds-window--plate .ds-window__cmd { flex: 1; min-width: 0; font-family: var(--mono); font-size: 0.8125rem; color: var(--plate-ink); white-space: pre; overflow-x: auto; } .ds-plate-switch { flex: none; border: var(--hair) solid var(--plate-rule); background: transparent; color: var(--plate-ink); padding: 0.42rem 0.6rem; font-family: var(--sans); font-stretch: 108%; font-weight: 600; font-size: 0.75rem; letter-spacing: 0.11em; text-transform: uppercase; cursor: pointer; transition: background 140ms ease-out; } .ds-plate-switch:hover { background: rgba(237, 237, 232, 0.12); } .ds-plate-switch:active { background: rgba(237, 237, 232, 0.2); } .ds-plate-switch:focus-visible { outline: 2px solid var(--plate-blue); outline-offset: 2px; border-radius: 1px; } .ds-plate-switch[data-copied=\"true\"] { background: var(--plate-ink); color: var(--plate); }"
+      "css": ".ds-window--plate { display: flex; align-items: center; gap: 16px; background-color: var(--plate); background-image: url(\"assets/plates/graphite-plate.jpg\"); background-size: 900px auto; border: var(--hair) solid var(--plate); padding: 0.55rem 0.65rem 0.55rem 0.75rem; /* dark: this window becomes the sheet — background-color var(--sheet-window) + url(\"assets/plates/paper-fibre.jpg\") at 900px auto, with the sheet inks and the paper keycap switch */ box-shadow: 0 22px 44px -36px rgba(21, 22, 26, 0.95); } .ds-window--plate .ds-window__label { flex: none; font-family: var(--sans); font-stretch: 108%; font-weight: 600; text-transform: uppercase; letter-spacing: 0.11em; font-size: 0.75rem; color: var(--plate-dim); } .ds-window--plate .ds-window__cmd { flex: 1; min-width: 0; font-family: var(--mono); font-size: 0.8125rem; color: var(--plate-ink); white-space: pre; overflow-x: auto; } .ds-plate-switch { flex: none; border: var(--hair) solid var(--plate-rule); background: transparent; color: var(--plate-ink); padding: 0.42rem 0.6rem; font-family: var(--sans); font-stretch: 108%; font-weight: 600; font-size: 0.75rem; letter-spacing: 0.11em; text-transform: uppercase; cursor: pointer; transition: background 140ms ease-out; } .ds-plate-switch:hover { background: rgba(237, 237, 232, 0.12); } .ds-plate-switch:active { background: rgba(237, 237, 232, 0.2); } .ds-plate-switch:focus-visible { outline: 2px solid var(--plate-blue); outline-offset: 2px; border-radius: 1px; } .ds-plate-switch[data-copied=\"true\"] { background: var(--plate-ink); color: var(--plate); }"
     },
     {
       "name": "Copy Switch, Copied",
@@ -752,6 +1248,14 @@
       "description": "The switch's confirmation state: full ink/paper inversion, no bevel, label swapped for 1800ms.",
       "html": "<button class=\"ds-switch ds-switch--copied\" type=\"button\" aria-live=\"polite\"><svg class=\"ds-switch__glyph\" viewBox=\"0 0 16 16\" aria-hidden=\"true\" focusable=\"false\"><rect x=\"2.5\" y=\"2.5\" width=\"8\" height=\"11\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.4\"/><path d=\"M5.5 2.5V1h8v11h-1.5\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.4\"/></svg><span>已複製</span></button>",
       "css": ".ds-switch { display: inline-flex; align-items: center; gap: 0.45rem; border: var(--hair) solid var(--ink); background: var(--ink); color: var(--paper); padding: 0.42rem 0.6rem; font-family: var(--sans); font-stretch: 108%; font-weight: 600; font-size: 0.75rem; letter-spacing: 0.11em; text-transform: uppercase; cursor: pointer; transition: transform 90ms ease-out, background 140ms ease-out; } .ds-switch:hover { background: var(--ink); color: var(--paper); } .ds-switch:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; border-radius: 1px; } .ds-switch__glyph { width: 12px; height: 12px; flex: none; }"
+    },
+    {
+      "name": "Theme Switch",
+      "kind": "button",
+      "refersTo": "theme-switch",
+      "description": "The 34x34 keycap that changes what the instrument stands on, sitting between the nav links and the language group. aria-pressed=true means dark is on; the label is 深色主題 / Dark theme. An inline head script sets data-theme pre-paint from localStorage[\"mgit-theme\"], falling back to prefers-color-scheme; recorder.js initTheme() owns click, persistence, aria-pressed and matchMedia following. The press inverts the keycap exactly the way a copied switch inverts, and the flip itself is instant — nothing cross-fades.",
+      "html": "<button class=\"ds-themeswitch\" type=\"button\" data-theme-toggle aria-pressed=\"false\" aria-label=\"Dark theme\"><svg class=\"ds-themeswitch__glyph\" viewBox=\"0 0 16 16\" aria-hidden=\"true\" focusable=\"false\"><rect x=\"2.5\" y=\"2.5\" width=\"11\" height=\"11\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.4\"/><path d=\"M2.5 2.5h5.5v11H2.5z\" fill=\"currentColor\"/></svg></button>",
+      "css": ".ds-themeswitch { display: inline-flex; align-items: center; justify-content: center; width: 34px; min-height: 34px; padding: 0; border: var(--hair) solid var(--ink); background: var(--window); color: var(--ink); cursor: pointer; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85), inset 0 -2px 0 rgba(21, 22, 26, 0.09); transition: background 140ms ease-out, color 140ms ease-out, transform 90ms ease-out; } .ds-themeswitch:hover { background: var(--paper-deep); } .ds-themeswitch:active { transform: translateY(1px); box-shadow: inset 0 2px 0 rgba(21, 22, 26, 0.12); } .ds-themeswitch[aria-pressed=\"true\"] { background: var(--ink); color: var(--paper); box-shadow: none; } .ds-themeswitch:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; border-radius: 1px; } .ds-themeswitch__glyph { width: 16px; height: 16px; flex: none; }"
     },
     {
       "name": "Replay Control",
@@ -765,25 +1269,25 @@
       "name": "Legend Row (graphite panel)",
       "kind": "custom",
       "refersTo": "legend-row",
-      "description": "A lane row of the instrument: two-digit number, repository, branch and state word on the lacquered graphite panel; reverts to paper at <=620px.",
+      "description": "A lane row of the instrument: two-digit number, repository, branch and state word on the lacquered graphite panel; reverts to the surface it stands on at <=620px (paper in light, the bare desk in dark). After dark the panel is graphite-plate-2 on #22242a, like every other panel.",
       "html": "<ul class=\"ds-legend\"><li class=\"ds-legend__head\"><span class=\"ds-legend__label\">#</span><span class=\"ds-legend__label\">Repository · branch</span></li><li class=\"ds-legend__row\"><span class=\"ds-legend__ch\">05</span><span class=\"ds-legend__name\">web-console</span><span class=\"ds-legend__meta\">main · 1 change · <span class=\"ds-legend__state\">dirty</span></span></li><li class=\"ds-legend__row\"><span class=\"ds-legend__ch\">06</span><span class=\"ds-legend__name\">web-console-hotfix</span><span class=\"ds-legend__meta\">hotfix · <span class=\"ds-legend__state ds-legend__state--clean\">clean</span></span></li></ul>",
-      "css": ".ds-legend { list-style: none; margin: 0; padding: 16px 0; color: var(--plate-ink); background-color: var(--plate); background-image: linear-gradient(rgba(25, 26, 29, 0.88), rgba(25, 26, 29, 0.88)), url(\"assets/plates/graphite-plate.jpg\"); background-size: auto, 900px auto; border-right: 2px solid var(--ink); } .ds-legend__head, .ds-legend__row { display: grid; grid-template-columns: 3.1rem 1fr; align-items: baseline; gap: 8px; padding-inline: 16px; } .ds-legend__head { padding-bottom: 8px; border-bottom: var(--hair) solid var(--plate-rule); margin-bottom: 8px; } .ds-legend__row { padding-block: 0.3rem; border-bottom: var(--hair) solid var(--plate-rule-soft); } .ds-legend__row:last-child { border-bottom: 0; } .ds-legend__label { font-family: var(--sans); font-stretch: 108%; font-weight: 600; text-transform: uppercase; letter-spacing: 0.11em; font-size: 0.75rem; color: var(--plate-dim); } .ds-legend__ch { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.06em; color: var(--plate-dim); } .ds-legend__name { font-family: var(--mono); font-size: 0.8125rem; font-weight: 500; color: var(--plate-ink); overflow-wrap: anywhere; } .ds-legend__meta { grid-column: 2; font-size: 0.75rem; line-height: 1.4; color: var(--plate-dim); } .ds-legend__state { color: var(--plate-ink); } .ds-legend__state--clean { color: var(--plate-dim); }"
+      "css": ".ds-legend { list-style: none; margin: 0; padding: 16px 0; color: var(--plate-ink); background-color: var(--plate); background-image: url(\"assets/plates/graphite-plate.jpg\"); background-size: 900px auto; border-right: 2px solid var(--ink); } /* dark: the panel moves to var(--plate-2) + url(\"assets/plates/graphite-plate-2.jpg\") at 900px auto, and at <=620px it reverts to the surface it stands on (the bare desk, transparent) */ .ds-legend__head, .ds-legend__row { display: grid; grid-template-columns: 3.1rem 1fr; align-items: baseline; gap: 8px; padding-inline: 16px; } .ds-legend__head { padding-bottom: 8px; border-bottom: var(--hair) solid var(--plate-rule); margin-bottom: 8px; } .ds-legend__row { padding-block: 0.3rem; border-bottom: var(--hair) solid var(--plate-rule-soft); } .ds-legend__row:last-child { border-bottom: 0; } .ds-legend__label { font-family: var(--sans); font-stretch: 108%; font-weight: 600; text-transform: uppercase; letter-spacing: 0.11em; font-size: 0.75rem; color: var(--plate-dim); } .ds-legend__ch { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.06em; color: var(--plate-dim); } .ds-legend__name { font-family: var(--mono); font-size: 0.8125rem; font-weight: 500; color: var(--plate-ink); overflow-wrap: anywhere; } .ds-legend__meta { grid-column: 2; font-size: 0.75rem; line-height: 1.4; color: var(--plate-dim); } .ds-legend__state { color: var(--plate-ink); } .ds-legend__state--clean { color: var(--plate-dim); }"
     },
     {
       "name": "Engraved Plate",
       "kind": "custom",
       "refersTo": "plate",
-      "description": "The dark spec object: panel-caps title with a mono spec stamp, calibration figures as mono measurements, hairline rows.",
+      "description": "The dark spec object: panel-caps title with a mono spec stamp, calibration figures as mono measurements, hairline rows. After dark it wears graphite-plate-2 on #22242a with its hairline border dropped to --plate-rule-soft (the tone step carries it) and its seated shadow re-cut for a dark ground.",
       "html": "<section class=\"ds-plate\"><header class=\"ds-plate__head\"><span class=\"ds-plate__title\">實測數字</span><span class=\"ds-plate__spec\">mgit 2.0.2</span></header><div class=\"ds-plate__body\"><dl class=\"ds-plate__grid\"><div class=\"ds-plate__figure\"><dt>8</dt><dd><span class=\"ds-plate__value\">release targets</span><span>macOS、Linux、Windows，x86_64 與 aarch64</span></dd></div><div class=\"ds-plate__figure\"><dt>0</dt><dd><span class=\"ds-plate__value\">執行期相依</span><span>單一 Rust 二進位檔</span></dd></div></dl><div class=\"ds-plate__rows\"><div class=\"ds-plate__row\"><div class=\"ds-plate__term\">透明代理</div><div class=\"ds-plate__def\">mgit 只認自己文件列出的選項，不認得的直接轉給 git。</div></div><div class=\"ds-plate__row\"><div class=\"ds-plate__term\">管線安全</div><div class=\"ds-plate__def\"><code>mgit … | head</code> 會還原 <code>SIGPIPE</code> 預設行為，安靜結束。</div></div></div></div></section>",
-      "css": ".ds-plate { background: var(--plate); color: var(--plate-ink); border: var(--hair) solid var(--plate); box-shadow: 0 24px 48px -40px rgba(21, 22, 26, 0.9); } .ds-plate__head { padding: 24px 32px; border-bottom: var(--hair) solid var(--plate-rule); display: flex; align-items: baseline; justify-content: space-between; gap: 24px; flex-wrap: wrap; } .ds-plate__title { font-family: var(--sans); font-stretch: 116%; text-transform: uppercase; letter-spacing: 0.13em; font-weight: 600; font-size: 0.8125rem; color: var(--plate-ink); } .ds-plate__spec { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.05em; color: var(--plate-dim); text-transform: uppercase; } .ds-plate__body { padding: 32px; } .ds-plate__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 32px; margin: 0; } .ds-plate__figure { margin: 0; } .ds-plate__figure dt { font-family: var(--sans); font-stretch: 108%; text-transform: uppercase; letter-spacing: 0.11em; font-size: 0.75rem; color: var(--plate-dim); margin-bottom: 0.4rem; } .ds-plate__figure dd { margin: 0; font-family: var(--mono); font-size: 1.5rem; line-height: 1.15; color: var(--plate-ink); } .ds-plate__figure dd span:not(.ds-plate__value) { font-family: var(--sans); font-size: 0.875rem; color: var(--plate-dim); display: block; margin-top: 0.3rem; } .ds-plate__rows { display: grid; margin-top: 48px; } .ds-plate__row { display: grid; grid-template-columns: minmax(150px, 20ch) 1fr; gap: 16px 32px; padding-block: 16px; border-top: var(--hair) solid var(--plate-rule-soft); } .ds-plate__term { font-family: var(--mono); font-size: 0.8125rem; color: var(--plate-ink); } .ds-plate__def { font-size: 0.9375rem; color: #cfcdc6; max-width: 62ch; } .ds-plate__def code { font-family: var(--mono); font-size: 0.8125rem; } .ds-plate a { color: var(--plate-blue); } .ds-plate a:hover { color: #a5cfe6; }"
+      "css": ".ds-plate { background-color: var(--plate); background-image: url(\"assets/plates/graphite-plate.jpg\"); background-size: 900px auto; color: var(--plate-ink); border: var(--hair) solid var(--plate); box-shadow: 0 24px 48px -40px rgba(21, 22, 26, 0.9); } /* dark: var(--plate-2) + url(\"assets/plates/graphite-plate-2.jpg\") at 900px auto, border-color var(--plate-rule-soft), seated shadow re-cut to 0 24px 48px -40px rgba(0, 0, 0, 0.9) */ .ds-plate__head { padding: 24px 32px; border-bottom: var(--hair) solid var(--plate-rule); display: flex; align-items: baseline; justify-content: space-between; gap: 24px; flex-wrap: wrap; } .ds-plate__title { font-family: var(--sans); font-stretch: 116%; text-transform: uppercase; letter-spacing: 0.13em; font-weight: 600; font-size: 0.8125rem; color: var(--plate-ink); } .ds-plate__spec { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.05em; color: var(--plate-dim); text-transform: uppercase; } .ds-plate__body { padding: 32px; } .ds-plate__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 32px; margin: 0; } .ds-plate__figure { margin: 0; } .ds-plate__figure dt { font-family: var(--sans); font-stretch: 108%; text-transform: uppercase; letter-spacing: 0.11em; font-size: 0.75rem; color: var(--plate-dim); margin-bottom: 0.4rem; } .ds-plate__figure dd { margin: 0; font-family: var(--mono); font-size: 1.5rem; line-height: 1.15; color: var(--plate-ink); } .ds-plate__figure dd span:not(.ds-plate__value) { font-family: var(--sans); font-size: 0.875rem; color: var(--plate-dim); display: block; margin-top: 0.3rem; } .ds-plate__rows { display: grid; margin-top: 48px; } .ds-plate__row { display: grid; grid-template-columns: minmax(150px, 20ch) 1fr; gap: 16px 32px; padding-block: 16px; border-top: var(--hair) solid var(--plate-rule-soft); } .ds-plate__term { font-family: var(--mono); font-size: 0.8125rem; color: var(--plate-ink); } .ds-plate__def { font-size: 0.9375rem; color: var(--plate-body); max-width: 62ch; } .ds-plate__def code { font-family: var(--mono); font-size: 0.8125rem; } .ds-plate a { color: var(--plate-blue); } .ds-plate a:hover { color: var(--plate-blue-deep); }"
     },
     {
       "name": "Recorded Runlog",
       "kind": "custom",
       "refersTo": "runlog",
-      "description": "A printed frame for a real terminal session: 2px ink frame, graphite bar (texture, Plate Ivory command at 700), white mono body at 0.78125rem/1.7 in a named group; tabindex flips with real overflow and the hint appears only then.",
+      "description": "A printed frame for a real terminal session: 2px ink frame, graphite bar (texture, Plate Ivory command at 700), white mono body at 0.78125rem/1.7 in a named group; tabindex flips with real overflow and the hint appears only then. After dark the frame re-declares the sheet ramp: the body is #fff on paper-fibre and the bar moves to graphite-plate-2 on #22242a, so a printout keeps its stock on either desk.",
       "html": "<div class=\"ds-runlog\"><div class=\"ds-runlog__bar\"><span class=\"ds-runlog__title\">mgit pull</span><span>exit 128 · 5 succeeded, 1 failed</span></div><div class=\"ds-runlog__body\"><span class=\"ds-rule\">================================================================================</span>\n<span class=\"ds-folder\">📂 Folder: web-console │ Branch: main</span>\n<span class=\"ds-rule\">================================================================================</span>\n<span class=\"ds-err\">error: cannot pull with rebase: You have unstaged changes.</span>\n<span class=\"ds-quiet\"> </span>\n<span class=\"ds-sum\">mgit: 6 repositories, 5 succeeded, 1 failed</span>\n<span class=\"ds-err\">  ✗ web-console (exit code 128)</span></div></div>",
-      "css": ".ds-runlog { border: 2px solid var(--ink); background: var(--window); } .ds-runlog__bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0.4rem 0.75rem; background-color: var(--plate); background-image: url(\"assets/plates/graphite-plate.jpg\"); background-size: 900px auto; color: var(--plate-ink); border-bottom: var(--hair) solid var(--plate); font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.04em; } .ds-runlog__title { font-weight: 700; } .ds-runlog__bar > span:last-child { color: var(--plate-dim); } .ds-runlog__body { padding: 16px 24px; font-family: var(--mono); font-size: 0.78125rem; line-height: 1.7; white-space: pre; overflow-x: auto; color: var(--ink); } .ds-runlog__hint { display: none; margin: 0; padding: 0.35rem 24px 16px; font-size: 0.75rem; color: var(--ink-3); border-top: var(--hair) dotted var(--rule); } .ds-runlog[data-scrollable=\"true\"] .ds-runlog__hint { display: block; } .ds-rule { color: var(--ink-3); } .ds-folder { color: var(--ink); font-weight: 500; } .ds-quiet { color: var(--ink-3); } .ds-err { color: var(--alarm); } .ds-sum { color: var(--ink-2); }"
+      "css": ".ds-runlog { border: 2px solid var(--ink); background: var(--window); } /* dark: the frame re-declares the --sheet-* ramp with background-color var(--sheet-window) + url(\"assets/plates/paper-fibre.jpg\") at 900px auto, and the bar moves to var(--plate-2) + url(\"assets/plates/graphite-plate-2.jpg\") at 900px auto */ .ds-runlog__bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0.4rem 0.75rem; background-color: var(--plate); background-image: url(\"assets/plates/graphite-plate.jpg\"); background-size: 900px auto; color: var(--plate-ink); border-bottom: var(--hair) solid var(--plate); font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.04em; } .ds-runlog__title { font-weight: 700; } .ds-runlog__bar > span:last-child { color: var(--plate-dim); } .ds-runlog__body { padding: 16px 24px; font-family: var(--mono); font-size: 0.78125rem; line-height: 1.7; white-space: pre; overflow-x: auto; color: var(--ink); } .ds-runlog__hint { display: none; margin: 0; padding: 0.35rem 24px 16px; font-size: 0.75rem; color: var(--ink-3); border-top: var(--hair) dotted var(--rule); } .ds-runlog[data-scrollable=\"true\"] .ds-runlog__hint { display: block; } .ds-rule { color: var(--ink-3); } .ds-folder { color: var(--ink); font-weight: 500; } .ds-quiet { color: var(--ink-3); } .ds-err { color: var(--alarm); } .ds-sum { color: var(--ink-2); }"
     },
     {
       "name": "Docs Row",
@@ -839,18 +1343,19 @@
       "refersTo": "legend-row",
       "description": "The printed key that makes the strip legible without color: five words, each with a 10x2px pen-weight swatch.",
       "html": "<p class=\"ds-vocab\"><span class=\"ds-vocab__word ds-vocab__word--clean ds-is-active\">乾淨</span><span class=\"ds-vocab__word ds-vocab__word--dirty ds-is-active\">有變更</span><span class=\"ds-vocab__word ds-vocab__word--failed\">失敗</span><span class=\"ds-vocab__word\">被中斷</span><span class=\"ds-vocab__word\">找不到儲存庫</span></p>",
-      "css": ".ds-vocab { display: flex; flex-wrap: wrap; gap: 0.35rem 16px; align-items: baseline; margin: 0; } .ds-vocab__word { font-family: var(--mono); font-size: 0.75rem; color: var(--ink-2); } .ds-vocab__word::before { content: \"\"; display: inline-block; width: 10px; height: 2px; margin-right: 0.45rem; vertical-align: 0.28em; background: var(--ink-3); } .ds-vocab__word--dirty::before { background: var(--ink); } .ds-vocab__word--failed::before { background: var(--alarm); } .ds-vocab__word--clean::before { background: var(--blue); } .ds-vocab__word:not(.ds-is-active) { color: var(--ink-3); } .ds-vocab__word:not(.ds-is-active)::before { background: var(--rule); }"
+      "css": ".ds-vocab { display: flex; flex-wrap: wrap; gap: 0.35rem 16px; align-items: baseline; margin: 0; background-color: var(--paper); background-image: url(\"assets/plates/paper-fibre.jpg\"); background-size: 900px auto; padding: 0.1rem 0.3rem; } /* the chip's stock is paper-fibre (not chart paper), which is what lets 12px --ink-3 clear 4.5 against the worst grain: 4.761; dark keeps the sheet ramp */ .ds-vocab__word { font-family: var(--mono); font-size: 0.75rem; color: var(--ink-2); } .ds-vocab__word::before { content: \"\"; display: inline-block; width: 10px; height: 2px; margin-right: 0.45rem; vertical-align: 0.28em; background: var(--ink-3); } .ds-vocab__word--dirty::before { background: var(--ink); } .ds-vocab__word--failed::before { background: var(--alarm); } .ds-vocab__word--clean::before { background: var(--blue); } .ds-vocab__word:not(.ds-is-active) { color: var(--ink-3); } .ds-vocab__word:not(.ds-is-active)::before { background: var(--rule); }"
     }
   ],
   "narrative": {
     "northStar": "The Strip-Chart Fleet Recorder",
-    "overview": "The whole site is one instrument. A single strip of chart paper advances under N pens, one pen per repository: a flat line is a clean repository, the excursion is the one that needs you, and the run closes in a totals band printed at the foot of the paper. The page therefore has no cards, no icon grid and no hero-plus-install-box; it has a printed head, a dark lane legend wired to the strip, and bands of the same continuous paper separated by a hairline rule and 112px of quiet. The vocabulary is plain throughout: the legend's number column is headed `#`, the documentation is 文件 / Docs, and chapter numbers are plain two-digit `01`–`08` — no coined shorthand.\n\nThe materials are a print room's, not a UI kit's. Paper runs edge to edge and the texture under it is real: the grain of a photographed sheet (`plates/paper-fibre.jpg`) is re-laid on the token's own tone, so the stock carries tooth at the exact `#f5f6f4` and no overlay stands between the material and the reader. The chart paper is the instrument's own material and appears only inside the strip: `plates/chart-paper.jpg` (grain re-laid on `#f5f6f4` at σ 4.4), one 1px printed rule every 40px, and 40px ticks down both edges, so no rule and no pattern ever runs through a line of prose. Dark objects are lacquered rather than filled — the plate, the footer, the lane legend, the graphite install window and the runlog bar all carry `plates/graphite-plate.jpg`, its grain re-laid on `#191a1d` at σ 4.0. What carries the rest of the world is rules: the 2px ink rules that divide the page, the dotted 1px hairlines between legend, navigation, margin-index and table rows, the docs row rules, the margin rule beside the chapter rail, and the engraved plate. Content is ink — graphite, link blue, alarm red — and nothing else. Anything that must feel physical is printed as an object: a punched white window for a chapter's own action, a printed monospace command line on the paper for everything else, a dark engraved plate for specs and calibration figures, a printed frame for the recorded terminal session. Depth is a printing metaphor (a lifted sheet, a seated plate, a punched hole), never a light source.\n\nThe build refines the direction contract in one place: the clean pen draws in link blue, not graphite, and graphite is spent on the dirty pen. The build wins; the pen vocabulary below is the shipped one.",
+    "overview": "The whole site is one instrument. A single strip of chart paper advances under N pens, one pen per repository: a flat line is a clean repository, the excursion is the one that needs you, and the run closes in a totals band printed at the foot of the paper. The page therefore has no cards, no icon grid and no hero-plus-install-box; it has a printed head, a dark lane legend wired to the strip, and bands of the same continuous paper separated by a hairline rule and 112px of quiet. The vocabulary is plain throughout: the legend's number column is headed `#`, the documentation is 文件 / Docs, and chapter numbers are plain two-digit `01`–`08` — no coined shorthand.\n\nThe materials are a print room's, not a UI kit's. Paper runs edge to edge and the texture under it is real — after dark it is graphite that runs edge to edge, and the sheet becomes an object standing on it. The grain of a photographed sheet (`plates/paper-fibre.jpg`) is re-laid on the token's own tone, so the stock carries tooth at the exact `#f5f6f4` and no overlay stands between the material and the reader. The chart paper is the instrument's own material and appears only inside the strip: `plates/chart-paper.jpg` (grain re-laid on `#f5f6f4` at σ 4.4), one 1px printed rule every 40px, and 40px ticks down both edges, so no rule and no pattern ever runs through a line of prose. Dark objects are lacquered rather than filled — the plate, the footer, the lane legend, the graphite install window and the runlog bar all carry `plates/graphite-plate.jpg`, its grain re-laid on `#191a1d` at σ 4.0 (and after dark the four that stay panels — plate, footer, legend, runlog bar — carry `plates/graphite-plate-2.jpg`, the same photograph on `#22242a`). What carries the rest of the world is rules: the 2px ink rules that divide the page, the dotted 1px hairlines between legend, navigation, margin-index and table rows, the docs row rules, the margin rule beside the chapter rail, and the engraved plate. Content is ink — graphite, link blue, alarm red — and nothing else (on the dark desk the same three meanings print in the plate family's inks; the ground changes, the meanings do not). Anything that must feel physical is printed as an object: a punched window for a chapter's own action (white on paper, the sheet itself after dark), a printed monospace command line on the paper for everything else, a dark engraved plate for specs and calibration figures, a printed frame for the recorded terminal session. Depth is a printing metaphor (a lifted sheet, a seated plate, a punched hole), never a light source.\n\nThe build refines the direction contract in one place: the clean pen draws in link blue, not graphite, and graphite is spent on the dirty pen. The build wins; the pen vocabulary below is the shipped one.\n\nTwo themes, one world. `document.documentElement.dataset.theme` switches between the instrument on a lit desk and the same instrument after dark: the desk and the panel go graphite — `--plate #191a1d` under the desk's own lacquer, `--plate-2 #22242a` for the objects that stand on it — and **the paper objects stay paper**: the strip keeps `#f5f6f4` + chart-paper, the runlog and the official install window take `#fff` + paper-fibre. In dark the official install window is the page's **brightest** object, which is how the \"one heaviest action\" invariant survives the flip; `color-scheme` follows the theme, an inline head script sets the attribute before the first paint (`localStorage[\"mgit-theme\"]`, then `prefers-color-scheme`), and `@media print` always forces the sheet.",
     "keyCharacteristics": [
-      "One continuous sheet: `paper-chart` and `paper-log` both paint the same `#f5f6f4` ground over one photographed fibre texture; the chart paper is the strip's own material, not the page's; sections are bands, never cards.",
-      "Three inks carry meaning (graphite, link blue, alarm) and colour means data and nothing else: the structure layer is three neutral rule greys, and the shipped landing measures 0.23% warm pixels at 1600px — all of it alarm ink.",
+      "One continuous sheet: `paper-chart` and `paper-log` both repaint `var(--paper)` over one photographed texture — `#f5f6f4` + fibre in light, `--plate #191a1d` + graphite lacquer after dark; the chart paper is the strip's own material, not the page's; sections are bands, never cards.",
+      "Three inks carry meaning — graphite, link blue, alarm on paper; plate ivory, plate blue, plate alarm on the dark desk — and colour means data and nothing else: the structure layer is neutral rule greys, the light landing measures 0.23% warm pixels at 1600px (all of it alarm ink), and the dark one 0.301% coloured pixels against light's 0.296% with an identical hue histogram.",
       "Instrument components: a dark lane legend wired to the strip, an engraved plate, a recorded-session frame, a five-word state vocabulary, a numbered rule list.",
-      "Three AI-generated textures carry material and nothing else — fibre under the page, chart paper in the strip, lacquered graphite behind the plate, the legend, the graphite window and the runlog bar — each re-laid on its token's own tone so the grain is visible without a scrim, and never a depicted object.",
-      "On paper, commands are printed lines (`.cmdline` with a text-only copy switch) and only a chapter's own action keeps the punched white window.",
+      "Three AI-generated textures carry material and nothing else — fibre under the page, chart paper in the strip, lacquered graphite behind the plate, the legend, the graphite window and the runlog bar — each re-laid on its token's own tone so the grain is visible without a scrim, and never a depicted object; the dark theme ships a fourth file from the same photograph (`graphite-plate-2.jpg`, grain re-laid on `#22242a`) so a panel still reads as an object on an already-dark desk.",
+      "Two themes, one world: a material variant, not a hue inversion — after dark the desk and the panel go graphite and every paper object re-declares the `--sheet-*` ramp and stays paper; a 34px keycap in the head toggles it, and print always forces the sheet.",
+      "On paper, commands are printed lines (`.cmdline` with a text-only copy switch) and only a chapter's own action keeps the punched window — white on paper, and after dark the sheet itself, standing on graphite.",
       "A margin index holds the chapter's own sections beside the text at ≥1280px (sticky, 232px) and as a compact list above the prose below that.",
       "Square corners throughout; hierarchy is rule weight (1px hair, 2px structure) and printed marks.",
       "One authored moment: the carriage sweep that draws the traces in 2400ms, with a replay control and a reduced-motion settle.",
@@ -859,7 +1364,7 @@
     "rules": [
       {
         "name": "The Structure-Only Rule",
-        "body": "Ruling is neutral and carries no colour: the three rule greys draw every separator, tick, table rule and scrollbar, and they never carry text, never border a control or a message, and never encode state. Colour in this system means data and nothing else — outside the pens, their marks and the failure word the page is neutral: the shipped landing measures 0.23% warm pixels across a 1600px page, and all of it is alarm ink.",
+        "body": "Ruling is neutral and carries no colour: the three rule greys — and, after dark, the desk's ivory hairlines at 0.1/0.2 alpha — draw every separator, tick, table rule and scrollbar, and they never carry text, never border a control or a message, and never encode state. Colour in this system means data and nothing else — outside the pens, their marks and the failure word the page is neutral: the shipped landing measures 0.23% warm pixels across a 1600px page, all of it alarm ink, and the dark page 0.301% coloured pixels with the same hue histogram (light 0.296%).",
         "section": "colors"
       },
       {
@@ -874,7 +1379,12 @@
       },
       {
         "name": "The Punched-White Rule",
-        "body": "White is an opening, not a surface: a window, a runlog, a callout, a switch, or the hovered/current row. No band, no section, no page is white.",
+        "body": "White is an opening, not a surface: a window, a runlog, a callout, a switch, or the hovered/current row. No band, no section, no page is white; after dark the same openings stand on graphite and the official install window is the page's brightest object — a punched hole is still a hole.",
+        "section": "colors"
+      },
+      {
+        "name": "The Material-Variant Rule",
+        "body": "A theme here is a material variant of one world, never a hue inversion: the desk and the panel change material and the paper objects stay paper, re-declaring the `--sheet-*` ramp on the strip, the runlog and the official install window. A theme that repaints a paper object, or that inverts hues without moving a material, is a different world — and no desk or panel may be a flat fill in either theme (dark measures σ 3.49–5.67 across its material surfaces, every one above 3).",
         "section": "colors"
       },
       {
@@ -924,14 +1434,17 @@
       }
     ],
     "dos": [
-      "Do keep the reading surface paper, not pattern: `paper-chart` and `paper-log` repaint the same `#f5f6f4` over one fibre texture whose grain is laid on the token's own tone, and the chart paper stays inside the strip where the pens draw.",
-      "Do use imagery as material only — fibre under the page, chart paper in the strip, lacquered graphite behind the plate, the legend, the graphite window and the runlog bar — each AI-generated texture carrying its prompt as an embedded JPEG comment and a sibling `.prompt.txt`.",
-      "Do re-lay a texture's grain on the token it stands on (`website/build/make-textures.py`: paper-fibre σ 3.2 on `#f5f6f4`, graphite-plate σ 4.0 on `#191a1d`, chart-paper σ 4.4 on `#f5f6f4`) so the material is visible at the token's own tone instead of under a scrim.",
+      "Do keep the reading surface paper, not pattern: `paper-chart` and `paper-log` repaint `var(--paper)` — `#f5f6f4` in light, `#191a1d` after dark — over one texture (the fibre in light, the graphite lacquer in dark) whose grain is laid on the token's own tone, and the chart paper stays inside the strip where the pens draw.",
+      "Do use imagery as material only — fibre under the page, chart paper in the strip, lacquered graphite behind the plate, the legend, the graphite window and the runlog bar — each AI-generated texture carrying its prompt as an embedded JPEG comment and a sibling `.prompt.txt`; the dark panels' `graphite-plate-2.jpg` is the same photograph at a second tone, with its own prompt file.",
+      "Do re-lay a texture's grain on the token it stands on (`website/build/make-textures.py`: paper-fibre σ 3.2 on `#f5f6f4`, graphite-plate σ 4.0 on `#191a1d`, graphite-plate-2 σ 4.0 on `#22242a`, chart-paper σ 4.4 on `#f5f6f4`) so the material is visible at the token's own tone instead of under a scrim.",
+      "Do keep every material visible in both themes: every surface that carries one measures σ ≥ 3 (dark: desk 4.68, legend 3.72, strip 5.67, runlog bar 4.38 and body 3.49, install window 3.62, plate 4.39, footer 4.65) — the desk and the panel may never be flat fills.",
+      "Do keep the paper objects paper in dark: the strip (`#f5f6f4` + chart-paper), the runlog and the official install window (`#fff` + paper-fibre) re-declare the `--sheet-*` ramp, so only the desk and the panel ever move between themes.",
+      "Do hold 12–17px chrome to 4.5 against the worst grain of the surface it sits on, not against the token — the light sheet on its darkest fibre (226/255), the dark desk on its lightest graphite (52/255) — and give a surface that cannot clear it a different material, as the strip's chips did when they moved from chart paper (4.415) to paper fibre (4.761).",
       "Do let ink carry content and paper carry structure through rules: 2px dividers, dotted 1px hairlines under list, table, navigation and index rows, the margin rule, the docs row rules.",
       "Do pair every failure with a mark and a word (failed pen + cross + `exit 128`), and print the whole five-word state vocabulary once per strip.",
       "Do set display-size CJK in the `--display` stack so it lands in \"mgit Display\", and extend the 155-character subset when new headline copy appears.",
-      "Do print a command as a `.cmdline` on the paper with the text-only ghost switch; give the official install commands the graphite window (`window--plate`) as the page's one primary action, and let verification and build lines keep the white punched window.",
-      "Do ration the graphite: the official install commands are the page's one primary action — five graphite windows on each landing (one in the hero, four in the install band: install.sh, install.ps1, `npm install -g @willh/mgit`, `npx @willh/mgit`) and three in each docs install chapter — the lane legend is the wide frame's dark mass (≥621px, reverting to paper at ≤620px where it would swallow the screen), and every recorded session's bar is graphite so the session announces itself before it is read.",
+      "Do print a command as a `.cmdline` on the paper with the text-only ghost switch; give the official install commands the window (`window--plate`) as the page's one primary action — graphite on the light desk, the sheet itself after dark — and let verification and build lines keep the punched window on paper in light and as a flat punch in the dark desk.",
+      "Do ration the graphite: the official install commands are the page's one primary action — five graphite windows on each landing (one in the hero, four in the install band: install.sh, install.ps1, `npm install -g @willh/mgit`, `npx @willh/mgit`) and three in each docs install chapter — the lane legend is the wide frame's dark mass (≥621px, reverting to the surface it stands on at ≤620px where it would swallow the screen), and every recorded session's bar is graphite so the session announces itself before it is read. The ration is one heaviest action per page, not one colour: after dark that action is the page's brightest object, the install window on stock.",
       "Do keep numbers plain and self-describing: `01`–`08` for chapters, `01`–`06` for lanes, the command itself (`mgit pull`) where a run needs a name.",
       "Do print a rule set as a `rules` list: CSS columns own the two balanced columns, each `li` owns only its own text and a 1px hairline.",
       "Do keep the margin index in step with the chapter's own h2/h3 headings (`sec-1`, `sec-2`, … in document order) so the index and the page can never disagree.",
@@ -939,7 +1452,7 @@
       "Do hold every gap to the 8px unit: 112px between bands, 48px from a band head to its content, 24–32px inside groups.",
       "Do keep corners square, and express state as inversion (Graphite/Paper) or a punched white opening.",
       "Do honor reduced motion by settling the strip to its final state — drawn traces, visible marks, parked carriage — rather than suppressing the drawing.",
-      "Do theme the browser surfaces (selection, caret, scrollbars, focus ring) from the same palette; all four already ship themed, and the ring turns Plate Blue on graphite.",
+      "Do theme the browser surfaces (selection, caret, scrollbars, focus ring) from the same palette; all four already ship themed, and the ring turns Plate Blue on graphite — light 5.59 worst case, dark 5.66, where `#0f5c86` would be 2.40.",
       "Do name every landmark (`網站`, `文件章節`, `章節`, `本章內容`, `章節切換`) and give a scrollable region a tab stop only when it actually overflows — `initScrollers()` measures each command line and runlog body and flips `tabindex` between 0 and -1, so the keyboard never stops on a line that already fits."
     ],
     "donts": [
@@ -952,9 +1465,12 @@
       "Don't introduce a fourth ink. Graphite, Link Blue and Alarm are the whole meaning layer; a second accent dilutes the alarm.",
       "Don't use Alarm as decoration — it only appears with a failure word, a code, or a cross.",
       "Don't add rounded panels, soft UI shadows, glows, gradient fills or colored shadows; the two lifts and two bevels in Elevation & Depth are the entire depth vocabulary.",
-      "Don't carry plate inks onto paper or paper inks onto the plate: the dark object has its own four inks, and the page keeps its three.",
+      "Don't carry plate inks onto paper or paper inks onto the plate: the dark object has its own four inks, the page keeps its three, and after dark the two exchange desks — the desk takes the plate family, the paper objects re-declare the sheet family — without either borrowing a colour ad hoc.",
+      "Don't implement a theme by inverting hues: dark is a material variant of one world — the desk and the panel move between paper and graphite, the paper objects do not, and no `--sheet-*` value changes in either theme.",
+      "Don't let the dark theme's primary action lose its \"one heaviest\" status: after dark the official install window is still the page's one primary action, now the brightest object rather than the darkest.",
+      "Don't confuse flat punches and keycaps with materials: the punched windows, the lang and theme keycaps and the replay button are flat `--plate-2` fills in dark (σ 0), mirroring light's flat white punches — grain belongs to the desk and the panel; holes and keys are flat.",
       "Don't let a fifth hue into the recorded output: the CLI's `=` rules, dividers and quiet lines print in Graphite 3, because colour on this site means data about repositories — never syntax.",
-      "Don't invert the site into a dark theme; pages declare `color-scheme: light`, and the plate stays an object on paper.",
+      "Don't invert the site into a dark theme by repainting its objects; the theme is a material variant, the paper stays paper, and print always forces the sheet back.",
       "Don't hang a label, kicker or eyebrow above a heading. No chapter head, band or page carries one: a chapter head is its title and intro, the chapter number lives in the navigation and the docs rows (where `aria-current` marks the open one), and the version lives in the footer colophon and the navigation title. The heading carries its own weight.",
       "Don't coin shorthand for things that already have plain names: the documentation is 文件 / Docs, the legend's number column is `#`, chapters and lanes are two-digit numbers, and a run is named by the command it ran (`mgit pull`), never by a code.",
       "Don't reproduce the CLI's printed symbols as site iconography, and don't style a screen that imitates the terminal outside the runlog frame."

@@ -1,0 +1,14 @@
+Model: Azure OpenAI gpt-image-2, quality medium, 1024x1024.
+
+Use case: stylized-concept
+Asset type: seamless background texture tiled under the light theme page ground of a developer tool website
+Primary request: an extremely subtle abstract surface grain, like fine matte anodised aluminium or a smooth technical drawing paper seen perfectly straight on
+Scene/backdrop: none; the frame is filled edge to edge by the surface itself
+Subject: surface micro texture only
+Style/medium: flat macro photograph of a material, no objects, no depth of field, no perspective
+Composition/framing: perfectly flat and uniform across the whole frame, no vignette, no hotspot, no gradient, no focal point, no centre of interest
+Lighting/mood: perfectly even diffuse light, calm and technical
+Color palette: near white warm neutral greys only, extremely low contrast
+Materials/textures: fine isotropic grain with faint short fibres, no visible repeating pattern
+Constraints: no text, no logos, no objects, no shapes, no lines, no borders, no watermark, no vignette, no gradient
+Avoid: any recognisable object, any strong feature, any directional streak, any colour cast, any composition

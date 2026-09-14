@@ -1,255 +1,186 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>mgit — one command, every Git repository under the current directory</title>
-<meta name="description" content="mgit runs the same git command in every Git repository below the current directory and folds the results into one report and one exit code. Single Rust binary, zero runtime dependencies.">
-<script>(function () {
-  var stored = null;
-  var system = "light";
-  try {
-    stored = window.localStorage.getItem("mgit-theme");
-  } catch (error) {
-    stored = null;
-  }
-  try {
-    if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) system = "dark";
-  } catch (error) {
-    system = "light";
-  }
-  document.documentElement.setAttribute("data-theme", stored === "light" || stored === "dark" ? stored : system);
-})();</script>
-<link rel="stylesheet" href="../assets/site.css">
-<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<title>mgit — one command for every Git repository in the directory</title>
+<meta name="description" content="mgit runs the same git command in every Git repository under the current directory and collects the results into one report and one exit code. A single Rust binary with no runtime dependencies. Try it in your browser.">
+<meta name="robots" content="index, follow">
 <meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#fbfbfa" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0d1013" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://mgit.gh.miniasp.com/en/">
+<link rel="alternate" hreflang="zh-Hant" href="https://mgit.gh.miniasp.com/"><link rel="alternate" hreflang="en" href="https://mgit.gh.miniasp.com/en/"><link rel="alternate" hreflang="x-default" href="https://mgit.gh.miniasp.com/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="mgit">
+<meta property="og:title" content="mgit — one command for every Git repository in the directory">
+<meta property="og:description" content="mgit runs the same git command in every Git repository under the current directory and collects the results into one report and one exit code. A single Rust binary with no runtime dependencies. Try it in your browser.">
+<meta property="og:url" content="https://mgit.gh.miniasp.com/en/">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://mgit.gh.miniasp.com/assets/img/og-cover.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="mgit terminal output: one command sweeping six Git repositories, closing with a one line summary.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="mgit — one command for every Git repository in the directory">
+<meta name="twitter:description" content="mgit runs the same git command in every Git repository under the current directory and collects the results into one report and one exit code. A single Rust binary with no runtime dependencies. Try it in your browser.">
+<meta name="twitter:image" content="https://mgit.gh.miniasp.com/assets/img/og-cover.png">
+<meta name="twitter:image:alt" content="mgit terminal output: one command sweeping six Git repositories, closing with a one line summary.">
+<script>(function(){var t=null;try{t=localStorage.getItem('mgit-theme')}catch(e){}if(t!=='light'&&t!=='dark'){t='light';try{if(matchMedia('(prefers-color-scheme: dark)').matches)t='dark'}catch(e){}}document.documentElement.setAttribute('data-theme',t)})()</script>
+<link rel="stylesheet" href="../assets/css/site.css">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/favicon.ico" sizes="32x32">
+<link rel="icon" href="../assets/img/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+<link rel="manifest" href="../site.webmanifest">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"mgit","description":"mgit runs the same git command in every Git repository under the current directory and collects the results into one report and one exit code. A single Rust binary with no runtime dependencies. Try it in your browser.","url":"https://mgit.gh.miniasp.com/en/","applicationCategory":"DeveloperApplication","operatingSystem":"macOS, Linux, Windows","softwareVersion":"2.0.2","license":"https://opensource.org/licenses/MIT","inLanguage":"en","downloadUrl":"https://github.com/doggy8088/mgit/releases","codeRepository":"https://github.com/doggy8088/mgit","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Person","name":"Will Huang","url":"https://github.com/doggy8088"}}</script>
 </head>
-<body class="paper-chart">
+<body>
 <a class="skip" href="#main">Skip to content</a>
-<header class="head"><div class="shell head__inner">
-<a class="wordmark" href="../en/index.html">
-<span class="wordmark__mark">mgit</span>
-</a>
-<nav class="head__links" aria-label="Site">
-<a href="../en/docs/">Docs</a>
-<a href="https://github.com/doggy8088/mgit">GitHub</a>
-<a href="https://github.com/doggy8088/mgit/releases">Releases</a>
-<a href="https://www.npmjs.com/package/@willh/mgit">npm</a>
-</nav>
-<button class="themeswitch" type="button" data-theme-toggle aria-pressed="false" aria-label="Dark theme"><svg class="themeswitch__glyph" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="2.5" y="2.5" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M2.5 2.5h5.5v11H2.5z" fill="currentColor"/></svg></button>
-<span class="lang" role="group" aria-label="Language">
-<a href="../en/index.html" aria-current="true">EN</a>
-<a href="../index.html">中文</a>
-</span>
-</div></header>
-<main id="main">
-<section class="instrument" aria-labelledby="hero-title"><div class="shell"><div class="paperhead"><h1 class="paperhead__title" id="hero-title">One command, every Git repository under the current directory</h1><p class="lede">No arguments means <code>git status -s</code> in every repository; any git command works the same way. A clean repository stays quiet, and the run ends on one exit code.</p><div class="window window--plate"><span class="label">macOS · Linux</span><span class="window__cmd" tabindex="0">curl -fsSL https://raw.githubusercontent.com/doggy8088/mgit/main/install.sh | sh</span><button type="button" class="switch" data-copy="curl -fsSL https://raw.githubusercontent.com/doggy8088/mgit/main/install.sh | sh" data-label-copied="Copied" data-label-failed="Copy manually"><svg class="switch__glyph" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="2.5" y="2.5" width="8" height="11" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M5.5 2.5V1h8v11h-1.5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg><span data-copy-label aria-live="polite">Copy</span></button></div><p class="paperhead__case">The classic case: several repositories scattered in one working directory, referring to each other, with no <code>git submodule</code> in sight.</p></div><div class="instrument__frame"><ul class="legend" data-legend="b"><li class="legend__head"><span class="label">#</span><span class="label">Repository · branch</span></li><li class="legend__row" data-lane="0"><span class="legend__ch">01</span><span class="legend__name">api-gateway</span><span class="legend__meta">main · <span class="legend__state" data-state="clean">clean</span></span></li><li class="legend__row" data-lane="1"><span class="legend__ch">02</span><span class="legend__name">billing-worker</span><span class="legend__meta">main · <span class="legend__state" data-state="clean">clean</span></span></li><li class="legend__row" data-lane="2"><span class="legend__ch">03</span><span class="legend__name">docs-site</span><span class="legend__meta">main · <span class="legend__state" data-state="clean">clean</span></span></li><li class="legend__row" data-lane="3"><span class="legend__ch">04</span><span class="legend__name">infra-scripts</span><span class="legend__meta">main · <span class="legend__state" data-state="clean">clean</span></span></li><li class="legend__row" data-lane="4"><span class="legend__ch">05</span><span class="legend__name">web-console</span><span class="legend__meta">main · exit 128 · <span class="legend__state" data-state="failed">failed</span> · cannot pull with rebase: unstaged changes</span></li><li class="legend__row" data-lane="5"><span class="legend__ch">06</span><span class="legend__name">web-console-hotfix</span><span class="legend__meta">hotfix · <span class="legend__state" data-state="clean">clean</span></span></li></ul><div class="strip" data-strip="b"><p class="strip__caption"><span class="strip__run">mgit pull</span><span class="strip__meta">demo workspace /tmp/mgit-mixed · 6 repositories · recorded 2026-09-14</span></p><div class="strip__foot"><p class="vocab"><span class="vocab__word is-active" data-state="clean">clean</span><span class="vocab__word" data-state="none">dirty</span><span class="vocab__word is-active" data-state="failed">failed</span><span class="vocab__word" data-state="none">interrupted</span><span class="vocab__word" data-state="none">no repos</span></p><p class="strip__exit"><b>exit 128</b> · mgit: 6 repositories, 5 succeeded, 1 failed</p></div><button type="button" class="replay" data-replay><svg class="replay__glyph" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M2.5 8a5.5 5.5 0 1 1 1.7 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M2.5 8V4.4M2.5 8h3.6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Replay</span></button></div></div><p class="instrument__note">A real session: <code>mgit pull</code> recorded in <code>/tmp/mgit-mixed</code> (six repositories); the spike on <code>web-console</code> is the one that failed.</p></div></section>
-<section class="band" aria-labelledby="case-title"><div class="shell"><div class="band__head"><div><h2 class="band__title" id="case-title">The classic case: scattered repositories, one directory</h2><p class="band__intro">The app, a shared package, examples, deploy scripts: each its own repository, referring to each other by relative path, with no <code>git submodule</code> wiring them together. Clone them as sibling folders and one command drives them all.</p></div></div><div class="cmdline"><span class="cmdline__text" tabindex="0">mgit --list</span><span class="cmdline__note">see which repositories will be touched</span><button type="button" class="switch switch--ghost" data-copy="mgit --list" data-label-copied="Copied" data-label-failed="Copy manually"><span data-copy-label aria-live="polite">Copy</span></button></div><div class="cmdline"><span class="cmdline__text" tabindex="0">mgit</span><span class="cmdline__note">every repository's status at once</span><button type="button" class="switch switch--ghost" data-copy="mgit" data-label-copied="Copied" data-label-failed="Copy manually"><span data-copy-label aria-live="polite">Copy</span></button></div><div class="cmdline"><span class="cmdline__text" tabindex="0">mgit pull</span><span class="cmdline__note">update them all in one run</span><button type="button" class="switch switch--ghost" data-copy="mgit pull" data-label-copied="Copied" data-label-failed="Copy manually"><span data-copy-label aria-live="polite">Copy</span></button></div><div class="cmdline"><span class="cmdline__text" tabindex="0">mgit log --oneline -n 1</span><span class="cmdline__note">the latest commit of each</span><button type="button" class="switch switch--ghost" data-copy="mgit log --oneline -n 1" data-label-copied="Copied" data-label-failed="Copy manually"><span data-copy-label aria-live="polite">Copy</span></button></div><p class="band__footnote">mgit puts no files inside a repository and changes no relationship between them: it only sends the same command to every child directory. Pin versions with submodules; unify CI and releases with a monorepo.</p></div></section>
-<section class="band" aria-labelledby="scan-title"><div class="shell"><div class="band__head"><div><h2 class="band__title" id="scan-title">How it finds the repositories</h2><p class="band__intro">Level one only by default; sorted by name, identical on all three systems. <code>--list</code> shows what will be touched.</p></div></div><ol class="rules"><li>The search starts in the current directory and walks down, one level by default (<code>--depth</code> goes deeper).</li><li>A directory counts as a repository when it holds a <code>.git</code> <b>directory</b> or a <code>.git</code> <b>file</b>, so <code>git worktree</code> and submodules are recognised.</li><li>Once a repository is found the search does not descend into it, so submodules and vendored projects are never counted twice.</li><li>Symlinks are followed and counted under the name you see; the real directory behind them is visited only once, so link loops cannot hang the run.</li><li>Results are sorted by name, ignoring case, and the order is identical on macOS, Linux and Windows.</li><li>When nothing is found the run warns and exits with <code>1</code> (<code>--allow-empty</code> restores the old behaviour); if the current directory itself is a repository, git runs right there.</li></ol><div class="split split--logs" style="margin-top:var(--s5)"><div class="runlog"><div class="runlog__bar"><span>mgit --list</span><span>/tmp/mgit-mixed · 6 paths</span></div><div class="runlog__body" tabindex="0" role="group" aria-label="mgit --list output"><span class="">/private/tmp/mgit-mixed/api-gateway</span>
-<span class="">/private/tmp/mgit-mixed/billing-worker</span>
-<span class="">/private/tmp/mgit-mixed/docs-site</span>
-<span class="">/private/tmp/mgit-mixed/infra-scripts</span>
-<span class="">/private/tmp/mgit-mixed/web-console</span>
-<span class="">/private/tmp/mgit-mixed/web-console-hotfix</span></div><p class="runlog__hint">← scrolls sideways</p></div><div class="runlog"><div class="runlog__bar"><span>mgit --depth 2 --summary</span><span>7 repositories</span></div><div class="runlog__body" tabindex="0" role="group" aria-label="mgit --depth 2 --summary output"><span class="rule">================================================================================</span>
-<span class="folder">📂 Folder: web-console-hotfix │ Branch: hotfix</span>
-<span class="rule">================================================================================</span>
-<span class="quiet"> </span>
-<span class="rule">────────────────────────────────────────────────────────────────────────────────</span>
-<span class="sum">mgit: 7 repositories, 7 succeeded</span></div><p class="runlog__hint">← scrolls sideways</p></div></div><p class="band__footnote">Same workspace: <code>--depth 1</code> → 6 repositories, <code>--depth 2</code> → 7 (the extra one is <code>vendor/legacy-auth</code>). Both are actual run results.</p></div></section>
-<section class="band" aria-labelledby="report-title"><div class="shell"><div class="band__head"><div><h2 class="band__title" id="report-title">A report you can act on</h2><p class="band__intro">The summary goes to stderr: <code>mgit status -s &gt; status.txt</code> stays clean.</p></div></div><div class="instrument__frame"><ul class="legend" data-legend="a"><li class="legend__head"><span class="label">#</span><span class="label">Repository · branch</span></li><li class="legend__row" data-lane="0"><span class="legend__ch">01</span><span class="legend__name">api-gateway</span><span class="legend__meta">main · <span class="legend__state" data-state="clean">clean</span></span></li><li class="legend__row" data-lane="1"><span class="legend__ch">02</span><span class="legend__name">billing-worker</span><span class="legend__meta">main · <span class="legend__state" data-state="clean">clean</span></span></li><li class="legend__row" data-lane="2"><span class="legend__ch">03</span><span class="legend__name">docs-site</span><span class="legend__meta">main · <span class="legend__state" data-state="clean">clean</span></span></li><li class="legend__row" data-lane="3"><span class="legend__ch">04</span><span class="legend__name">infra-scripts</span><span class="legend__meta">main · <span class="legend__state" data-state="clean">clean</span></span></li><li class="legend__row" data-lane="4"><span class="legend__ch">05</span><span class="legend__name">web-console</span><span class="legend__meta">main · 1 change · <span class="legend__state" data-state="dirty">dirty</span> · M src/main.rs</span></li><li class="legend__row" data-lane="5"><span class="legend__ch">06</span><span class="legend__name">web-console-hotfix</span><span class="legend__meta">hotfix · <span class="legend__state" data-state="clean">clean</span></span></li></ul><div class="strip" data-strip="a"><p class="strip__caption"><span class="strip__run">mgit --summary</span><span class="strip__meta">same workspace · read-only status · recorded 2026-09-14</span></p><div class="strip__foot"><p class="vocab"><span class="vocab__word is-active" data-state="clean">clean</span><span class="vocab__word is-active" data-state="dirty">dirty</span><span class="vocab__word" data-state="none">failed</span><span class="vocab__word" data-state="none">interrupted</span><span class="vocab__word" data-state="none">no repos</span></p><p class="strip__exit"><b>exit 0</b> · mgit: 6 repositories, 6 succeeded</p></div><button type="button" class="replay" data-replay><svg class="replay__glyph" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M2.5 8a5.5 5.5 0 1 1 1.7 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M2.5 8V4.4M2.5 8h3.6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Replay</span></button></div></div><div class="split split--logs" style="margin-top:var(--s5)"><div class="runlog"><div class="runlog__bar"><span>mgit pull</span><span>exit 128 · 5 succeeded, 1 failed</span></div><div class="runlog__body" tabindex="0" role="group" aria-label="mgit pull output"><span class="rule">================================================================================</span>
-<span class="folder">📂 Folder: api-gateway │ Branch: main</span>
-<span class="rule">================================================================================</span>
-<span class="">Already up to date.</span>
-<span class="quiet"> </span>
-<span class="rule">================================================================================</span>
-<span class="folder">📂 Folder: billing-worker │ Branch: main</span>
-<span class="rule">================================================================================</span>
-<span class="">Already up to date.</span>
-<span class="quiet"> </span>
-<span class="rule">================================================================================</span>
-<span class="folder">📂 Folder: docs-site │ Branch: main</span>
-<span class="rule">================================================================================</span>
-<span class="">Already up to date.</span>
-<span class="quiet"> </span>
-<span class="rule">================================================================================</span>
-<span class="folder">📂 Folder: infra-scripts │ Branch: main</span>
-<span class="rule">================================================================================</span>
-<span class="">Already up to date.</span>
-<span class="quiet"> </span>
-<span class="rule">================================================================================</span>
-<span class="folder">📂 Folder: web-console │ Branch: main</span>
-<span class="rule">================================================================================</span>
-<span class="err">error: cannot pull with rebase: You have unstaged changes.</span>
-<span class="err">error: Please commit or stash them.</span>
-<span class="quiet"> </span>
-<span class="rule">================================================================================</span>
-<span class="folder">📂 Folder: web-console-hotfix │ Branch: hotfix</span>
-<span class="rule">================================================================================</span>
-<span class="">Already up to date.</span>
-<span class="quiet"> </span>
-<span class="rule">────────────────────────────────────────────────────────────────────────────────</span>
-<span class="sum">mgit: 6 repositories, 5 succeeded, 1 failed</span>
-<span class="err">  ✗ web-console (exit code 128)</span></div><p class="runlog__hint">← scrolls sideways</p></div><div class="runlog"><div class="runlog__bar"><span>mgit --summary</span><span>exit 0 · 6 succeeded</span></div><div class="runlog__body" tabindex="0" role="group" aria-label="mgit --summary output"><span class="rule">================================================================================</span>
-<span class="folder">📂 Folder: api-gateway │ Branch: main</span>
-<span class="rule">================================================================================</span>
-<span class="quiet"> </span>
-<span class="rule">================================================================================</span>
-<span class="folder">📂 Folder: billing-worker │ Branch: main</span>
-<span class="rule">================================================================================</span>
-<span class="quiet"> </span>
-<span class="rule">================================================================================</span>
-<span class="folder">📂 Folder: docs-site │ Branch: main</span>
-<span class="rule">================================================================================</span>
-<span class="quiet"> </span>
-<span class="rule">================================================================================</span>
-<span class="folder">📂 Folder: infra-scripts │ Branch: main</span>
-<span class="rule">================================================================================</span>
-<span class="quiet"> </span>
-<span class="rule">================================================================================</span>
-<span class="folder">📂 Folder: web-console │ Branch: main</span>
-<span class="rule">================================================================================</span>
-<span class=""> M src/main.rs</span>
-<span class="quiet"> </span>
-<span class="rule">================================================================================</span>
-<span class="folder">📂 Folder: web-console-hotfix │ Branch: hotfix</span>
-<span class="rule">================================================================================</span>
-<span class="quiet"> </span>
-<span class="rule">────────────────────────────────────────────────────────────────────────────────</span>
-<span class="sum">mgit: 6 repositories, 6 succeeded</span></div><p class="runlog__hint">← scrolls sideways</p></div></div><p class="note__label label" style="margin-top:var(--s5)">After the run: the summary and the exit code</p><p class="prose">The failing run names the repository and its code in the summary (<code>✗ web-console (exit code 128)</code>); the run ends on that first failing code.</p><div class="plate"><div class="plate__head"><span class="plate__title">Exit codes</span><span class="plate__spec">mgit 2.0.2</span></div><div class="plate__body"><table class="table table--spec"><thead><tr><th>Code</th><th>Meaning</th></tr></thead><tbody><tr><td>0</td><td>Every repository succeeded (or nothing was found with <code>--allow-empty</code>)</td></tr><tr><td>1</td><td>A repository failed, or no repository was found at all</td></tr><tr><td>2</td><td>The command line could not be parsed</td></tr><tr><td>127</td><td>git could not be started</td></tr><tr><td>130</td><td>Interrupted with Ctrl+C (SIGINT / SIGTERM)</td></tr><tr><td>other</td><td>The exit code of the first failing git invocation, reported unchanged</td></tr></tbody></table></div></div></div></section>
-<section class="band" aria-labelledby="install-title"><div class="shell"><div class="band__head"><div><h2 class="band__title" id="install-title">Install</h2><p class="band__intro">One Rust binary, zero runtime dependencies; the official installers verify SHA-256 first.</p></div></div><div class="stack stack--wide"><div class="proc"><div class="proc__head"><span class="proc__name">macOS · Linux</span><span class="proc__note">POSIX sh: detects the OS and CPU architecture, verifies SHA-256, then installs.</span></div><div class="window window--plate"><span class="label">macOS · Linux</span><span class="window__cmd" tabindex="0">curl -fsSL https://raw.githubusercontent.com/doggy8088/mgit/main/install.sh | sh</span><button type="button" class="switch" data-copy="curl -fsSL https://raw.githubusercontent.com/doggy8088/mgit/main/install.sh | sh" data-label-copied="Copied" data-label-failed="Copy manually"><svg class="switch__glyph" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="2.5" y="2.5" width="8" height="11" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M5.5 2.5V1h8v11h-1.5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg><span data-copy-label aria-live="polite">Copy</span></button></div></div><div class="proc"><div class="proc__head"><span class="proc__name">Windows PowerShell</span><span class="proc__note">Also works from PowerShell 7+ on macOS and Linux.</span></div><div class="window window--plate"><span class="label">Windows PowerShell</span><span class="window__cmd" tabindex="0">irm https://raw.githubusercontent.com/doggy8088/mgit/main/install.ps1 | iex</span><button type="button" class="switch" data-copy="irm https://raw.githubusercontent.com/doggy8088/mgit/main/install.ps1 | iex" data-label-copied="Copied" data-label-failed="Copy manually"><svg class="switch__glyph" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="2.5" y="2.5" width="8" height="11" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M5.5 2.5V1h8v11h-1.5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg><span data-copy-label aria-live="polite">Copy</span></button></div></div><div class="proc"><div class="proc__head"><span class="proc__name">npm · npx</span><span class="proc__note">Node.js 20+; the package ships the official binaries for six platforms and runs no code on install (there is no postinstall).</span></div><div class="window window--plate"><span class="label">npm · npx</span><span class="window__cmd" tabindex="0">npm install -g @willh/mgit</span><button type="button" class="switch" data-copy="npm install -g @willh/mgit" data-label-copied="Copied" data-label-failed="Copy manually"><svg class="switch__glyph" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="2.5" y="2.5" width="8" height="11" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M5.5 2.5V1h8v11h-1.5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg><span data-copy-label aria-live="polite">Copy</span></button></div><div class="window window--plate"><span class="label">npm · npx</span><span class="window__cmd" tabindex="0">npx @willh/mgit</span><button type="button" class="switch" data-copy="npx @willh/mgit" data-label-copied="Copied" data-label-failed="Copy manually"><svg class="switch__glyph" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="2.5" y="2.5" width="8" height="11" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M5.5 2.5V1h8v11h-1.5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg><span data-copy-label aria-live="polite">Copy</span></button></div></div></div><div class="split" style="margin-top:var(--s6)"><div class="stack"><p class="label">Verify it yourself</p><div class="window"><span class="label">macOS</span><span class="window__cmd" tabindex="0">shasum -a 256 -c mgit-aarch64-apple-darwin.tar.gz.sha256</span><button type="button" class="switch" data-copy="shasum -a 256 -c mgit-aarch64-apple-darwin.tar.gz.sha256" data-label-copied="Copied" data-label-failed="Copy manually"><svg class="switch__glyph" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="2.5" y="2.5" width="8" height="11" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M5.5 2.5V1h8v11h-1.5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg><span data-copy-label aria-live="polite">Copy</span></button></div><div class="window"><span class="label">Linux</span><span class="window__cmd" tabindex="0">sha256sum -c mgit-x86_64-unknown-linux-musl.tar.gz.sha256</span><button type="button" class="switch" data-copy="sha256sum -c mgit-x86_64-unknown-linux-musl.tar.gz.sha256" data-label-copied="Copied" data-label-failed="Copy manually"><svg class="switch__glyph" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="2.5" y="2.5" width="8" height="11" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M5.5 2.5V1h8v11h-1.5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg><span data-copy-label aria-live="polite">Copy</span></button></div><p class="proc__note">Every checksum is also collected in <a href="https://github.com/doggy8088/mgit/releases/download/v2.0.2/SHA256SUMS.txt">SHA256SUMS.txt</a>.</p></div><div class="stack"><table class="table"><caption>8 release targets</caption><thead><tr><th>Target</th><th>Archive</th><th>libc</th></tr></thead><tbody><tr><td>Linux x86_64</td><td><code>mgit-x86_64-unknown-linux-musl.tar.gz</code></td><td>static</td></tr><tr><td>Linux aarch64</td><td><code>mgit-aarch64-unknown-linux-musl.tar.gz</code></td><td>static</td></tr><tr><td>Linux x86_64</td><td><code>mgit-x86_64-unknown-linux-gnu.tar.gz</code></td><td>glibc</td></tr><tr><td>Linux aarch64</td><td><code>mgit-aarch64-unknown-linux-gnu.tar.gz</code></td><td>glibc</td></tr><tr><td>macOS Apple Silicon</td><td><code>mgit-aarch64-apple-darwin.tar.gz</code></td><td>n/a</td></tr><tr><td>macOS Intel</td><td><code>mgit-x86_64-apple-darwin.tar.gz</code></td><td>n/a</td></tr><tr><td>Windows x64</td><td><code>mgit-x86_64-pc-windows-msvc.zip</code></td><td>n/a</td></tr><tr><td>Windows on ARM</td><td><code>mgit-aarch64-pc-windows-msvc.zip</code></td><td>n/a</td></tr></tbody></table><div class="window"><span class="label">from source</span><span class="window__cmd" tabindex="0">cargo install --path .</span><button type="button" class="switch" data-copy="cargo install --path ." data-label-copied="Copied" data-label-failed="Copy manually"><svg class="switch__glyph" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="2.5" y="2.5" width="8" height="11" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M5.5 2.5V1h8v11h-1.5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg><span data-copy-label aria-live="polite">Copy</span></button></div></div></div></div></section>
-<section class="band" aria-labelledby="cert-title"><div class="shell"><div class="band__head"><div><h2 class="band__title" id="cert-title">Why you can trust the reading</h2><p class="band__intro">Numbers you can check, not adjectives.</p></div></div><div class="plate"><div class="plate__head"><span class="plate__title">Measured numbers</span><span class="plate__spec">mgit 2.0.2</span></div><div class="plate__body"><dl class="plate__grid"><div class="plate__figure"><dt>8</dt><dd><span class="plate__value">release targets</span><span>macOS, Linux, Windows, x86_64 and aarch64</span></dd></div><div class="plate__figure"><dt>6</dt><dd><span class="plate__value">platform binaries in npm</span><span>no code runs on install</span></dd></div><div class="plate__figure"><dt>0</dt><dd><span class="plate__value">runtime dependencies</span><span>one Rust binary</span></dd></div><div class="plate__figure"><dt>SHA-256</dt><dd><span class="plate__value">per archive</span><span>the installers verify before installing</span></dd></div></dl><div style="margin-top:var(--s5)"><div class="plate__rows"><div class="plate__row"><div class="plate__term">Transparent</div><div class="plate__def">mgit only claims the options it documents; anything else (<code>-c</code>, <code>--git-dir</code>…) goes straight to git.</div></div><div class="plate__row"><div class="plate__term">No shell</div><div class="plate__def">Every git argument is passed as an array: no argument injection, no glob expansion.</div></div><div class="plate__row"><div class="plate__term">Pipe safe</div><div class="plate__def"><code>mgit … | head</code> restores the default <code>SIGPIPE</code> behaviour and exits quietly instead of panicking.</div></div><div class="plate__row"><div class="plate__term">Tests</div><div class="plate__def"><code>cargo test --all-targets</code>, <code>clippy -D warnings</code> and a 90% coverage floor, run on Ubuntu, macOS and Windows.</div></div><div class="plate__row"><div class="plate__term">License</div><div class="plate__def">MIT, with no extra terms.</div></div></div></div></div></div></div></section>
-<section class="band" aria-labelledby="log-title"><div class="shell"><div class="band__head"><div><h2 class="band__title" id="log-title">Docs</h2><p class="band__intro">Why, how to install, every option, every exit code, every platform difference.</p></div></div><nav class="logbook" aria-label="Docs chapters"><a class="logbook__row" href="docs/use-cases.html"><span class="logbook__ch">01</span><span><span class="logbook__name">When to use it</span><span class="logbook__desc">Why mgit exists: repositories that reference each other and are not wired together with submodules</span></span><svg class="logbook__arrow" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11M11 5.5 15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a class="logbook__row" href="docs/install.html"><span class="logbook__ch">02</span><span><span class="logbook__name">Install</span><span class="logbook__desc">Three install paths, checksum verification, and building from source</span></span><svg class="logbook__arrow" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11M11 5.5 15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a class="logbook__row" href="docs/options.html"><span class="logbook__ch">03</span><span><span class="logbook__name">Options</span><span class="logbook__desc">The thirteen options, the parsing rule, and everyday examples</span></span><svg class="logbook__arrow" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11M11 5.5 15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a class="logbook__row" href="docs/output.html"><span class="logbook__ch">04</span><span><span class="logbook__name">Output and behavior</span><span class="logbook__desc">Headers, quiet repositories, the summary and the color policy</span></span><svg class="logbook__arrow" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11M11 5.5 15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a class="logbook__row" href="docs/discovery.html"><span class="logbook__ch">05</span><span><span class="logbook__name">Repository discovery</span><span class="logbook__desc">Depth, worktrees, submodules, symlinks and one ordering on every OS</span></span><svg class="logbook__arrow" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11M11 5.5 15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a class="logbook__row" href="docs/exit-codes.html"><span class="logbook__ch">06</span><span><span class="logbook__name">Exit codes and environment</span><span class="logbook__desc">How the run reports success, and how the environment overrides it</span></span><svg class="logbook__arrow" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11M11 5.5 15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a class="logbook__row" href="docs/platforms.html"><span class="logbook__ch">07</span><span><span class="logbook__name">Cross-platform behavior</span><span class="logbook__desc">Windows consoles, locales, SIGPIPE and how git is located</span></span><svg class="logbook__arrow" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11M11 5.5 15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a class="logbook__row" href="docs/changes.html"><span class="logbook__ch">08</span><span><span class="logbook__name">Versions, releases and npm</span><span class="logbook__desc">Differences from 1.0, the tag-driven release flow and the npm package</span></span><svg class="logbook__arrow" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11M11 5.5 15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></nav></div></section>
-</main>
-<footer class="foot"><div class="shell foot__inner">
-<dl class="foot__group"><dt>Release</dt>
-<dd><a href="https://github.com/doggy8088/mgit/releases">Release 2.0.2</a></dd>
-<dd><a href="https://github.com/doggy8088/mgit/blob/main/CHANGELOG.md">CHANGELOG.md</a></dd>
-</dl>
-<dl class="foot__group"><dt>Install</dt>
-<dd><a href="https://github.com/doggy8088/mgit/blob/main/install.sh">install.sh</a></dd>
-<dd><a href="https://github.com/doggy8088/mgit/blob/main/install.ps1">install.ps1</a></dd>
-</dl>
-<dl class="foot__group"><dt>Package</dt>
-<dd><a href="https://www.npmjs.com/package/@willh/mgit">@willh/mgit</a></dd>
-<dd><a href="https://github.com/doggy8088/mgit/blob/main/npm/PUBLISHING.md">npm/PUBLISHING.md</a></dd>
-</dl>
+<header class="hdr">
+<div class="shell shell--wide hdr__inner">
+<a class="wordmark" href="../">mgit<span class="wordmark__version">2.0.2</span></a>
+<nav class="hdr__nav" aria-label="Main"><a href="../en/playground/">Playground</a><a href="../en/docs/">Docs</a><a href="../en/docs/install/">Install</a><a href="https://github.com/doggy8088/mgit" rel="noopener">GitHub</a></nav>
+<div class="hdr__tools">
+<button type="button" class="btn btn--icon" data-theme-toggle aria-pressed="false" data-label-dark="Switch to the dark theme" data-label-light="Switch to the light theme" aria-label="Switch to the dark theme"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M13 9.5A5.5 5.5 0 0 1 6.5 3a5.5 5.5 0 1 0 6.5 6.5z"/></svg></button>
+<span class="langswitch" role="group" aria-label="Language"><a href="../" hreflang="zh-Hant" lang="zh-Hant">中文</a><a href="../en/" aria-current="true" hreflang="en" lang="en">EN</a></span>
 </div>
-<div class="shell foot__colophon"><span>© 2026 Will 保哥 · MIT licensed · Demo data is a real session recorded with the 2.0.2 binary in a demo workspace</span><span><a href="https://github.com/doggy8088/mgit/blob/main/LICENSE">MIT</a></span></div>
+</div>
+</header>
+<main id="main">
+<section class="hero" data-landing>
+<div class="shell shell--wide">
+<div class="hero__grid">
+<div>
+<span class="eyebrow">One Rust binary · macOS · Linux · Windows</span>
+<h1>One command for every Git repository in the directory</h1>
+<p class="lede">With no arguments it is <code>git status -s</code> in every repository. <code>mgit pull</code>, <code>mgit fetch --all</code> and <code>mgit log -n 1</code> work the same way. Clean repositories stay quiet, and failures are collected into one exit code.</p>
+<div class="hero__actions">
+<a class="btn btn--primary" href="../en/playground/"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 4.5 7 8l-3.5 3.5"/><path d="M8.5 11.5h4"/></svg> Try it in your browser</a>
+<a class="btn" href="../en/docs/"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2.5 3.5h4a2 2 0 0 1 2 2v8a1.6 1.6 0 0 0-1.6-1.6H2.5z"/><path d="M13.5 3.5h-4a2 2 0 0 0-2 2v8a1.6 1.6 0 0 1 1.6-1.6h4.4z"/></svg> Read the docs</a>
+</div>
+<ul class="hero__facts"><li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 8.5 6.5 12 13 4.5"/></svg><span>One binary, no runtime dependencies: no Python, no Node.js, no package manager.</span></li><li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 8.5 6.5 12 13 4.5"/></svg><span>Every git argument is passed as an argument vector, never through a shell, so nothing is injected or glob expanded.</span></li><li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 8.5 6.5 12 13 4.5"/></svg><span>Releases ship SHA-256 checksums and the official installers verify them before touching your PATH.</span></li></ul>
+</div>
+<div data-landing-demo data-autorun="mgit --summary">
+<h2 class="demo__title">You can actually type here: this is mgit&#x27;s own parsing and discovery running in your browser</h2>
+<div class="term term--fixed" id="landing-terminal" data-terminal>
+<div class="term__bar">
+<span class="term__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+<span class="term__title">Sandbox terminal — everything happens in this tab</span>
+<span class="term__bar-actions">
+<button type="button" class="term__btn" data-term-stop hidden><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4.5" y="4.5" width="7" height="7" rx="1"/></svg>Stop</button>
+
+</span>
+</div>
+<div class="term__screen" data-term-screen role="log" aria-live="polite" aria-atomic="false"
+ aria-label="Playground terminal output" tabindex="0">This terminal needs JavaScript. Nothing else on the site does: the install commands, the option tables and every documentation page work without it.</div>
+<div class="term__input-row">
+<span class="term__prompt"><span data-term-prompt-live>~/work</span> $</span>
+<label class="visually-hidden" for="landing-terminal-input">Type a command for the playground</label>
+<input class="term__input" id="landing-terminal-input" data-term-input type="text" autocomplete="off"
+ autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Try mgit --help, or press Tab to complete">
+</div>
+<div class="term__hint"><span><kbd>Enter</kbd> run</span><span><kbd>Tab</kbd> complete</span><span><kbd>Ctrl+C</kbd> interrupt</span></div>
+</div>
+<div class="chips" style="margin-top:var(--s3)"><button type="button" class="chip" data-demo-command="mgit">mgit</button><button type="button" class="chip" data-demo-command="mgit --summary">mgit --summary</button><button type="button" class="chip" data-demo-command="mgit pull">mgit pull</button><button type="button" class="chip" data-demo-command="mgit --list">mgit --list</button><button type="button" class="chip" data-demo-command="mgit --help">mgit --help</button></div>
+<p class="cmd__note">The sandbox holds six repositories, and <code>web-console</code> has an uncommitted change. Try <code>mgit pull</code>. <a href="../en/playground/">Open the full playground</a></p>
+</div>
+</div>
+</div>
+</section>
+<section class="section" id="loop" aria-labelledby="loop-title">
+<div class="shell">
+<div class="section__head"><h2 class="visually-hidden" id="loop-title">The loop you stop writing</h2><span class="eyebrow">Why it exists</span><h2>The loop you stop writing</h2><p class="lede">An application, a shared package, some examples, the deployment scripts and a docs site, each its own repository, sitting side by side in one working directory and referring to each other by relative path, with no <code>git submodule</code> holding them together. That is the situation mgit was written for.</p></div>
+<pre class="block"><code># before
+for d in */; do (cd &quot;$d&quot; &amp;&amp; git status -s); done
+
+# and a second version for PowerShell, which behaved slightly differently</code></pre>
+<p>One command instead, and the same binary with the same test suite on all three operating systems:</p>
+<div class="cmd" data-copy-source><code class="cmd__text" data-copy-text>mgit</code><button type="button" class="cmd__copy" data-copy="mgit"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="5.5" y="5.5" width="8" height="9" rx="1.5"/><path d="M10.5 5.5V3.5a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h2"/></svg><span data-copy-label>Copy</span></button></div>
+<p>It does not change the contents of any repository and it does not manage the relationships between them. Use submodules when you need to pin versions; a monorepo is the answer when you need one CI pipeline and one release.</p>
+</div>
+</section>
+<section class="section" id="claims" aria-labelledby="claims-title">
+<div class="shell">
+<div class="section__head"><h2 class="visually-hidden" id="claims-title">One executable, nothing else</h2><span class="eyebrow">What it is</span><h2>One executable, nothing else</h2></div>
+<div class="grid"><div class="card"><span class="card__meta">8 release targets</span><h3>A single Rust binary</h3><p>macOS, Linux and Windows share the same code and the same tests. The Bash and PowerShell scripts of 1.0 are archived.</p></div><div class="card"><span class="card__meta">No runtime dependencies</span><h3>Download and run</h3><p>No Python, no Node.js, no package manager. The npm package bundles the official binaries for six platforms and has no postinstall.</p></div><div class="card"><span class="card__meta">Verifiable</span><h3>Verified before it is installed</h3><p>Every archive ships a SHA-256 checksum and the official installers check it first. Every git argument is passed as an argument vector, never through a shell.</p></div><div class="card"><span class="card__meta">Does not reinvent git</span><h3>A transparent proxy</h3><p>mgit only recognises the options in its own documentation. Everything it does not know (<code>-c</code>, <code>--git-dir</code>, …) is handed to git untouched.</p></div></div>
+</div>
+</section>
+<section class="section" id="find" aria-labelledby="find-title">
+<div class="shell">
+<div class="section__head"><h2 class="visually-hidden" id="find-title">It only touches directories you can see</h2><span class="eyebrow">Discovery</span><h2>It only touches directories you can see</h2><p class="lede">By default it looks one level down, and it never walks into a repository it has already found. Drag the slider to see what <code>--depth</code> actually reaches.</p></div>
+<div class="panel" data-depth-explorer>
+<div class="panel__head"><h3>What --depth actually reaches</h3></div>
+<div class="panel__body">
+<div class="slider-row">
+<label for="depth-range">Depth</label>
+<input type="range" id="depth-range" min="1" max="3" value="1" step="1" data-depth-range
+ aria-describedby="depth-answer">
+<output class="badge" data-depth-value>1</output>
+<span id="depth-answer" class="small muted" data-depth-answer>1 repositories found</span>
+</div>
+<div class="split split--2" style="margin-top:var(--s4)">
+<div>
+<h4 class="small muted">Working directory</h4>
+<pre class="block" data-depth-tree></pre>
+</div>
+<div>
+<h4 class="small muted">Output of mgit --list</h4>
+<pre class="block" data-depth-output></pre>
+</div>
+</div>
+</div>
+</div><p>The full set of six rules, including worktrees, submodules, symbolic links and ordering, is in <a href="../en/docs/discovery/">how repositories are found</a>.</p>
+</div>
+</section>
+<section class="section" id="report" aria-labelledby="report-title">
+<div class="shell">
+<div class="section__head"><h2 class="visually-hidden" id="report-title">A report you can put in a script</h2><span class="eyebrow">Output</span><h2>A report you can put in a script</h2><p class="lede">The summary goes to stderr by default, so <code>mgit status -s &gt; status.txt</code> leaves you clean data in the file while failures stay visible on screen.</p></div>
+<div class="panel" data-stream-demo>
+<div class="panel__head"><h3>What lands in the file, and what stays on screen</h3></div>
+<div class="panel__body">
+<div class="chips" data-stream-commands></div>
+<div class="split split--2" style="margin-top:var(--s4)">
+<div>
+<h4 class="small muted">Inside the file: <code>status.txt</code></h4>
+<pre class="block" data-stream-file></pre>
+</div>
+<div>
+<h4 class="small muted">Still on screen</h4>
+<pre class="block" data-stream-screen></pre>
+</div>
+</div>
+<p class="cmd__note" data-stream-note></p>
+</div>
+</div><div class="table-wrap"><table class=""><caption>Exit codes</caption><thead><tr><th scope="col">Code</th><th scope="col">Meaning</th></tr></thead><tbody><tr><td><code>0</code></td><td>every repository succeeded</td></tr><tr><td><code>1</code></td><td>a repository failed, or no repository was found</td></tr><tr><td><code>2</code></td><td>the command line could not be parsed</td></tr><tr><td><code>127</code></td><td>git could not be started</td></tr><tr><td><code>130</code></td><td>interrupted with Ctrl+C</td></tr><tr><td>anything else</td><td>the exit code of the first failing git command</td></tr></tbody></table></div>
+</div>
+</section>
+<section class="section" id="install" aria-labelledby="install-title">
+<div class="shell">
+<div class="section__head"><h2 class="visually-hidden" id="install-title">One line, verified before it installs</h2><span class="eyebrow">Install</span><h2>One line, verified before it installs</h2><p class="lede">The installer detects your operating system and CPU, downloads the matching archive and verifies its SHA-256 before installing.</p></div>
+<div data-tabs><div class="tabs" role="tablist" aria-label="Installation method"><button type="button" class="tab" role="tab" id="install-tab-0" aria-controls="install-panel-0" aria-selected="true" tabindex="0">macOS / Linux</button><button type="button" class="tab" role="tab" id="install-tab-1" aria-controls="install-panel-1" aria-selected="false" tabindex="-1">Windows</button><button type="button" class="tab" role="tab" id="install-tab-2" aria-controls="install-panel-2" aria-selected="false" tabindex="-1">npm</button><button type="button" class="tab" role="tab" id="install-tab-3" aria-controls="install-panel-3" aria-selected="false" tabindex="-1">From source</button></div><div id="install-panel-0" role="tabpanel" aria-labelledby="install-tab-0"><div class="cmd cmd--lg" data-copy-source><code class="cmd__text" data-copy-text>curl -fsSL https://raw.githubusercontent.com/doggy8088/mgit/main/install.sh | sh</code><button type="button" class="cmd__copy" data-copy="curl -fsSL https://raw.githubusercontent.com/doggy8088/mgit/main/install.sh | sh"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="5.5" y="5.5" width="8" height="9" rx="1.5"/><path d="M10.5 5.5V3.5a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h2"/></svg><span data-copy-label>Copy</span></button></div><p class="cmd__note">The installer detects your operating system and CPU, downloads the matching archive and <b>verifies its SHA-256 before installing anything</b>.</p></div><div id="install-panel-1" role="tabpanel" aria-labelledby="install-tab-1" hidden><div class="cmd cmd--lg" data-copy-source><code class="cmd__text" data-copy-text>irm https://raw.githubusercontent.com/doggy8088/mgit/main/install.ps1 | iex</code><button type="button" class="cmd__copy" data-copy="irm https://raw.githubusercontent.com/doggy8088/mgit/main/install.ps1 | iex"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="5.5" y="5.5" width="8" height="9" rx="1.5"/><path d="M10.5 5.5V3.5a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h2"/></svg><span data-copy-label>Copy</span></button></div><p class="cmd__note">The same flow in PowerShell. Works in Windows PowerShell 5.1 and in PowerShell 7+.</p></div><div id="install-panel-2" role="tabpanel" aria-labelledby="install-tab-2" hidden><div class="cmd cmd--lg" data-copy-source><code class="cmd__text" data-copy-text>npm install -g @willh/mgit</code><button type="button" class="cmd__copy" data-copy="npm install -g @willh/mgit"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="5.5" y="5.5" width="8" height="9" rx="1.5"/><path d="M10.5 5.5V3.5a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h2"/></svg><span data-copy-label>Copy</span></button></div><p class="cmd__note">The package bundles the official binaries for six platforms and runs <b>no install scripts</b>; <code>npx @willh/mgit</code> works without installing.</p></div><div id="install-panel-3" role="tabpanel" aria-labelledby="install-tab-3" hidden><div class="cmd cmd--lg" data-copy-source><code class="cmd__text" data-copy-text>cargo install --path .</code><button type="button" class="cmd__copy" data-copy="cargo install --path ."><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="5.5" y="5.5" width="8" height="9" rx="1.5"/><path d="M10.5 5.5V3.5a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h2"/></svg><span data-copy-label>Copy</span></button></div><p class="cmd__note">Needs Rust 1.85 or newer. <code>cargo build --release</code> produces <code>target/release/mgit</code>.</p></div></div><p class="cmd__note">Check the install: <code>mgit --version</code></p><p>Manual downloads, checksum verification and building from source are in <a href="../en/docs/install/">install and verify</a>.</p>
+</div>
+</section>
+<section class="section" id="docs" aria-labelledby="docs-title">
+<div class="shell">
+<div class="section__head"><h2 id="docs-title">Documentation</h2>
+<p class="lede">Seven chapters, each one readable on its own.</p></div>
+<div class="grid"><a class="card card--link" href="../en/docs/install/"><span class="card__meta">01</span><h3>Install and verify</h3><p>Four ways in, all of them ending at the same thing: one binary with no runtime dependencies.</p></a><a class="card card--link" href="../en/docs/usage/"><span class="card__meta">02</span><h3>Commands and options</h3><p>mgit only recognises the options in its own documentation. Everything else goes to git exactly as you typed it.</p></a><a class="card card--link" href="../en/docs/discovery/"><span class="card__meta">03</span><h3>How repositories are found</h3><p>Six rules in total, and the result is identical on macOS, Linux and Windows.</p></a><a class="card card--link" href="../en/docs/output/"><span class="card__meta">04</span><h3>Output, colour and glyphs</h3><p>The format has not changed since 1.0, and colour is never the only thing carrying information.</p></a><a class="card card--link" href="../en/docs/exit-codes/"><span class="card__meta">05</span><h3>Exit codes and automation</h3><p>Everything you need to know before a script decides something based on the result.</p></a><a class="card card--link" href="../en/docs/environment/"><span class="card__meta">06</span><h3>Environment and platforms</h3><p>The differences between terminals are absorbed by the tool instead of being pushed onto you.</p></a><a class="card card--link" href="../en/docs/recipes/"><span class="card__meta">07</span><h3>Recipes</h3><p>Every block here can be pasted straight into a terminal, or tried in the playground first.</p></a></div>
+</div>
+</section>
+
+</main>
+<footer class="foot">
+<div class="shell shell--wide">
+<div class="foot__grid"><div><h2>Start here</h2><ul><li><a href="../en/docs/install/">Install and verify</a></li><li><a href="../en/docs/usage/">Commands and options</a></li><li><a href="../en/playground/">Playground</a></li><li><a href="../en/docs/recipes/">Recipes</a></li></ul></div><div><h2>Behaviour</h2><ul><li><a href="../en/docs/discovery/">How repositories are found</a></li><li><a href="../en/docs/output/">Output, colour and glyphs</a></li><li><a href="../en/docs/exit-codes/">Exit codes and automation</a></li><li><a href="../en/docs/environment/">Environment and platforms</a></li></ul></div><div><h2>Source and releases</h2><ul><li><a href="https://github.com/doggy8088/mgit" rel="noopener">GitHub repository</a></li><li><a href="https://github.com/doggy8088/mgit/releases" rel="noopener">Releases and checksums</a></li><li><a href="https://github.com/doggy8088/mgit/blob/main/CHANGELOG.md" rel="noopener">Changelog</a></li><li><a href="https://www.npmjs.com/package/@willh/mgit" rel="noopener">npm: @willh/mgit</a></li></ul></div></div>
+<div class="foot__bottom">
+<span>MIT licensed © 2026 Will Huang. mgit is an independent project and is not affiliated with the Git project.</span>
+<span>No analytics, no cookies, no third party requests. The playground runs entirely in your browser tab.</span>
+</div>
+</div>
 </footer>
-<script type="application/json" id="mgit-runs">{
- "a": {
-  "id": "mgit --summary",
-  "command": "mgit --summary",
-  "exit": 0,
-  "summary": "6 repositories, 6 succeeded",
-  "channels": [
-   {
-    "ch": "01",
-    "name": "api-gateway",
-    "branch": "main",
-    "state": "clean",
-    "changes": 0,
-    "detail": "no output at all"
-   },
-   {
-    "ch": "02",
-    "name": "billing-worker",
-    "branch": "main",
-    "state": "clean",
-    "changes": 0,
-    "detail": "no output at all"
-   },
-   {
-    "ch": "03",
-    "name": "docs-site",
-    "branch": "main",
-    "state": "clean",
-    "changes": 0,
-    "detail": "no output at all"
-   },
-   {
-    "ch": "04",
-    "name": "infra-scripts",
-    "branch": "main",
-    "state": "clean",
-    "changes": 0,
-    "detail": "no output at all"
-   },
-   {
-    "ch": "05",
-    "name": "web-console",
-    "branch": "main",
-    "state": "dirty",
-    "changes": 1,
-    "detail": "M src/main.rs"
-   },
-   {
-    "ch": "06",
-    "name": "web-console-hotfix",
-    "branch": "hotfix",
-    "state": "clean",
-    "changes": 0,
-    "detail": "worktree · no output at all"
-   }
-  ]
- },
- "b": {
-  "id": "mgit pull",
-  "command": "mgit pull",
-  "exit": 128,
-  "summary": "6 repositories, 5 succeeded, 1 failed",
-  "channels": [
-   {
-    "ch": "01",
-    "name": "api-gateway",
-    "branch": "main",
-    "state": "clean",
-    "changes": 0,
-    "detail": "already up to date"
-   },
-   {
-    "ch": "02",
-    "name": "billing-worker",
-    "branch": "main",
-    "state": "clean",
-    "changes": 0,
-    "detail": "already up to date"
-   },
-   {
-    "ch": "03",
-    "name": "docs-site",
-    "branch": "main",
-    "state": "clean",
-    "changes": 0,
-    "detail": "already up to date"
-   },
-   {
-    "ch": "04",
-    "name": "infra-scripts",
-    "branch": "main",
-    "state": "clean",
-    "changes": 0,
-    "detail": "already up to date"
-   },
-   {
-    "ch": "05",
-    "name": "web-console",
-    "branch": "main",
-    "state": "failed",
-    "code": 128,
-    "detail": "cannot pull with rebase: unstaged changes"
-   },
-   {
-    "ch": "06",
-    "name": "web-console-hotfix",
-    "branch": "hotfix",
-    "state": "clean",
-    "changes": 0,
-    "detail": "already up to date"
-   }
-  ]
- }
-}</script>
-<script src="../assets/recorder.js" defer></script>
+<script type="application/json" id="site-config">{"labels": {"copy": "Copy", "copied": "Copied", "copy_failed": "Press Ctrl+C", "install_tablist": "Installation method", "anchor_label": "Link to this section", "input_label": "Type a command for the playground", "input_placeholder": "Try mgit --help, or press Tab to complete", "screen_label": "Playground terminal output", "stop": "Stop", "terminal_title": "Sandbox terminal — everything happens in this tab", "terminal_fallback": "This terminal needs JavaScript. Nothing else on the site does: the install commands, the option tables and every documentation page work without it.", "copy_transcript": "Copy all", "reset": "Reset", "share": "Copy link", "scenario": "Working directory", "target": "Where the output goes", "simulate": "Simulate", "no_git": "Remove git", "animate": "Play back", "workspace": "Working directory", "add_repo": "Add a repository", "add": "Add", "inspector": "What it did", "inspector_empty": "Run an mgit command and this panel lists every directory it opened, every git call it made, and how those results became one exit code.", "hint_run": "run", "hint_complete": "complete", "hint_history": "history", "hint_interrupt": "interrupt", "hint_clear": "clear", "exit": "exit", "welcome": "Type a command, or pick one below. Everything runs in this tab and nothing touches your files.", "scenario_loaded": "Loaded working directory: ", "target_changed": "Output target: ", "git_gone": "git has been taken off PATH. Every run now ends in 127.", "git_back": "git is back on PATH.", "reset_done": "The working directory is back the way it started.", "interrupt_note": "Ctrl+C reaches every git that mgit started, so the run stops at once and reports 130.", "name_rule": "Use letters, digits, dots, dashes or underscores.", "name_taken": "That name is already taken.", "here_is_repo": ". (this directory)", "unreadable": "unreadable", "dot_git_file": "file", "summary": "{repos} repositories at depth 1", "state_clean": "clean", "state_dirty": "changes", "state_behind": "behind", "state_ahead": "ahead", "state_blocked": "will fail", "action_dirty": "edit", "action_behind": "behind", "action_block": "block", "action_remove": "remove", "action_title_dirty": "Toggle an uncommitted change", "action_title_behind": "Toggle whether the remote has new commits", "action_title_block": "Toggle whether pull fails here", "action_title_remove": "Remove from the working directory", "command": "The command", "search_root": "Searched", "depth": "Depth", "git_args": "Handed to git", "colour": "Colour", "glyphs": "Glyphs", "mode": "Mode", "on": "on", "off": "off", "exit_code": "Exit code", "discovery": "The walk", "git_runs": "git, once per repository", "result": "How that became one exit code", "not_modelled": "not modelled in the sandbox", "total": "Repositories", "succeeded": "Succeeded", "failed": "Failed", "skipped": "Skipped", "summary_stream": "Summary went to", "summary_none": "nowhere: nothing failed and --summary was not given", "interrupted": "Interrupted", "interrupted_note": "Ctrl+C stops the whole run at once", "step_scan": "read", "step_repository": "repository", "step_descend": "descend", "step_depth-limit": "depth limit", "step_already-visited": "already visited", "step_skip-file": "not a directory", "step_unreadable": "unreadable", "exit_ok": "everything succeeded", "exit_failure": "something failed, or no repository was found", "exit_usage": "the command line could not be parsed", "exit_notFound": "git could not be started", "exit_git": "from the first failing git command", "exit_interrupted": "interrupted with Ctrl+C", "exit_brokenPipe": "the reader closed the pipe", "depth_title": "What --depth actually reaches", "depth_label": "Depth", "depth_found": "{n} repositories found", "depth_tree": "Working directory", "depth_output": "Output of mgit --list", "stream_title": "What lands in the file, and what stays on screen", "stream_file": "Inside the file:", "stream_screen": "Still on screen", "note_redirect": "{stream} went into {path} ({lines} lines). Read it back with `cat {path}`.", "note_sigpipe": "head closed the pipe after {count} lines. The real mgit restores the default SIGPIPE behaviour, so it stops quietly instead of printing a panic, and the exit code on this line belongs to head rather than to mgit.", "note_unmodelled": "The sandbox does not model the output of {command}. On a real run mgit still executes it in every repository and collects its exit code.", "note_unknown_command": "This sandbox knows mgit, plus {commands}. Type help for the full list.", "noscript": "This page needs JavaScript: the playground runs entirely in your browser. Every documentation chapter, option table and install command works without it.", "install_verify": "Check the install:"}, "scenarios": {"workbench": {"name": "An ordinary working directory (6 repositories)", "blurb": "Six repositories: one with an uncommitted change, one three commits behind its remote, one linked worktree, one on a hotfix branch."}, "nested": {"name": "A second level", "blurb": "vendor/ holds two more repositories, and web-console holds one too. mgit never walks into a repository, so that last one is never counted."}, "worktrees": {"name": "Worktrees and submodules", "blurb": "These directories keep their .git as a file rather than a directory. mgit accepts both, so worktrees and submodule checkouts are found."}, "links": {"name": "Symbolic links", "blurb": "gateway is a link to api-gateway. Both names are run, the real directory is only walked once, and a link loop cannot spin forever."}, "empty": {"name": "No repository at all", "blurb": "See what mgit says and returns when it finds nothing, and exactly what --allow-empty changes."}, "inside-repo": {"name": "You are standing inside a repository", "blurb": "When the current directory is itself a repository and holds no others, mgit behaves exactly like plain git."}, "locked": {"name": "One directory cannot be read", "blurb": "restricted/ denies permission. mgit warns on stderr and finishes the rest of the walk."}, "fleet": {"name": "Twelve repositories", "blurb": "The one to use for the play back, for --fail-fast, and for pressing Ctrl+C in the middle of a run."}}, "playgroundUrl": "../en/playground/"}</script>
+<script type="module" src="../assets/js/ui/main.js"></script>
 </body>
 </html>

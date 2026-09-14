@@ -1,0 +1,14 @@
+Model: Azure OpenAI gpt-image-2, quality high, 1216x640.
+
+Use case: stylized-concept
+Asset type: backdrop layer behind the text of a social sharing card for a command line developer tool
+Primary request: a calm dark abstract technical field, like a precision instrument panel photographed straight on, with a very soft pool of light in the upper left and the rest falling quietly into darkness
+Scene/backdrop: an abstract flat surface, no room, no horizon, no objects
+Subject: surface and light only
+Style/medium: abstract material photography, quiet and restrained, no illustration, no 3D render of any object
+Composition/framing: flat and frontal; the entire right half and lower half must stay almost empty and very dark so white text can be laid over them
+Lighting/mood: one soft diffuse light from the upper left, no lens flare, no bloom, no rays
+Color palette: near black charcoal with a faint cool teal tint in the lit area only
+Materials/textures: fine blasted metal grain, optionally an extremely faint square engineering grid that fades out completely before the edges
+Constraints: no text, no letters, no numbers, no logos, no icons, no devices, no screens, no keyboards, no code, no hands, no people, no watermark
+Avoid: any recognisable object, any bright highlight, any strong pattern, any busy detail, any element near the centre or right side

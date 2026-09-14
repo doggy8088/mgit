@@ -1,0 +1,107 @@
+name: Deploy the website
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'website/**'
+      - '.github/workflows/deploy-pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    name: Verify the site
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache
+        uses: Swatinem/rust-cache@v2
+
+      - name: Build the binary the playground is compared against
+        run: cargo build --release
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Engine unit tests and parity against the real binary
+        run: node --test website/tests/*.test.mjs
+
+      - name: The committed HTML matches the content modules
+        run: |
+          python website/build/build.py
+          if ! git diff --quiet -- website; then
+            echo "website/ is out of date: run python3 website/build/build.py and commit the result." >&2
+            git diff --stat -- website >&2
+            exit 1
+          fi
+
+      - name: Contrast gate
+        run: |
+          python -m pip install --quiet --disable-pip-version-check pillow numpy
+          python website/build/check-contrast.py
+
+      - name: Responsive and accessibility audit
+        run: |
+          python website/build/serve.py 8801 &
+          for _ in $(seq 1 30); do
+            curl -fsS -o /dev/null http://localhost:8801/ && break
+            sleep 1
+          done
+          CHROME="$(which google-chrome || which chromium-browser || which chromium)" \
+            node website/build/audit.mjs
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: [verify]
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Stage the site without the author tools
+        run: |
+          mkdir -p _site
+          rsync -a --delete \
+            --exclude 'build/' \
+            --exclude 'tests/' \
+            --exclude 'README.md' \
+            website/ _site/
+          test -f _site/index.html
+          test -f _site/CNAME
+          test ! -d _site/build
+
+      - name: Upload the site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./_site
+
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

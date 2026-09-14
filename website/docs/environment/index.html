@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="zh-Hant-TW" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>環境變數與跨平台 — mgit 文件</title>
+<meta name="description" content="mgit 讀取的環境變數、它們的優先順序，以及在 macOS、Linux、Windows 主控台上的行為差異。">
+<meta name="robots" content="index, follow">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#fbfbfa" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0d1013" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://mgit.gh.miniasp.com/docs/environment/">
+<link rel="alternate" hreflang="zh-Hant" href="https://mgit.gh.miniasp.com/docs/environment/"><link rel="alternate" hreflang="en" href="https://mgit.gh.miniasp.com/en/docs/environment/"><link rel="alternate" hreflang="x-default" href="https://mgit.gh.miniasp.com/docs/environment/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="mgit">
+<meta property="og:title" content="環境變數與跨平台 — mgit 文件">
+<meta property="og:description" content="mgit 讀取的環境變數、它們的優先順序，以及在 macOS、Linux、Windows 主控台上的行為差異。">
+<meta property="og:url" content="https://mgit.gh.miniasp.com/docs/environment/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://mgit.gh.miniasp.com/assets/img/og-cover.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="mgit 的終端機輸出：一個指令掃過六個 Git 儲存庫，最後是一行統計摘要。">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="環境變數與跨平台 — mgit 文件">
+<meta name="twitter:description" content="mgit 讀取的環境變數、它們的優先順序，以及在 macOS、Linux、Windows 主控台上的行為差異。">
+<meta name="twitter:image" content="https://mgit.gh.miniasp.com/assets/img/og-cover.png">
+<meta name="twitter:image:alt" content="mgit 的終端機輸出：一個指令掃過六個 Git 儲存庫，最後是一行統計摘要。">
+<script>(function(){var t=null;try{t=localStorage.getItem('mgit-theme')}catch(e){}if(t!=='light'&&t!=='dark'){t='light';try{if(matchMedia('(prefers-color-scheme: dark)').matches)t='dark'}catch(e){}}document.documentElement.setAttribute('data-theme',t)})()</script>
+<link rel="stylesheet" href="../../assets/css/site.css">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../../assets/favicon.ico" sizes="32x32">
+<link rel="icon" href="../../assets/img/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="../../assets/img/apple-touch-icon.png">
+<link rel="manifest" href="../../site.webmanifest">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"環境變數與跨平台 — mgit 文件","description":"mgit 讀取的環境變數、它們的優先順序，以及在 macOS、Linux、Windows 主控台上的行為差異。","url":"https://mgit.gh.miniasp.com/docs/environment/","inLanguage":"zh-Hant","isPartOf":{"@type":"WebSite","name":"mgit","url":"https://mgit.gh.miniasp.com/"},"author":{"@type":"Person","name":"Will Huang","url":"https://github.com/doggy8088"}}</script>
+</head>
+<body>
+<a class="skip" href="#main">跳到主要內容</a>
+<header class="hdr">
+<div class="shell shell--wide hdr__inner">
+<a class="wordmark" href="../../">mgit<span class="wordmark__version">2.0.2</span></a>
+<nav class="hdr__nav" aria-label="主要導覽"><a href="../../playground/">試用場</a><a href="../../docs/" aria-current="page">文件</a><a href="../../docs/install/">安裝</a><a href="https://github.com/doggy8088/mgit" rel="noopener">GitHub</a></nav>
+<div class="hdr__tools">
+<button type="button" class="btn btn--icon" data-theme-toggle aria-pressed="false" data-label-dark="切換到深色主題" data-label-light="切換到淺色主題" aria-label="切換到深色主題"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M13 9.5A5.5 5.5 0 0 1 6.5 3a5.5 5.5 0 1 0 6.5 6.5z"/></svg></button>
+<span class="langswitch" role="group" aria-label="語言"><a href="../../docs/environment/" aria-current="true" hreflang="zh-Hant" lang="zh-Hant">中文</a><a href="../../en/docs/environment/" hreflang="en" lang="en">EN</a></span>
+</div>
+</div>
+</header>
+<main id="main">
+<div class="shell shell--wide">
+<div class="docs">
+<nav class="docs__nav" aria-label="文件">
+<span class="docs__nav-title">文件</span>
+<ol><li><a href="../../docs/install/"><span>安裝與驗證</span></a></li><li><a href="../../docs/usage/"><span>指令與選項</span></a></li><li><a href="../../docs/discovery/"><span>它怎麼找儲存庫</span></a></li><li><a href="../../docs/output/"><span>輸出、顏色與符號</span></a></li><li><a href="../../docs/exit-codes/"><span>結束代碼與自動化</span></a></li><li><a href="../../docs/environment/" aria-current="page"><span>環境變數與跨平台</span></a></li><li><a href="../../docs/recipes/"><span>實用配方</span></a></li></ol>
+</nav>
+<article class="prose">
+<div class="prose__head">
+<span class="eyebrow">06 / 07</span>
+<h1>環境變數與跨平台</h1>
+<p class="lede">終端機的差異由工具吸收，不要求你先改環境。</p>
+</div>
+<h2 id="variables" data-anchor-label="本節連結">環境變數</h2>
+<div class="table-wrap"><table class=""><thead><tr><th scope="col">變數</th><th scope="col">說明</th></tr></thead><tbody><tr><td><code>MGIT_GIT</code></td><td>指定 <code>git</code> 執行檔名稱或路徑（預設 <code>git</code>）</td></tr><tr><td><code>MGIT_COLOR</code></td><td><code>auto</code>、<code>always</code> 或 <code>never</code>，優先於終端機偵測</td></tr><tr><td><code>MGIT_ASCII</code></td><td><code>1</code> 強制 ASCII 符號；<code>0</code> 強制 Unicode 符號</td></tr><tr><td><code>NO_COLOR</code></td><td>設為非空值時關閉顏色</td></tr><tr><td><code>CLICOLOR_FORCE</code></td><td>設為非空且非 <code>0</code> 的值時強制開啟顏色</td></tr><tr><td><code>CLICOLOR</code></td><td>設為 <code>0</code> 時關閉顏色</td></tr><tr><td><code>MGIT_VERSION</code></td><td>安裝腳本要安裝的版本，例如 <code>2.0.0</code></td></tr><tr><td><code>MGIT_INSTALL_DIR</code></td><td>安裝腳本的安裝目錄</td></tr></tbody></table></div>
+<p>優先順序：命令列選項 → <code>MGIT_*</code> → <code>CLICOLOR_FORCE</code> → <code>NO_COLOR</code> → 終端機偵測。</p>
+<p class="cmd__note"><a class="btn btn--small" href="../../playground/?scenario=workbench&amp;cmd=CLICOLOR_FORCE%3D1%20NO_COLOR%3D1%20mgit%20--summary"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 4.5 7 8l-3.5 3.5"/><path d="M8.5 11.5h4"/></svg> 試優先順序<span class="visually-hidden">: CLICOLOR_FORCE=1 NO_COLOR=1 mgit --summary</span></a></p>
+<h2 id="platforms" data-anchor-label="本節連結">跨平台行為</h2>
+<div class="table-wrap"><table class=""><thead><tr><th scope="col">情境</th><th scope="col">行為</th></tr></thead><tbody><tr><td>輸出被重導向（管線、檔案、CI 日誌）</td><td>自動關閉顏色，只輸出純文字</td></tr><tr><td>Windows <code>cmd.exe</code>／Windows PowerShell 5.1</td><td>啟動時嘗試開啟虛擬終端（VT）模式讓 ANSI 顏色生效；開不起來就自動停用顏色</td></tr><tr><td>Windows 主控台代碼頁不是 UTF-8</td><td>自動改用 ASCII 符號，避免 emoji 變亂碼</td></tr><tr><td>PowerShell 7、Windows Terminal、macOS、Linux</td><td>使用 Unicode 符號</td></tr><tr><td>POSIX locale 非 UTF-8（<code>LANG=C</code>）</td><td>自動改用 ASCII 符號，可用 <code>MGIT_ASCII=0</code> 強制回復</td></tr><tr><td><code>mgit … | head</code></td><td>還原 <code>SIGPIPE</code> 預設行為，管線中斷時安靜結束</td></tr><tr><td>Windows 上的 <code>git</code></td><td>透過 <code>PATH</code>（含 <code>PATHEXT</code>）尋找 <code>git.exe</code>，也可用 <code>MGIT_GIT</code> 指定完整路徑</td></tr></tbody></table></div>
+<p>試用場右上角的「輸出送到哪裡」可以直接切換這幾種情境，看同一個指令的輸出怎麼變。</p>
+<p class="cmd__note"><a class="btn btn--small" href="../../playground/?scenario=workbench&amp;cmd=mgit%20--summary"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 4.5 7 8l-3.5 3.5"/><path d="M8.5 11.5h4"/></svg> 切換輸出目標再跑一次<span class="visually-hidden">: mgit --summary</span></a></p>
+<h2 id="missing-git" data-anchor-label="本節連結">找不到 git</h2>
+<p>mgit 在執行前會先確認 git 能不能啟動。啟動不了時會印出一行錯誤與該平台的安裝提示，並以 <code>127</code> 結束。</p>
+<p class="cmd__note"><a class="btn btn--small" href="../../playground/?scenario=workbench&amp;cmd=mgit"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 4.5 7 8l-3.5 3.5"/><path d="M8.5 11.5h4"/></svg> 先按「拿掉 git」再執行<span class="visually-hidden">: mgit</span></a></p>
+<nav class="pager" aria-label="文件"><a href="../../docs/exit-codes/"><span>上一章</span>結束代碼與自動化</a><a href="../../docs/recipes/"><span>下一章</span>實用配方</a></nav>
+</article>
+<nav class="toc" data-toc aria-label="本章內容">
+<p class="toc__title">本章內容</p>
+<ul><li><a href="#variables">環境變數</a></li><li><a href="#platforms">跨平台行為</a></li><li><a href="#missing-git">找不到 git</a></li></ul>
+</nav>
+</div>
+</div>
+
+</main>
+<footer class="foot">
+<div class="shell shell--wide">
+<div class="foot__grid"><div><h2>開始使用</h2><ul><li><a href="../../docs/install/">安裝與驗證</a></li><li><a href="../../docs/usage/">指令與選項</a></li><li><a href="../../playground/">試用場</a></li><li><a href="../../docs/recipes/">實用配方</a></li></ul></div><div><h2>行為細節</h2><ul><li><a href="../../docs/discovery/">它怎麼找儲存庫</a></li><li><a href="../../docs/output/">輸出、顏色與符號</a></li><li><a href="../../docs/exit-codes/">結束代碼與自動化</a></li><li><a href="../../docs/environment/">環境變數與跨平台</a></li></ul></div><div><h2>原始碼與發行</h2><ul><li><a href="https://github.com/doggy8088/mgit" rel="noopener">GitHub 儲存庫</a></li><li><a href="https://github.com/doggy8088/mgit/releases" rel="noopener">發行檔與檢查碼</a></li><li><a href="https://github.com/doggy8088/mgit/blob/main/CHANGELOG.md" rel="noopener">變更記錄</a></li><li><a href="https://www.npmjs.com/package/@willh/mgit" rel="noopener">npm：@willh/mgit</a></li></ul></div></div>
+<div class="foot__bottom">
+<span>MIT 授權 © 2026 Will 保哥。mgit 是獨立專案，與 Git 專案無關。</span>
+<span>本站沒有分析工具、沒有 cookie、沒有外部請求；試用場完全在你的瀏覽器分頁裡執行。</span>
+</div>
+</div>
+</footer>
+<script type="application/json" id="site-config">{"labels": {"copy": "複製", "copied": "已複製", "copy_failed": "請手動複製", "install_tablist": "安裝方式", "anchor_label": "本節連結", "input_label": "在試用場輸入指令", "input_placeholder": "輸入 mgit --help，或按 Tab 補字", "screen_label": "試用場的終端機輸出", "stop": "停止", "terminal_title": "沙箱終端機 — 一切都在這個分頁裡", "terminal_fallback": "這個終端機需要 JavaScript。頁面其餘部分（安裝指令、選項表、所有文件）不需要。", "copy_transcript": "複製整段", "reset": "重設", "share": "複製連結", "scenario": "工作目錄", "target": "輸出送到哪裡", "simulate": "模擬", "no_git": "拿掉 git", "animate": "逐個播放", "workspace": "工作目錄", "add_repo": "新增一個儲存庫", "add": "新增", "inspector": "它做了什麼", "inspector_empty": "跑一個 mgit 指令，這裡就會列出它走訪的每個目錄、每次 git 呼叫，以及結束代碼是怎麼算出來的。", "hint_run": "執行", "hint_complete": "補字", "hint_history": "上一個指令", "hint_interrupt": "中斷", "hint_clear": "清畫面", "exit": "結束代碼", "welcome": "輸入指令，或點下面的按鈕。所有執行都在這個分頁裡，不會碰到你的檔案。", "scenario_loaded": "已載入工作目錄：", "target_changed": "輸出目標：", "git_gone": "git 已從 PATH 拿掉。接下來每次執行都會是 127。", "git_back": "git 回到 PATH 了。", "reset_done": "工作目錄已還原成一開始的樣子。", "interrupt_note": "Ctrl+C 會送到 mgit 啟動的每一個 git，所以整個執行立刻停下，回報 130。", "name_rule": "只能使用英文字母、數字、點、減號與底線。", "name_taken": "這個名字已經存在。", "here_is_repo": ".（這個目錄本身）", "unreadable": "不可讀", "dot_git_file": "檔案", "summary": "第一層有 {repos} 個儲存庫", "state_clean": "乾淨", "state_dirty": "有變更", "state_behind": "落後", "state_ahead": "領先", "state_blocked": "會失敗", "action_dirty": "改動", "action_behind": "落後", "action_block": "擋住", "action_remove": "刪除", "action_title_dirty": "切換未提交的變更", "action_title_behind": "切換遠端有沒有新 commit", "action_title_block": "切換 pull 會不會失敗", "action_title_remove": "從工作目錄移除", "command": "這次的指令", "search_root": "搜尋起點", "depth": "搜尋層數", "git_args": "交給 git 的參數", "colour": "顏色", "glyphs": "符號", "mode": "模式", "on": "開", "off": "關", "exit_code": "結束代碼", "discovery": "它怎麼走的", "git_runs": "每個儲存庫各跑一次 git", "result": "怎麼變成一個結束代碼", "not_modelled": "沙箱沒有模擬這個指令的輸出", "total": "儲存庫數", "succeeded": "成功", "failed": "失敗", "skipped": "略過", "summary_stream": "摘要寫到", "summary_none": "沒有印：沒有失敗，也沒有加 --summary", "interrupted": "被中斷", "interrupted_note": "Ctrl+C 讓整個執行立刻停止", "step_scan": "讀目錄", "step_repository": "是儲存庫", "step_descend": "往下一層", "step_depth-limit": "到達層數上限", "step_already-visited": "已經走過", "step_skip-file": "不是目錄", "step_unreadable": "讀不到", "exit_ok": "全部成功", "exit_failure": "有失敗，或一個儲存庫都沒找到", "exit_usage": "參數無法解析", "exit_notFound": "找不到 git", "exit_git": "來自第一個失敗的 git 指令", "exit_interrupted": "被 Ctrl+C 中斷", "exit_brokenPipe": "讀取端關閉了管線", "depth_title": "--depth 到底多找到什麼", "depth_label": "搜尋層數", "depth_found": "找到 {n} 個儲存庫", "depth_tree": "工作目錄", "depth_output": "mgit --list 的輸出", "stream_title": "哪些字進了檔案，哪些留在畫面上", "stream_file": "檔案裡的內容：", "stream_screen": "還留在畫面上的", "note_redirect": "{stream} 寫進了 {path}（{lines} 行）。用 `cat {path}` 讀回來看看。", "note_sigpipe": "head 讀滿 {count} 行就把管線關掉了。真正的 mgit 還原了 SIGPIPE 的預設行為，所以它安靜結束、不會噴 panic；這一行的結束代碼是 head 的，不是 mgit 的。", "note_unmodelled": "沙箱沒有模擬 {command} 的輸出。真的執行時，mgit 一樣會在每個儲存庫跑它，並收下它的結束代碼。", "note_unknown_command": "這個沙箱只認得 mgit，以及 {commands}。輸入 help 看完整清單。", "noscript": "這一頁需要 JavaScript：試用場整個是在你的瀏覽器裡執行的。文件的每一章、選項表與安裝指令都不需要 JavaScript，可以直接閱讀。", "install_verify": "安裝完驗證一下："}, "scenarios": {"workbench": {"name": "一般的工作目錄（6 個儲存庫）", "blurb": "六個 repo：一個有未提交的變更、一個落後遠端三個 commit、一個是 worktree、一個在 hotfix 分支上。"}, "nested": {"name": "有第二層的目錄", "blurb": "vendor/ 底下還有兩個 repo，而 web-console 裡面也有一個——mgit 不會走進儲存庫，所以那一個永遠不會被算進來。"}, "worktrees": {"name": "worktree 與 submodule", "blurb": "這些目錄的 .git 是檔案不是目錄。mgit 兩種都認，所以 worktree 和 submodule 都會被找到。"}, "links": {"name": "符號連結", "blurb": "gateway 是 api-gateway 的連結。兩個名字都會被執行，但實際目錄只會走訪一次，連結迴圈不會轉不停。"}, "empty": {"name": "一個儲存庫都沒有", "blurb": "看看找不到東西時會說什麼、回傳什麼，以及 --allow-empty 改變了哪一件事。"}, "inside-repo": {"name": "你就站在儲存庫裡", "blurb": "當前目錄本身是 repo、底下又沒有別的 repo 時，mgit 的行為等同直接呼叫 git。"}, "locked": {"name": "有一個目錄讀不到", "blurb": "restricted/ 沒有讀取權限。mgit 會在 stderr 留下警告，然後把其他目錄跑完。"}, "fleet": {"name": "12 個儲存庫的大目錄", "blurb": "適合用來看逐個播放、--fail-fast、以及 Ctrl+C 中斷整個執行的樣子。"}}, "playgroundUrl": "../../playground/"}</script>
+<script type="module" src="../../assets/js/ui/main.js"></script>
+</body>
+</html>

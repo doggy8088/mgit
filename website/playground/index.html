@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="zh-Hant-TW" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>mgit 試用場 — 在瀏覽器裡跑 mgit</title>
+<meta name="description" content="在瀏覽器沙箱裡試 mgit：可編輯的工作目錄、真實的參數解析與搜尋規則、逐個儲存庫播放的執行過程，以及每個結束代碼的來源。不會碰到你的檔案。">
+<meta name="robots" content="index, follow">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#fbfbfa" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0d1013" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://mgit.gh.miniasp.com/playground/">
+<link rel="alternate" hreflang="zh-Hant" href="https://mgit.gh.miniasp.com/playground/"><link rel="alternate" hreflang="en" href="https://mgit.gh.miniasp.com/en/playground/"><link rel="alternate" hreflang="x-default" href="https://mgit.gh.miniasp.com/playground/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="mgit">
+<meta property="og:title" content="mgit 試用場 — 在瀏覽器裡跑 mgit">
+<meta property="og:description" content="在瀏覽器沙箱裡試 mgit：可編輯的工作目錄、真實的參數解析與搜尋規則、逐個儲存庫播放的執行過程，以及每個結束代碼的來源。不會碰到你的檔案。">
+<meta property="og:url" content="https://mgit.gh.miniasp.com/playground/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://mgit.gh.miniasp.com/assets/img/og-cover.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="mgit 的終端機輸出：一個指令掃過六個 Git 儲存庫，最後是一行統計摘要。">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="mgit 試用場 — 在瀏覽器裡跑 mgit">
+<meta name="twitter:description" content="在瀏覽器沙箱裡試 mgit：可編輯的工作目錄、真實的參數解析與搜尋規則、逐個儲存庫播放的執行過程，以及每個結束代碼的來源。不會碰到你的檔案。">
+<meta name="twitter:image" content="https://mgit.gh.miniasp.com/assets/img/og-cover.png">
+<meta name="twitter:image:alt" content="mgit 的終端機輸出：一個指令掃過六個 Git 儲存庫，最後是一行統計摘要。">
+<script>(function(){var t=null;try{t=localStorage.getItem('mgit-theme')}catch(e){}if(t!=='light'&&t!=='dark'){t='light';try{if(matchMedia('(prefers-color-scheme: dark)').matches)t='dark'}catch(e){}}document.documentElement.setAttribute('data-theme',t)})()</script>
+<link rel="stylesheet" href="../assets/css/site.css">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/favicon.ico" sizes="32x32">
+<link rel="icon" href="../assets/img/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+<link rel="manifest" href="../site.webmanifest">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"mgit 試用場 — 在瀏覽器裡跑 mgit","description":"在瀏覽器沙箱裡試 mgit：可編輯的工作目錄、真實的參數解析與搜尋規則、逐個儲存庫播放的執行過程，以及每個結束代碼的來源。不會碰到你的檔案。","url":"https://mgit.gh.miniasp.com/playground/","inLanguage":"zh-Hant","isPartOf":{"@type":"WebSite","name":"mgit","url":"https://mgit.gh.miniasp.com/"},"author":{"@type":"Person","name":"Will Huang","url":"https://github.com/doggy8088"}}</script>
+</head>
+<body>
+<a class="skip" href="#main">跳到主要內容</a>
+<header class="hdr">
+<div class="shell shell--wide hdr__inner">
+<a class="wordmark" href="../">mgit<span class="wordmark__version">2.0.2</span></a>
+<nav class="hdr__nav" aria-label="主要導覽"><a href="../playground/" aria-current="page">試用場</a><a href="../docs/">文件</a><a href="../docs/install/">安裝</a><a href="https://github.com/doggy8088/mgit" rel="noopener">GitHub</a></nav>
+<div class="hdr__tools">
+<button type="button" class="btn btn--icon" data-theme-toggle aria-pressed="false" data-label-dark="切換到深色主題" data-label-light="切換到淺色主題" aria-label="切換到深色主題"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M13 9.5A5.5 5.5 0 0 1 6.5 3a5.5 5.5 0 1 0 6.5 6.5z"/></svg></button>
+<span class="langswitch" role="group" aria-label="語言"><a href="../playground/" aria-current="true" hreflang="zh-Hant" lang="zh-Hant">中文</a><a href="../en/playground/" hreflang="en" lang="en">EN</a></span>
+</div>
+</div>
+</header>
+<main id="main">
+<div class="shell shell--wide" style="padding-top:var(--s6)">
+<h1>試用場</h1>
+<p class="lede" style="max-width:70ch">左邊是一個假的工作目錄，中間是終端機，右邊說明 mgit 做了哪些決定。所有東西都在這個分頁裡，不會碰到你電腦上的任何檔案。</p>
+</div>
+<div class="shell shell--wide">
+<noscript><p class="noscript">這一頁需要 JavaScript：試用場整個是在你的瀏覽器裡執行的。文件的每一章、選項表與安裝指令都不需要 JavaScript，可以直接閱讀。</p></noscript>
+<div class="pg__toolbar">
+<div class="field">
+<label for="pg-scenario">工作目錄</label>
+<select id="pg-scenario" data-scenario><option value="workbench">一般的工作目錄（6 個儲存庫）</option><option value="nested">有第二層的目錄</option><option value="worktrees">worktree 與 submodule</option><option value="links">符號連結</option><option value="empty">一個儲存庫都沒有</option><option value="inside-repo">你就站在儲存庫裡</option><option value="locked">有一個目錄讀不到</option><option value="fleet">12 個儲存庫的大目錄</option></select>
+</div>
+<div class="field">
+<label for="pg-target">輸出送到哪裡</label>
+<select id="pg-target" data-target><option value="unix-tty">macOS／Linux 終端機</option><option value="pipe">導向檔案或 CI 日誌</option><option value="windows-terminal">Windows Terminal／PowerShell 7</option><option value="windows-legacy">舊版 Windows 主控台（非 UTF-8）</option></select>
+</div>
+<div class="field">
+<span class="field__label">模擬</span>
+<div class="chips">
+<button type="button" class="btn btn--small" data-git-toggle aria-pressed="false">拿掉 git</button>
+<button type="button" class="btn btn--small" data-animate-toggle aria-pressed="true">逐個播放</button>
+<button type="button" class="btn btn--small" data-share><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6.5 9.5a3 3 0 0 1 0-4.2l1.8-1.8a3 3 0 0 1 4.2 4.2l-.9.9"/><path d="M9.5 6.5a3 3 0 0 1 0 4.2l-1.8 1.8a3 3 0 0 1-4.2-4.2l.9-.9"/></svg><span data-copy-label>複製連結</span></button>
+</div>
+</div>
+<p class="small muted" data-scenario-note style="flex:1 1 260px;margin:0"></p>
+</div>
+
+<div class="pg" data-playground>
+<section class="panel" data-workspace aria-labelledby="pg-workspace-title">
+<div class="panel__head"><h2 id="pg-workspace-title">工作目錄</h2></div>
+<div class="panel__body panel__body--flush">
+<ul class="tree" data-workspace-list></ul>
+</div>
+<div class="panel__body">
+<p class="small muted" data-workspace-summary></p>
+<div class="field">
+<label for="pg-new-repo">新增一個儲存庫</label>
+<div class="chips">
+<input type="text" id="pg-new-repo" data-workspace-name placeholder="new-service" autocomplete="off" style="flex:1">
+<button type="button" class="btn btn--small" data-workspace-add>新增</button>
+</div>
+</div>
+</div>
+</section>
+
+<section aria-labelledby="pg-terminal-title">
+<h2 id="pg-terminal-title" class="visually-hidden">沙箱終端機 — 一切都在這個分頁裡</h2>
+<div class="term term--fixed" id="pg-terminal" data-terminal>
+<div class="term__bar">
+<span class="term__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+<span class="term__title">沙箱終端機 — 一切都在這個分頁裡</span>
+<span class="term__bar-actions">
+<button type="button" class="term__btn" data-term-stop hidden><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4.5" y="4.5" width="7" height="7" rx="1"/></svg>停止</button>
+<button type="button" class="term__btn" data-copy-transcript><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="5.5" y="5.5" width="8" height="9" rx="1.5"/><path d="M10.5 5.5V3.5a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h2"/></svg><span data-copy-label>複製整段</span></button><button type="button" class="term__btn" data-reset><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 8a5 5 0 1 0 1.6-3.7"/><path d="M3 3.5V7h3.5"/></svg>重設</button>
+</span>
+</div>
+<div class="term__screen" data-term-screen role="log" aria-live="polite" aria-atomic="false"
+ aria-label="試用場的終端機輸出" tabindex="0">這個終端機需要 JavaScript。頁面其餘部分（安裝指令、選項表、所有文件）不需要。</div>
+<div class="term__input-row">
+<span class="term__prompt"><span data-term-prompt-live>~/work</span> $</span>
+<label class="visually-hidden" for="pg-terminal-input">在試用場輸入指令</label>
+<input class="term__input" id="pg-terminal-input" data-term-input type="text" autocomplete="off"
+ autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="輸入 mgit --help，或按 Tab 補字">
+</div>
+<div class="term__hint"><span><kbd>Enter</kbd> 執行</span><span><kbd>Tab</kbd> 補字</span><span><kbd>↑ ↓</kbd> 上一個指令</span><span><kbd>Ctrl+C</kbd> 中斷</span><span><kbd>Ctrl+L</kbd> 清畫面</span></div>
+</div>
+<div class="chips" data-quick-commands style="margin-top:var(--s4)"></div>
+</section>
+
+<section class="panel inspector" data-inspector aria-labelledby="pg-inspector-title">
+<div class="panel__head"><h2 id="pg-inspector-title">它做了什麼</h2></div>
+<div class="panel__body">
+<p class="small muted" data-inspector-empty>跑一個 mgit 指令，這裡就會列出它走訪的每個目錄、每次 git 呼叫，以及結束代碼是怎麼算出來的。</p>
+<div data-inspector-body></div>
+</div>
+</section>
+</div>
+</div>
+<section class="section">
+<div class="shell">
+<div class="section__head"><h2>這有多真？</h2></div>
+<ul><li><b>參數解析、儲存庫搜尋、輸出格式與結束代碼</b>是從 mgit 的 Rust 原始碼逐條移植的，並且有一組對照測試：同樣的工作目錄、同樣的指令，一邊跑真正編譯出來的執行檔、一邊跑這裡的程式，輸出必須逐字相同。</li><li><b>git 本身是模擬的</b>。沙箱知道 <code>status</code>、<code>pull</code>、<code>fetch</code>、<code>log</code>、<code>branch</code>、<code>checkout</code> 這些指令在這些假儲存庫裡該回答什麼；遇到沒有模擬的 git 指令，它會直說，而不會編一段輸出給你看。</li><li>沙箱的路徑一律是 POSIX 風格；切換到 Windows 輸出目標時改變的是<b>符號與顏色的判斷</b>，不是路徑格式。</li></ul>
+</div>
+</section>
+
+</main>
+<footer class="foot">
+<div class="shell shell--wide">
+<div class="foot__grid"><div><h2>開始使用</h2><ul><li><a href="../docs/install/">安裝與驗證</a></li><li><a href="../docs/usage/">指令與選項</a></li><li><a href="../playground/">試用場</a></li><li><a href="../docs/recipes/">實用配方</a></li></ul></div><div><h2>行為細節</h2><ul><li><a href="../docs/discovery/">它怎麼找儲存庫</a></li><li><a href="../docs/output/">輸出、顏色與符號</a></li><li><a href="../docs/exit-codes/">結束代碼與自動化</a></li><li><a href="../docs/environment/">環境變數與跨平台</a></li></ul></div><div><h2>原始碼與發行</h2><ul><li><a href="https://github.com/doggy8088/mgit" rel="noopener">GitHub 儲存庫</a></li><li><a href="https://github.com/doggy8088/mgit/releases" rel="noopener">發行檔與檢查碼</a></li><li><a href="https://github.com/doggy8088/mgit/blob/main/CHANGELOG.md" rel="noopener">變更記錄</a></li><li><a href="https://www.npmjs.com/package/@willh/mgit" rel="noopener">npm：@willh/mgit</a></li></ul></div></div>
+<div class="foot__bottom">
+<span>MIT 授權 © 2026 Will 保哥。mgit 是獨立專案，與 Git 專案無關。</span>
+<span>本站沒有分析工具、沒有 cookie、沒有外部請求；試用場完全在你的瀏覽器分頁裡執行。</span>
+</div>
+</div>
+</footer>
+<script type="application/json" id="site-config">{"labels": {"copy": "複製", "copied": "已複製", "copy_failed": "請手動複製", "install_tablist": "安裝方式", "anchor_label": "本節連結", "input_label": "在試用場輸入指令", "input_placeholder": "輸入 mgit --help，或按 Tab 補字", "screen_label": "試用場的終端機輸出", "stop": "停止", "terminal_title": "沙箱終端機 — 一切都在這個分頁裡", "terminal_fallback": "這個終端機需要 JavaScript。頁面其餘部分（安裝指令、選項表、所有文件）不需要。", "copy_transcript": "複製整段", "reset": "重設", "share": "複製連結", "scenario": "工作目錄", "target": "輸出送到哪裡", "simulate": "模擬", "no_git": "拿掉 git", "animate": "逐個播放", "workspace": "工作目錄", "add_repo": "新增一個儲存庫", "add": "新增", "inspector": "它做了什麼", "inspector_empty": "跑一個 mgit 指令，這裡就會列出它走訪的每個目錄、每次 git 呼叫，以及結束代碼是怎麼算出來的。", "hint_run": "執行", "hint_complete": "補字", "hint_history": "上一個指令", "hint_interrupt": "中斷", "hint_clear": "清畫面", "exit": "結束代碼", "welcome": "輸入指令，或點下面的按鈕。所有執行都在這個分頁裡，不會碰到你的檔案。", "scenario_loaded": "已載入工作目錄：", "target_changed": "輸出目標：", "git_gone": "git 已從 PATH 拿掉。接下來每次執行都會是 127。", "git_back": "git 回到 PATH 了。", "reset_done": "工作目錄已還原成一開始的樣子。", "interrupt_note": "Ctrl+C 會送到 mgit 啟動的每一個 git，所以整個執行立刻停下，回報 130。", "name_rule": "只能使用英文字母、數字、點、減號與底線。", "name_taken": "這個名字已經存在。", "here_is_repo": ".（這個目錄本身）", "unreadable": "不可讀", "dot_git_file": "檔案", "summary": "第一層有 {repos} 個儲存庫", "state_clean": "乾淨", "state_dirty": "有變更", "state_behind": "落後", "state_ahead": "領先", "state_blocked": "會失敗", "action_dirty": "改動", "action_behind": "落後", "action_block": "擋住", "action_remove": "刪除", "action_title_dirty": "切換未提交的變更", "action_title_behind": "切換遠端有沒有新 commit", "action_title_block": "切換 pull 會不會失敗", "action_title_remove": "從工作目錄移除", "command": "這次的指令", "search_root": "搜尋起點", "depth": "搜尋層數", "git_args": "交給 git 的參數", "colour": "顏色", "glyphs": "符號", "mode": "模式", "on": "開", "off": "關", "exit_code": "結束代碼", "discovery": "它怎麼走的", "git_runs": "每個儲存庫各跑一次 git", "result": "怎麼變成一個結束代碼", "not_modelled": "沙箱沒有模擬這個指令的輸出", "total": "儲存庫數", "succeeded": "成功", "failed": "失敗", "skipped": "略過", "summary_stream": "摘要寫到", "summary_none": "沒有印：沒有失敗，也沒有加 --summary", "interrupted": "被中斷", "interrupted_note": "Ctrl+C 讓整個執行立刻停止", "step_scan": "讀目錄", "step_repository": "是儲存庫", "step_descend": "往下一層", "step_depth-limit": "到達層數上限", "step_already-visited": "已經走過", "step_skip-file": "不是目錄", "step_unreadable": "讀不到", "exit_ok": "全部成功", "exit_failure": "有失敗，或一個儲存庫都沒找到", "exit_usage": "參數無法解析", "exit_notFound": "找不到 git", "exit_git": "來自第一個失敗的 git 指令", "exit_interrupted": "被 Ctrl+C 中斷", "exit_brokenPipe": "讀取端關閉了管線", "depth_title": "--depth 到底多找到什麼", "depth_label": "搜尋層數", "depth_found": "找到 {n} 個儲存庫", "depth_tree": "工作目錄", "depth_output": "mgit --list 的輸出", "stream_title": "哪些字進了檔案，哪些留在畫面上", "stream_file": "檔案裡的內容：", "stream_screen": "還留在畫面上的", "note_redirect": "{stream} 寫進了 {path}（{lines} 行）。用 `cat {path}` 讀回來看看。", "note_sigpipe": "head 讀滿 {count} 行就把管線關掉了。真正的 mgit 還原了 SIGPIPE 的預設行為，所以它安靜結束、不會噴 panic；這一行的結束代碼是 head 的，不是 mgit 的。", "note_unmodelled": "沙箱沒有模擬 {command} 的輸出。真的執行時，mgit 一樣會在每個儲存庫跑它，並收下它的結束代碼。", "note_unknown_command": "這個沙箱只認得 mgit，以及 {commands}。輸入 help 看完整清單。", "noscript": "這一頁需要 JavaScript：試用場整個是在你的瀏覽器裡執行的。文件的每一章、選項表與安裝指令都不需要 JavaScript，可以直接閱讀。", "install_verify": "安裝完驗證一下："}, "scenarios": {"workbench": {"name": "一般的工作目錄（6 個儲存庫）", "blurb": "六個 repo：一個有未提交的變更、一個落後遠端三個 commit、一個是 worktree、一個在 hotfix 分支上。"}, "nested": {"name": "有第二層的目錄", "blurb": "vendor/ 底下還有兩個 repo，而 web-console 裡面也有一個——mgit 不會走進儲存庫，所以那一個永遠不會被算進來。"}, "worktrees": {"name": "worktree 與 submodule", "blurb": "這些目錄的 .git 是檔案不是目錄。mgit 兩種都認，所以 worktree 和 submodule 都會被找到。"}, "links": {"name": "符號連結", "blurb": "gateway 是 api-gateway 的連結。兩個名字都會被執行，但實際目錄只會走訪一次，連結迴圈不會轉不停。"}, "empty": {"name": "一個儲存庫都沒有", "blurb": "看看找不到東西時會說什麼、回傳什麼，以及 --allow-empty 改變了哪一件事。"}, "inside-repo": {"name": "你就站在儲存庫裡", "blurb": "當前目錄本身是 repo、底下又沒有別的 repo 時，mgit 的行為等同直接呼叫 git。"}, "locked": {"name": "有一個目錄讀不到", "blurb": "restricted/ 沒有讀取權限。mgit 會在 stderr 留下警告，然後把其他目錄跑完。"}, "fleet": {"name": "12 個儲存庫的大目錄", "blurb": "適合用來看逐個播放、--fail-fast、以及 Ctrl+C 中斷整個執行的樣子。"}}, "playgroundUrl": "../playground/"}</script>
+<script type="module" src="../assets/js/ui/main.js"></script>
+</body>
+</html>

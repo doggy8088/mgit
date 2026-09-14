@@ -9,6 +9,8 @@
 
 CARGO   ?= cargo
 NPM     ?= npm
+PYTHON  ?= python3
+SITE_PORT ?= 8801
 ARGS    ?=
 VERSION ?= patch
 DIST    ?= dist
@@ -27,7 +29,8 @@ RELEASE_TARGETS = x86_64-unknown-linux-gnu x86_64-unknown-linux-musl \
 
 .PHONY: help build release run test e2e fmt fmt-check lint lint-windows \
         check ci coverage coverage-html msrv cross-check package install \
-        bump lint-scripts npm-test npm-vendor npm-pack clean
+        bump lint-scripts npm-test npm-vendor npm-pack clean \
+        site site-serve site-test site-check site-audit site-assets
 
 help: ## List the available targets
 	@echo 'mgit targets:'
@@ -132,6 +135,27 @@ npm-pack: ## Build the local npm tarball from dist/ (the release flow is in npm/
 	npm/scripts/vendor.sh $(DIST) host
 	cp LICENSE npm/LICENSE
 	cd npm && $(NPM) pack
+
+site: ## Rebuild every page of website/ from the content modules
+	$(PYTHON) website/build/build.py
+
+site-serve: ## Preview the site at http://localhost:8801/ (override with SITE_PORT)
+	$(PYTHON) website/build/serve.py $(SITE_PORT)
+
+site-test: ## Engine unit tests plus the parity test against target/release/mgit
+	$(CARGO) build --release
+	node --test website/tests/*.test.mjs
+
+site-check: ## Contrast gate: WCAG AA against the worst pixel of every texture
+	$(PYTHON) website/build/check-contrast.py
+
+site-audit: ## Overflow, landmarks, labels and heading order at three viewports
+	@echo 'Start `make site-serve` in another shell first.'
+	node website/build/audit.mjs
+
+site-assets: ## Regenerate the icons, the social card and the surface textures
+	$(PYTHON) website/build/make-textures.py
+	$(PYTHON) website/build/make-assets.py
 
 clean: ## Remove the build output, the packaged archives and the npm vendor directory
 	$(CARGO) clean

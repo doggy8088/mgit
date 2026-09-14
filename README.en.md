@@ -245,7 +245,8 @@ src/
   platform.rs   platform details (SIGPIPE)
 tests/          per module integration tests and end to end tests
 scripts/        version tooling
-archive/        the legacy scripts, website and workflows
+website/        the product and documentation site, with a browser sandbox
+archive/        the legacy scripts, websites and workflows
 ```
 
 ### Testing (TDD)
@@ -322,6 +323,30 @@ $ /bump-and-release v2.1.0       # explicit version
 It follows the same rules: main branch, clean tree and green CI → `scripts/bump-version.sh` → detailed commit → tag push → verification of both workflows, the GitHub release assets, the npm version and the provenance attestation.
 
 The `Release` workflow can also be started manually with a version; it creates and pushes the matching tag for you.
+
+---
+
+## Website
+
+The product and documentation site lives in [`website/`](website/README.md) and
+is published at <https://mgit.gh.miniasp.com/> by
+[`deploy-pages.yml`](.github/workflows/deploy-pages.yml) on every push to
+`main`.
+
+Its **playground** (<https://mgit.gh.miniasp.com/en/playground/>) runs mgit in
+the browser: the working directory is editable, any command really executes,
+the run plays back one repository at a time, and Ctrl+C stops it at 130. It is
+not a recording. Argument parsing, repository discovery, the output format and
+the exit codes are ported rule by rule from `src/`, and a parity test compares
+the port against the compiled binary character for character across eight
+workspaces and thirty-seven command lines.
+
+```console
+$ make site          # regenerate every page from the content modules
+$ make site-serve    # preview at http://localhost:8801/
+$ make site-test     # engine unit tests plus parity against target/release/mgit
+$ make site-check    # the contrast gate, including the darkest grain of every texture
+```
 
 ---
 

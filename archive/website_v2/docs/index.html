@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>文件 — mgit 2.0.2</title>
+<meta name="description" content="mgit 的文件：安裝、選項、輸出、找儲存庫、結束代碼、跨平台與發行。">
+<script>(function () {
+  var stored = null;
+  var system = "light";
+  try {
+    stored = window.localStorage.getItem("mgit-theme");
+  } catch (error) {
+    stored = null;
+  }
+  try {
+    if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) system = "dark";
+  } catch (error) {
+    system = "light";
+  }
+  document.documentElement.setAttribute("data-theme", stored === "light" || stored === "dark" ? stored : system);
+})();</script>
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<meta name="color-scheme" content="light dark">
+</head>
+<body class="paper-log">
+<a class="skip" href="#main">跳至主要內容</a>
+<header class="head"><div class="shell head__inner">
+<a class="wordmark" href="../index.html">
+<span class="wordmark__mark">mgit</span>
+</a>
+<nav class="head__links" aria-label="網站">
+<a href="../docs/">文件</a>
+<a href="https://github.com/doggy8088/mgit">GitHub</a>
+<a href="https://github.com/doggy8088/mgit/releases">發行檔</a>
+<a href="https://www.npmjs.com/package/@willh/mgit">npm</a>
+</nav>
+<button class="themeswitch" type="button" data-theme-toggle aria-pressed="false" aria-label="深色主題"><svg class="themeswitch__glyph" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="2.5" y="2.5" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M2.5 2.5h5.5v11H2.5z" fill="currentColor"/></svg></button>
+<span class="lang" role="group" aria-label="語言">
+<a href="../index.html" aria-current="true">中文</a>
+<a href="../en/docs/index.html">EN</a>
+</span>
+</div></header>
+<main id="main">
+<div class="shell band"><div class="band__head"><div><h1 class="band__title">文件</h1><p class="band__intro">為什麼用它、怎麼裝、每個選項、每個結束代碼、每個平台差異。</p></div></div><nav class="logbook" aria-label="文件章節"><a class="logbook__row" href="use-cases.html"><span class="logbook__ch">01</span><span><span class="logbook__name">使用情境</span><span class="logbook__desc">為什麼會有 mgit：散落各處、彼此互相參考、又沒有用 submodule 的 repo</span></span><svg class="logbook__arrow" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11M11 5.5 15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a class="logbook__row" href="install.html"><span class="logbook__ch">02</span><span><span class="logbook__name">安裝</span><span class="logbook__desc">三種安裝方式、驗證檢查碼，以及從原始碼建置</span></span><svg class="logbook__arrow" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11M11 5.5 15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a class="logbook__row" href="options.html"><span class="logbook__ch">03</span><span><span class="logbook__name">選項</span><span class="logbook__desc">十三個選項、解析規則與常用範例</span></span><svg class="logbook__arrow" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11M11 5.5 15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a class="logbook__row" href="output.html"><span class="logbook__ch">04</span><span><span class="logbook__name">輸出與行為</span><span class="logbook__desc">標題格式、安靜的儲存庫、摘要與顏色政策</span></span><svg class="logbook__arrow" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11M11 5.5 15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a class="logbook__row" href="discovery.html"><span class="logbook__ch">05</span><span><span class="logbook__name">它怎麼找儲存庫</span><span class="logbook__desc">深度、worktree、submodule、symlink 與跨平台一致的排序</span></span><svg class="logbook__arrow" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11M11 5.5 15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a class="logbook__row" href="exit-codes.html"><span class="logbook__ch">06</span><span><span class="logbook__name">結束代碼與環境變數</span><span class="logbook__desc">成敗如何回報，環境如何覆寫預設值</span></span><svg class="logbook__arrow" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11M11 5.5 15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a class="logbook__row" href="platforms.html"><span class="logbook__ch">07</span><span><span class="logbook__name">跨平台行為</span><span class="logbook__desc">Windows 主控台、locale、SIGPIPE 與 git 的尋找方式</span></span><svg class="logbook__arrow" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11M11 5.5 15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a class="logbook__row" href="changes.html"><span class="logbook__ch">08</span><span><span class="logbook__name">版本、發行與 npm</span><span class="logbook__desc">與 1.0 的差異、標籤驅動的發行流程與 npm 套件</span></span><svg class="logbook__arrow" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11M11 5.5 15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></nav><p style="margin-top:var(--s5)"><a href="../index.html">← 回網站首頁</a></p></div>
+</main>
+<footer class="foot"><div class="shell foot__inner">
+<dl class="foot__group"><dt>發行</dt>
+<dd><a href="https://github.com/doggy8088/mgit/releases">Release 2.0.2</a></dd>
+<dd><a href="https://github.com/doggy8088/mgit/blob/main/CHANGELOG.md">CHANGELOG.md</a></dd>
+</dl>
+<dl class="foot__group"><dt>安裝</dt>
+<dd><a href="https://github.com/doggy8088/mgit/blob/main/install.sh">install.sh</a></dd>
+<dd><a href="https://github.com/doggy8088/mgit/blob/main/install.ps1">install.ps1</a></dd>
+</dl>
+<dl class="foot__group"><dt>套件</dt>
+<dd><a href="https://www.npmjs.com/package/@willh/mgit">@willh/mgit</a></dd>
+<dd><a href="https://github.com/doggy8088/mgit/blob/main/npm/PUBLISHING.md">npm/PUBLISHING.md</a></dd>
+</dl>
+</div>
+<div class="shell foot__colophon"><span>© 2026 Will 保哥 · MIT 授權 · 示範資料是 2.0.2 版二進位在示範工作台錄下來的真實 session</span><span><a href="https://github.com/doggy8088/mgit/blob/main/LICENSE">MIT</a></span></div>
+</footer>
+<script src="../assets/recorder.js" defer></script>
+</body>
+</html>

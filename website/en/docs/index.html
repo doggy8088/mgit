@@ -1,66 +1,75 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Docs — mgit 2.0.2</title>
-<meta name="description" content="mgit documentation: install, options, output, discovery, exit codes, platforms and releases.">
-<script>(function () {
-  var stored = null;
-  var system = "light";
-  try {
-    stored = window.localStorage.getItem("mgit-theme");
-  } catch (error) {
-    stored = null;
-  }
-  try {
-    if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) system = "dark";
-  } catch (error) {
-    system = "light";
-  }
-  document.documentElement.setAttribute("data-theme", stored === "light" || stored === "dark" ? stored : system);
-})();</script>
-<link rel="stylesheet" href="../../assets/site.css">
-<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<title>mgit documentation</title>
+<meta name="description" content="Everything about mgit: installing and verifying it, the command line, how repositories are found, the output format, exit codes, environment variables, platform behaviour and recipes.">
+<meta name="robots" content="index, follow">
 <meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#fbfbfa" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0d1013" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://mgit.gh.miniasp.com/en/docs/">
+<link rel="alternate" hreflang="zh-Hant" href="https://mgit.gh.miniasp.com/docs/"><link rel="alternate" hreflang="en" href="https://mgit.gh.miniasp.com/en/docs/"><link rel="alternate" hreflang="x-default" href="https://mgit.gh.miniasp.com/docs/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="mgit">
+<meta property="og:title" content="mgit documentation">
+<meta property="og:description" content="Everything about mgit: installing and verifying it, the command line, how repositories are found, the output format, exit codes, environment variables, platform behaviour and recipes.">
+<meta property="og:url" content="https://mgit.gh.miniasp.com/en/docs/">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://mgit.gh.miniasp.com/assets/img/og-cover.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="mgit terminal output: one command sweeping six Git repositories, closing with a one line summary.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="mgit documentation">
+<meta name="twitter:description" content="Everything about mgit: installing and verifying it, the command line, how repositories are found, the output format, exit codes, environment variables, platform behaviour and recipes.">
+<meta name="twitter:image" content="https://mgit.gh.miniasp.com/assets/img/og-cover.png">
+<meta name="twitter:image:alt" content="mgit terminal output: one command sweeping six Git repositories, closing with a one line summary.">
+<script>(function(){var t=null;try{t=localStorage.getItem('mgit-theme')}catch(e){}if(t!=='light'&&t!=='dark'){t='light';try{if(matchMedia('(prefers-color-scheme: dark)').matches)t='dark'}catch(e){}}document.documentElement.setAttribute('data-theme',t)})()</script>
+<link rel="stylesheet" href="../../assets/css/site.css">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../../assets/favicon.ico" sizes="32x32">
+<link rel="icon" href="../../assets/img/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="../../assets/img/apple-touch-icon.png">
+<link rel="manifest" href="../../site.webmanifest">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"mgit documentation","description":"Everything about mgit: installing and verifying it, the command line, how repositories are found, the output format, exit codes, environment variables, platform behaviour and recipes.","url":"https://mgit.gh.miniasp.com/en/docs/","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"mgit","url":"https://mgit.gh.miniasp.com/en/"},"author":{"@type":"Person","name":"Will Huang","url":"https://github.com/doggy8088"}}</script>
 </head>
-<body class="paper-log">
+<body>
 <a class="skip" href="#main">Skip to content</a>
-<header class="head"><div class="shell head__inner">
-<a class="wordmark" href="../../en/index.html">
-<span class="wordmark__mark">mgit</span>
-</a>
-<nav class="head__links" aria-label="Site">
-<a href="../../en/docs/">Docs</a>
-<a href="https://github.com/doggy8088/mgit">GitHub</a>
-<a href="https://github.com/doggy8088/mgit/releases">Releases</a>
-<a href="https://www.npmjs.com/package/@willh/mgit">npm</a>
-</nav>
-<button class="themeswitch" type="button" data-theme-toggle aria-pressed="false" aria-label="Dark theme"><svg class="themeswitch__glyph" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="2.5" y="2.5" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M2.5 2.5h5.5v11H2.5z" fill="currentColor"/></svg></button>
-<span class="lang" role="group" aria-label="Language">
-<a href="../../en/index.html" aria-current="true">EN</a>
-<a href="../../docs/index.html">中文</a>
-</span>
-</div></header>
-<main id="main">
-<div class="shell band"><div class="band__head"><div><h1 class="band__title">Docs</h1><p class="band__intro">Why, how to install, every option, every exit code, every platform difference.</p></div></div><nav class="logbook" aria-label="Docs chapters"><a class="logbook__row" href="use-cases.html"><span class="logbook__ch">01</span><span><span class="logbook__name">When to use it</span><span class="logbook__desc">Why mgit exists: repositories that reference each other and are not wired together with submodules</span></span><svg class="logbook__arrow" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11M11 5.5 15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a class="logbook__row" href="install.html"><span class="logbook__ch">02</span><span><span class="logbook__name">Install</span><span class="logbook__desc">Three install paths, checksum verification, and building from source</span></span><svg class="logbook__arrow" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11M11 5.5 15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a class="logbook__row" href="options.html"><span class="logbook__ch">03</span><span><span class="logbook__name">Options</span><span class="logbook__desc">The thirteen options, the parsing rule, and everyday examples</span></span><svg class="logbook__arrow" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11M11 5.5 15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a class="logbook__row" href="output.html"><span class="logbook__ch">04</span><span><span class="logbook__name">Output and behavior</span><span class="logbook__desc">Headers, quiet repositories, the summary and the color policy</span></span><svg class="logbook__arrow" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11M11 5.5 15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a class="logbook__row" href="discovery.html"><span class="logbook__ch">05</span><span><span class="logbook__name">Repository discovery</span><span class="logbook__desc">Depth, worktrees, submodules, symlinks and one ordering on every OS</span></span><svg class="logbook__arrow" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11M11 5.5 15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a class="logbook__row" href="exit-codes.html"><span class="logbook__ch">06</span><span><span class="logbook__name">Exit codes and environment</span><span class="logbook__desc">How the run reports success, and how the environment overrides it</span></span><svg class="logbook__arrow" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11M11 5.5 15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a class="logbook__row" href="platforms.html"><span class="logbook__ch">07</span><span><span class="logbook__name">Cross-platform behavior</span><span class="logbook__desc">Windows consoles, locales, SIGPIPE and how git is located</span></span><svg class="logbook__arrow" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11M11 5.5 15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a class="logbook__row" href="changes.html"><span class="logbook__ch">08</span><span><span class="logbook__name">Versions, releases and npm</span><span class="logbook__desc">Differences from 1.0, the tag-driven release flow and the npm package</span></span><svg class="logbook__arrow" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11M11 5.5 15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></nav><p style="margin-top:var(--s5)"><a href="../../index.html">← Back to the site</a></p></div>
-</main>
-<footer class="foot"><div class="shell foot__inner">
-<dl class="foot__group"><dt>Release</dt>
-<dd><a href="https://github.com/doggy8088/mgit/releases">Release 2.0.2</a></dd>
-<dd><a href="https://github.com/doggy8088/mgit/blob/main/CHANGELOG.md">CHANGELOG.md</a></dd>
-</dl>
-<dl class="foot__group"><dt>Install</dt>
-<dd><a href="https://github.com/doggy8088/mgit/blob/main/install.sh">install.sh</a></dd>
-<dd><a href="https://github.com/doggy8088/mgit/blob/main/install.ps1">install.ps1</a></dd>
-</dl>
-<dl class="foot__group"><dt>Package</dt>
-<dd><a href="https://www.npmjs.com/package/@willh/mgit">@willh/mgit</a></dd>
-<dd><a href="https://github.com/doggy8088/mgit/blob/main/npm/PUBLISHING.md">npm/PUBLISHING.md</a></dd>
-</dl>
+<header class="hdr">
+<div class="shell shell--wide hdr__inner">
+<a class="wordmark" href="../../">mgit<span class="wordmark__version">2.0.2</span></a>
+<nav class="hdr__nav" aria-label="Main"><a href="../../en/playground/">Playground</a><a href="../../en/docs/" aria-current="page">Docs</a><a href="../../en/docs/install/">Install</a><a href="https://github.com/doggy8088/mgit" rel="noopener">GitHub</a></nav>
+<div class="hdr__tools">
+<button type="button" class="btn btn--icon" data-theme-toggle aria-pressed="false" data-label-dark="Switch to the dark theme" data-label-light="Switch to the light theme" aria-label="Switch to the dark theme"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M13 9.5A5.5 5.5 0 0 1 6.5 3a5.5 5.5 0 1 0 6.5 6.5z"/></svg></button>
+<span class="langswitch" role="group" aria-label="Language"><a href="../../docs/" hreflang="zh-Hant" lang="zh-Hant">中文</a><a href="../../en/docs/" aria-current="true" hreflang="en" lang="en">EN</a></span>
 </div>
-<div class="shell foot__colophon"><span>© 2026 Will 保哥 · MIT licensed · Demo data is a real session recorded with the 2.0.2 binary in a demo workspace</span><span><a href="https://github.com/doggy8088/mgit/blob/main/LICENSE">MIT</a></span></div>
+</div>
+</header>
+<main id="main">
+<div class="shell" style="padding:var(--s7) 0 0">
+<div class="prose__head">
+<h1>Documentation</h1>
+<p class="lede">Every chapter stands on its own, and every rule in them can be tried in the playground with one click.</p>
+</div>
+</div>
+<section class="section section--flush"><div class="shell">
+<div class="grid"><a class="card card--link" href="../../en/docs/install/"><span class="card__meta">01</span><h2>Install and verify</h2><p>Four ways in, all of them ending at the same thing: one binary with no runtime dependencies.</p></a><a class="card card--link" href="../../en/docs/usage/"><span class="card__meta">02</span><h2>Commands and options</h2><p>mgit only recognises the options in its own documentation. Everything else goes to git exactly as you typed it.</p></a><a class="card card--link" href="../../en/docs/discovery/"><span class="card__meta">03</span><h2>How repositories are found</h2><p>Six rules in total, and the result is identical on macOS, Linux and Windows.</p></a><a class="card card--link" href="../../en/docs/output/"><span class="card__meta">04</span><h2>Output, colour and glyphs</h2><p>The format has not changed since 1.0, and colour is never the only thing carrying information.</p></a><a class="card card--link" href="../../en/docs/exit-codes/"><span class="card__meta">05</span><h2>Exit codes and automation</h2><p>Everything you need to know before a script decides something based on the result.</p></a><a class="card card--link" href="../../en/docs/environment/"><span class="card__meta">06</span><h2>Environment and platforms</h2><p>The differences between terminals are absorbed by the tool instead of being pushed onto you.</p></a><a class="card card--link" href="../../en/docs/recipes/"><span class="card__meta">07</span><h2>Recipes</h2><p>Every block here can be pasted straight into a terminal, or tried in the playground first.</p></a></div>
+</div></section>
+
+</main>
+<footer class="foot">
+<div class="shell shell--wide">
+<div class="foot__grid"><div><h2>Start here</h2><ul><li><a href="../../en/docs/install/">Install and verify</a></li><li><a href="../../en/docs/usage/">Commands and options</a></li><li><a href="../../en/playground/">Playground</a></li><li><a href="../../en/docs/recipes/">Recipes</a></li></ul></div><div><h2>Behaviour</h2><ul><li><a href="../../en/docs/discovery/">How repositories are found</a></li><li><a href="../../en/docs/output/">Output, colour and glyphs</a></li><li><a href="../../en/docs/exit-codes/">Exit codes and automation</a></li><li><a href="../../en/docs/environment/">Environment and platforms</a></li></ul></div><div><h2>Source and releases</h2><ul><li><a href="https://github.com/doggy8088/mgit" rel="noopener">GitHub repository</a></li><li><a href="https://github.com/doggy8088/mgit/releases" rel="noopener">Releases and checksums</a></li><li><a href="https://github.com/doggy8088/mgit/blob/main/CHANGELOG.md" rel="noopener">Changelog</a></li><li><a href="https://www.npmjs.com/package/@willh/mgit" rel="noopener">npm: @willh/mgit</a></li></ul></div></div>
+<div class="foot__bottom">
+<span>MIT licensed © 2026 Will Huang. mgit is an independent project and is not affiliated with the Git project.</span>
+<span>No analytics, no cookies, no third party requests. The playground runs entirely in your browser tab.</span>
+</div>
+</div>
 </footer>
-<script src="../../assets/recorder.js" defer></script>
+<script type="application/json" id="site-config">{"labels": {"copy": "Copy", "copied": "Copied", "copy_failed": "Press Ctrl+C", "install_tablist": "Installation method", "anchor_label": "Link to this section", "input_label": "Type a command for the playground", "input_placeholder": "Try mgit --help, or press Tab to complete", "screen_label": "Playground terminal output", "stop": "Stop", "terminal_title": "Sandbox terminal — everything happens in this tab", "terminal_fallback": "This terminal needs JavaScript. Nothing else on the site does: the install commands, the option tables and every documentation page work without it.", "copy_transcript": "Copy all", "reset": "Reset", "share": "Copy link", "scenario": "Working directory", "target": "Where the output goes", "simulate": "Simulate", "no_git": "Remove git", "animate": "Play back", "workspace": "Working directory", "add_repo": "Add a repository", "add": "Add", "inspector": "What it did", "inspector_empty": "Run an mgit command and this panel lists every directory it opened, every git call it made, and how those results became one exit code.", "hint_run": "run", "hint_complete": "complete", "hint_history": "history", "hint_interrupt": "interrupt", "hint_clear": "clear", "exit": "exit", "welcome": "Type a command, or pick one below. Everything runs in this tab and nothing touches your files.", "scenario_loaded": "Loaded working directory: ", "target_changed": "Output target: ", "git_gone": "git has been taken off PATH. Every run now ends in 127.", "git_back": "git is back on PATH.", "reset_done": "The working directory is back the way it started.", "interrupt_note": "Ctrl+C reaches every git that mgit started, so the run stops at once and reports 130.", "name_rule": "Use letters, digits, dots, dashes or underscores.", "name_taken": "That name is already taken.", "here_is_repo": ". (this directory)", "unreadable": "unreadable", "dot_git_file": "file", "summary": "{repos} repositories at depth 1", "state_clean": "clean", "state_dirty": "changes", "state_behind": "behind", "state_ahead": "ahead", "state_blocked": "will fail", "action_dirty": "edit", "action_behind": "behind", "action_block": "block", "action_remove": "remove", "action_title_dirty": "Toggle an uncommitted change", "action_title_behind": "Toggle whether the remote has new commits", "action_title_block": "Toggle whether pull fails here", "action_title_remove": "Remove from the working directory", "command": "The command", "search_root": "Searched", "depth": "Depth", "git_args": "Handed to git", "colour": "Colour", "glyphs": "Glyphs", "mode": "Mode", "on": "on", "off": "off", "exit_code": "Exit code", "discovery": "The walk", "git_runs": "git, once per repository", "result": "How that became one exit code", "not_modelled": "not modelled in the sandbox", "total": "Repositories", "succeeded": "Succeeded", "failed": "Failed", "skipped": "Skipped", "summary_stream": "Summary went to", "summary_none": "nowhere: nothing failed and --summary was not given", "interrupted": "Interrupted", "interrupted_note": "Ctrl+C stops the whole run at once", "step_scan": "read", "step_repository": "repository", "step_descend": "descend", "step_depth-limit": "depth limit", "step_already-visited": "already visited", "step_skip-file": "not a directory", "step_unreadable": "unreadable", "exit_ok": "everything succeeded", "exit_failure": "something failed, or no repository was found", "exit_usage": "the command line could not be parsed", "exit_notFound": "git could not be started", "exit_git": "from the first failing git command", "exit_interrupted": "interrupted with Ctrl+C", "exit_brokenPipe": "the reader closed the pipe", "depth_title": "What --depth actually reaches", "depth_label": "Depth", "depth_found": "{n} repositories found", "depth_tree": "Working directory", "depth_output": "Output of mgit --list", "stream_title": "What lands in the file, and what stays on screen", "stream_file": "Inside the file:", "stream_screen": "Still on screen", "note_redirect": "{stream} went into {path} ({lines} lines). Read it back with `cat {path}`.", "note_sigpipe": "head closed the pipe after {count} lines. The real mgit restores the default SIGPIPE behaviour, so it stops quietly instead of printing a panic, and the exit code on this line belongs to head rather than to mgit.", "note_unmodelled": "The sandbox does not model the output of {command}. On a real run mgit still executes it in every repository and collects its exit code.", "note_unknown_command": "This sandbox knows mgit, plus {commands}. Type help for the full list.", "noscript": "This page needs JavaScript: the playground runs entirely in your browser. Every documentation chapter, option table and install command works without it.", "install_verify": "Check the install:"}, "scenarios": {"workbench": {"name": "An ordinary working directory (6 repositories)", "blurb": "Six repositories: one with an uncommitted change, one three commits behind its remote, one linked worktree, one on a hotfix branch."}, "nested": {"name": "A second level", "blurb": "vendor/ holds two more repositories, and web-console holds one too. mgit never walks into a repository, so that last one is never counted."}, "worktrees": {"name": "Worktrees and submodules", "blurb": "These directories keep their .git as a file rather than a directory. mgit accepts both, so worktrees and submodule checkouts are found."}, "links": {"name": "Symbolic links", "blurb": "gateway is a link to api-gateway. Both names are run, the real directory is only walked once, and a link loop cannot spin forever."}, "empty": {"name": "No repository at all", "blurb": "See what mgit says and returns when it finds nothing, and exactly what --allow-empty changes."}, "inside-repo": {"name": "You are standing inside a repository", "blurb": "When the current directory is itself a repository and holds no others, mgit behaves exactly like plain git."}, "locked": {"name": "One directory cannot be read", "blurb": "restricted/ denies permission. mgit warns on stderr and finishes the rest of the walk."}, "fleet": {"name": "Twelve repositories", "blurb": "The one to use for the play back, for --fail-fast, and for pressing Ctrl+C in the middle of a run."}}, "playgroundUrl": "../../en/playground/"}</script>
+<script type="module" src="../../assets/js/ui/main.js"></script>
 </body>
 </html>

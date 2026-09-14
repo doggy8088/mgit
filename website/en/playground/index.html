@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>mgit playground — run mgit in your browser</title>
+<meta name="description" content="Try mgit in a browser sandbox: an editable working directory, the real argument parsing and discovery rules, a run you can watch repository by repository, and the reason behind every exit code. Your files are never touched.">
+<meta name="robots" content="index, follow">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#fbfbfa" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0d1013" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://mgit.gh.miniasp.com/en/playground/">
+<link rel="alternate" hreflang="zh-Hant" href="https://mgit.gh.miniasp.com/playground/"><link rel="alternate" hreflang="en" href="https://mgit.gh.miniasp.com/en/playground/"><link rel="alternate" hreflang="x-default" href="https://mgit.gh.miniasp.com/playground/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="mgit">
+<meta property="og:title" content="mgit playground — run mgit in your browser">
+<meta property="og:description" content="Try mgit in a browser sandbox: an editable working directory, the real argument parsing and discovery rules, a run you can watch repository by repository, and the reason behind every exit code. Your files are never touched.">
+<meta property="og:url" content="https://mgit.gh.miniasp.com/en/playground/">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://mgit.gh.miniasp.com/assets/img/og-cover.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="mgit terminal output: one command sweeping six Git repositories, closing with a one line summary.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="mgit playground — run mgit in your browser">
+<meta name="twitter:description" content="Try mgit in a browser sandbox: an editable working directory, the real argument parsing and discovery rules, a run you can watch repository by repository, and the reason behind every exit code. Your files are never touched.">
+<meta name="twitter:image" content="https://mgit.gh.miniasp.com/assets/img/og-cover.png">
+<meta name="twitter:image:alt" content="mgit terminal output: one command sweeping six Git repositories, closing with a one line summary.">
+<script>(function(){var t=null;try{t=localStorage.getItem('mgit-theme')}catch(e){}if(t!=='light'&&t!=='dark'){t='light';try{if(matchMedia('(prefers-color-scheme: dark)').matches)t='dark'}catch(e){}}document.documentElement.setAttribute('data-theme',t)})()</script>
+<link rel="stylesheet" href="../../assets/css/site.css">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../../assets/favicon.ico" sizes="32x32">
+<link rel="icon" href="../../assets/img/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="../../assets/img/apple-touch-icon.png">
+<link rel="manifest" href="../../site.webmanifest">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"mgit playground — run mgit in your browser","description":"Try mgit in a browser sandbox: an editable working directory, the real argument parsing and discovery rules, a run you can watch repository by repository, and the reason behind every exit code. Your files are never touched.","url":"https://mgit.gh.miniasp.com/en/playground/","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"mgit","url":"https://mgit.gh.miniasp.com/en/"},"author":{"@type":"Person","name":"Will Huang","url":"https://github.com/doggy8088"}}</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="hdr">
+<div class="shell shell--wide hdr__inner">
+<a class="wordmark" href="../../">mgit<span class="wordmark__version">2.0.2</span></a>
+<nav class="hdr__nav" aria-label="Main"><a href="../../en/playground/" aria-current="page">Playground</a><a href="../../en/docs/">Docs</a><a href="../../en/docs/install/">Install</a><a href="https://github.com/doggy8088/mgit" rel="noopener">GitHub</a></nav>
+<div class="hdr__tools">
+<button type="button" class="btn btn--icon" data-theme-toggle aria-pressed="false" data-label-dark="Switch to the dark theme" data-label-light="Switch to the light theme" aria-label="Switch to the dark theme"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M13 9.5A5.5 5.5 0 0 1 6.5 3a5.5 5.5 0 1 0 6.5 6.5z"/></svg></button>
+<span class="langswitch" role="group" aria-label="Language"><a href="../../playground/" hreflang="zh-Hant" lang="zh-Hant">中文</a><a href="../../en/playground/" aria-current="true" hreflang="en" lang="en">EN</a></span>
+</div>
+</div>
+</header>
+<main id="main">
+<div class="shell shell--wide" style="padding-top:var(--s6)">
+<h1>Playground</h1>
+<p class="lede" style="max-width:70ch">A make believe working directory on the left, a terminal in the middle, and what mgit decided on the right. All of it lives in this tab and none of it can reach the files on your machine.</p>
+</div>
+<div class="shell shell--wide">
+<noscript><p class="noscript">This page needs JavaScript: the playground runs entirely in your browser. Every documentation chapter, option table and install command works without it.</p></noscript>
+<div class="pg__toolbar">
+<div class="field">
+<label for="pg-scenario">Working directory</label>
+<select id="pg-scenario" data-scenario><option value="workbench">An ordinary working directory (6 repositories)</option><option value="nested">A second level</option><option value="worktrees">Worktrees and submodules</option><option value="links">Symbolic links</option><option value="empty">No repository at all</option><option value="inside-repo">You are standing inside a repository</option><option value="locked">One directory cannot be read</option><option value="fleet">Twelve repositories</option></select>
+</div>
+<div class="field">
+<label for="pg-target">Where the output goes</label>
+<select id="pg-target" data-target><option value="unix-tty">macOS / Linux terminal</option><option value="pipe">Redirected to a file or a CI log</option><option value="windows-terminal">Windows Terminal / PowerShell 7</option><option value="windows-legacy">Legacy Windows console (not UTF-8)</option></select>
+</div>
+<div class="field">
+<span class="field__label">Simulate</span>
+<div class="chips">
+<button type="button" class="btn btn--small" data-git-toggle aria-pressed="false">Remove git</button>
+<button type="button" class="btn btn--small" data-animate-toggle aria-pressed="true">Play back</button>
+<button type="button" class="btn btn--small" data-share><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6.5 9.5a3 3 0 0 1 0-4.2l1.8-1.8a3 3 0 0 1 4.2 4.2l-.9.9"/><path d="M9.5 6.5a3 3 0 0 1 0 4.2l-1.8 1.8a3 3 0 0 1-4.2-4.2l.9-.9"/></svg><span data-copy-label>Copy link</span></button>
+</div>
+</div>
+<p class="small muted" data-scenario-note style="flex:1 1 260px;margin:0"></p>
+</div>
+
+<div class="pg" data-playground>
+<section class="panel" data-workspace aria-labelledby="pg-workspace-title">
+<div class="panel__head"><h2 id="pg-workspace-title">Working directory</h2></div>
+<div class="panel__body panel__body--flush">
+<ul class="tree" data-workspace-list></ul>
+</div>
+<div class="panel__body">
+<p class="small muted" data-workspace-summary></p>
+<div class="field">
+<label for="pg-new-repo">Add a repository</label>
+<div class="chips">
+<input type="text" id="pg-new-repo" data-workspace-name placeholder="new-service" autocomplete="off" style="flex:1">
+<button type="button" class="btn btn--small" data-workspace-add>Add</button>
+</div>
+</div>
+</div>
+</section>
+
+<section aria-labelledby="pg-terminal-title">
+<h2 id="pg-terminal-title" class="visually-hidden">Sandbox terminal — everything happens in this tab</h2>
+<div class="term term--fixed" id="pg-terminal" data-terminal>
+<div class="term__bar">
+<span class="term__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+<span class="term__title">Sandbox terminal — everything happens in this tab</span>
+<span class="term__bar-actions">
+<button type="button" class="term__btn" data-term-stop hidden><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4.5" y="4.5" width="7" height="7" rx="1"/></svg>Stop</button>
+<button type="button" class="term__btn" data-copy-transcript><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="5.5" y="5.5" width="8" height="9" rx="1.5"/><path d="M10.5 5.5V3.5a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h2"/></svg><span data-copy-label>Copy all</span></button><button type="button" class="term__btn" data-reset><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 8a5 5 0 1 0 1.6-3.7"/><path d="M3 3.5V7h3.5"/></svg>Reset</button>
+</span>
+</div>
+<div class="term__screen" data-term-screen role="log" aria-live="polite" aria-atomic="false"
+ aria-label="Playground terminal output" tabindex="0">This terminal needs JavaScript. Nothing else on the site does: the install commands, the option tables and every documentation page work without it.</div>
+<div class="term__input-row">
+<span class="term__prompt"><span data-term-prompt-live>~/work</span> $</span>
+<label class="visually-hidden" for="pg-terminal-input">Type a command for the playground</label>
+<input class="term__input" id="pg-terminal-input" data-term-input type="text" autocomplete="off"
+ autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Try mgit --help, or press Tab to complete">
+</div>
+<div class="term__hint"><span><kbd>Enter</kbd> run</span><span><kbd>Tab</kbd> complete</span><span><kbd>↑ ↓</kbd> history</span><span><kbd>Ctrl+C</kbd> interrupt</span><span><kbd>Ctrl+L</kbd> clear</span></div>
+</div>
+<div class="chips" data-quick-commands style="margin-top:var(--s4)"></div>
+</section>
+
+<section class="panel inspector" data-inspector aria-labelledby="pg-inspector-title">
+<div class="panel__head"><h2 id="pg-inspector-title">What it did</h2></div>
+<div class="panel__body">
+<p class="small muted" data-inspector-empty>Run an mgit command and this panel lists every directory it opened, every git call it made, and how those results became one exit code.</p>
+<div data-inspector-body></div>
+</div>
+</section>
+</div>
+</div>
+<section class="section">
+<div class="shell">
+<div class="section__head"><h2>How real is this?</h2></div>
+<ul><li><b>Argument parsing, repository discovery, the output format and the exit codes</b> are ported rule by rule from mgit&#x27;s Rust source, and a parity test keeps them honest: the same working directory and the same command are given to the compiled binary and to this code, and the output has to match character for character.</li><li><b>git itself is simulated.</b> The sandbox knows what <code>status</code>, <code>pull</code>, <code>fetch</code>, <code>log</code>, <code>branch</code> and <code>checkout</code> should answer for these make believe repositories. For a git command it does not model, it says so instead of inventing output.</li><li>Sandbox paths are always POSIX style. Switching to a Windows output target changes <b>the glyph and colour decisions</b>, not the path format.</li></ul>
+</div>
+</section>
+
+</main>
+<footer class="foot">
+<div class="shell shell--wide">
+<div class="foot__grid"><div><h2>Start here</h2><ul><li><a href="../../en/docs/install/">Install and verify</a></li><li><a href="../../en/docs/usage/">Commands and options</a></li><li><a href="../../en/playground/">Playground</a></li><li><a href="../../en/docs/recipes/">Recipes</a></li></ul></div><div><h2>Behaviour</h2><ul><li><a href="../../en/docs/discovery/">How repositories are found</a></li><li><a href="../../en/docs/output/">Output, colour and glyphs</a></li><li><a href="../../en/docs/exit-codes/">Exit codes and automation</a></li><li><a href="../../en/docs/environment/">Environment and platforms</a></li></ul></div><div><h2>Source and releases</h2><ul><li><a href="https://github.com/doggy8088/mgit" rel="noopener">GitHub repository</a></li><li><a href="https://github.com/doggy8088/mgit/releases" rel="noopener">Releases and checksums</a></li><li><a href="https://github.com/doggy8088/mgit/blob/main/CHANGELOG.md" rel="noopener">Changelog</a></li><li><a href="https://www.npmjs.com/package/@willh/mgit" rel="noopener">npm: @willh/mgit</a></li></ul></div></div>
+<div class="foot__bottom">
+<span>MIT licensed © 2026 Will Huang. mgit is an independent project and is not affiliated with the Git project.</span>
+<span>No analytics, no cookies, no third party requests. The playground runs entirely in your browser tab.</span>
+</div>
+</div>
+</footer>
+<script type="application/json" id="site-config">{"labels": {"copy": "Copy", "copied": "Copied", "copy_failed": "Press Ctrl+C", "install_tablist": "Installation method", "anchor_label": "Link to this section", "input_label": "Type a command for the playground", "input_placeholder": "Try mgit --help, or press Tab to complete", "screen_label": "Playground terminal output", "stop": "Stop", "terminal_title": "Sandbox terminal — everything happens in this tab", "terminal_fallback": "This terminal needs JavaScript. Nothing else on the site does: the install commands, the option tables and every documentation page work without it.", "copy_transcript": "Copy all", "reset": "Reset", "share": "Copy link", "scenario": "Working directory", "target": "Where the output goes", "simulate": "Simulate", "no_git": "Remove git", "animate": "Play back", "workspace": "Working directory", "add_repo": "Add a repository", "add": "Add", "inspector": "What it did", "inspector_empty": "Run an mgit command and this panel lists every directory it opened, every git call it made, and how those results became one exit code.", "hint_run": "run", "hint_complete": "complete", "hint_history": "history", "hint_interrupt": "interrupt", "hint_clear": "clear", "exit": "exit", "welcome": "Type a command, or pick one below. Everything runs in this tab and nothing touches your files.", "scenario_loaded": "Loaded working directory: ", "target_changed": "Output target: ", "git_gone": "git has been taken off PATH. Every run now ends in 127.", "git_back": "git is back on PATH.", "reset_done": "The working directory is back the way it started.", "interrupt_note": "Ctrl+C reaches every git that mgit started, so the run stops at once and reports 130.", "name_rule": "Use letters, digits, dots, dashes or underscores.", "name_taken": "That name is already taken.", "here_is_repo": ". (this directory)", "unreadable": "unreadable", "dot_git_file": "file", "summary": "{repos} repositories at depth 1", "state_clean": "clean", "state_dirty": "changes", "state_behind": "behind", "state_ahead": "ahead", "state_blocked": "will fail", "action_dirty": "edit", "action_behind": "behind", "action_block": "block", "action_remove": "remove", "action_title_dirty": "Toggle an uncommitted change", "action_title_behind": "Toggle whether the remote has new commits", "action_title_block": "Toggle whether pull fails here", "action_title_remove": "Remove from the working directory", "command": "The command", "search_root": "Searched", "depth": "Depth", "git_args": "Handed to git", "colour": "Colour", "glyphs": "Glyphs", "mode": "Mode", "on": "on", "off": "off", "exit_code": "Exit code", "discovery": "The walk", "git_runs": "git, once per repository", "result": "How that became one exit code", "not_modelled": "not modelled in the sandbox", "total": "Repositories", "succeeded": "Succeeded", "failed": "Failed", "skipped": "Skipped", "summary_stream": "Summary went to", "summary_none": "nowhere: nothing failed and --summary was not given", "interrupted": "Interrupted", "interrupted_note": "Ctrl+C stops the whole run at once", "step_scan": "read", "step_repository": "repository", "step_descend": "descend", "step_depth-limit": "depth limit", "step_already-visited": "already visited", "step_skip-file": "not a directory", "step_unreadable": "unreadable", "exit_ok": "everything succeeded", "exit_failure": "something failed, or no repository was found", "exit_usage": "the command line could not be parsed", "exit_notFound": "git could not be started", "exit_git": "from the first failing git command", "exit_interrupted": "interrupted with Ctrl+C", "exit_brokenPipe": "the reader closed the pipe", "depth_title": "What --depth actually reaches", "depth_label": "Depth", "depth_found": "{n} repositories found", "depth_tree": "Working directory", "depth_output": "Output of mgit --list", "stream_title": "What lands in the file, and what stays on screen", "stream_file": "Inside the file:", "stream_screen": "Still on screen", "note_redirect": "{stream} went into {path} ({lines} lines). Read it back with `cat {path}`.", "note_sigpipe": "head closed the pipe after {count} lines. The real mgit restores the default SIGPIPE behaviour, so it stops quietly instead of printing a panic, and the exit code on this line belongs to head rather than to mgit.", "note_unmodelled": "The sandbox does not model the output of {command}. On a real run mgit still executes it in every repository and collects its exit code.", "note_unknown_command": "This sandbox knows mgit, plus {commands}. Type help for the full list.", "noscript": "This page needs JavaScript: the playground runs entirely in your browser. Every documentation chapter, option table and install command works without it.", "install_verify": "Check the install:"}, "scenarios": {"workbench": {"name": "An ordinary working directory (6 repositories)", "blurb": "Six repositories: one with an uncommitted change, one three commits behind its remote, one linked worktree, one on a hotfix branch."}, "nested": {"name": "A second level", "blurb": "vendor/ holds two more repositories, and web-console holds one too. mgit never walks into a repository, so that last one is never counted."}, "worktrees": {"name": "Worktrees and submodules", "blurb": "These directories keep their .git as a file rather than a directory. mgit accepts both, so worktrees and submodule checkouts are found."}, "links": {"name": "Symbolic links", "blurb": "gateway is a link to api-gateway. Both names are run, the real directory is only walked once, and a link loop cannot spin forever."}, "empty": {"name": "No repository at all", "blurb": "See what mgit says and returns when it finds nothing, and exactly what --allow-empty changes."}, "inside-repo": {"name": "You are standing inside a repository", "blurb": "When the current directory is itself a repository and holds no others, mgit behaves exactly like plain git."}, "locked": {"name": "One directory cannot be read", "blurb": "restricted/ denies permission. mgit warns on stderr and finishes the rest of the walk."}, "fleet": {"name": "Twelve repositories", "blurb": "The one to use for the play back, for --fail-fast, and for pressing Ctrl+C in the middle of a run."}}, "playgroundUrl": "../../en/playground/"}</script>
+<script type="module" src="../../assets/js/ui/main.js"></script>
+</body>
+</html>

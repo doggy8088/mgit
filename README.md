@@ -245,6 +245,7 @@ src/
   platform.rs   平台細節（SIGPIPE）
 tests/          對應每個模組的整合測試與端對端測試
 scripts/        版本升級工具
+website/        產品與文件網站，含在瀏覽器裡執行的沙箱試用場
 archive/        舊版腳本、網頁與 workflow 的封存區
 ```
 
@@ -322,6 +323,26 @@ $ /bump-and-release v2.1.0       # 指定版號
 技能會依相同規則執行：確認 main、工作區乾淨與 CI 綠燈 → `scripts/bump-version.sh` → 完整 zh-TW 提交 → 推送標籤 → 驗證兩個 workflow、GitHub Release 資產、npm 版本與 provenance。
 
 也可以在 GitHub 上以 `Release` workflow 手動指定版本執行，流程會自動建立並推送對應標籤。
+
+---
+
+## 網站
+
+產品與文件網站在 [`website/`](website/README.md)，上線位置是
+<https://mgit.gh.miniasp.com/>（GitHub Pages，推送到 `main` 時由
+[`deploy-pages.yml`](.github/workflows/deploy-pages.yml) 自動部署）。
+
+網站上的**試用場**（<https://mgit.gh.miniasp.com/playground/>）可以直接在瀏覽器裡執行 mgit：
+工作目錄可以編輯、任何指令都能真的跑、執行過程逐個儲存庫播放、Ctrl+C 也會如實停在 130。
+它不是一段錄影：參數解析、儲存庫搜尋、輸出格式與結束代碼是從 `src/` 逐條移植的，
+並且有一組對照測試把它和真正編譯出來的執行檔逐字比對（8 個工作目錄 × 37 條指令）。
+
+```console
+$ make site          # 從文案模組重新產生所有頁面
+$ make site-serve    # 本機預覽 http://localhost:8801/
+$ make site-test     # 引擎單元測試 + 與 target/release/mgit 的對照測試
+$ make site-check    # 對比度門檻（含材質最暗的那一顆顆粒）
+```
 
 ---
 

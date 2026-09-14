@@ -42,7 +42,7 @@ README 另外記錄了自動化會用到的行為（結束代碼彙總、摘要�
 - **目錄慣例**：父目錄下每個子目錄是一個儲存庫；`.git` 目錄與 `.git` 檔案（worktree、submodule）都算；symlink 以「看到的名字」為準且不重複走訪。
 - **開發流程**：`make check`（fmt --check + clippy -D warnings + 全部測試）、`make test`、`make e2e`、`make coverage`；CI 在 Ubuntu／macOS／Windows 執行，另有 MSRV 1.85、8 個目標交叉編譯、shellcheck 與 actionlint，覆蓋率門檻 90%。
 - **發行流程**：推送 `vX.Y.Z` 標籤 → Release workflow 驗證版本一致性、建置 8 個平台並發佈 GitHub Release（含 `SHA256SUMS.txt`）→ Publish to npm workflow 以 trusted publishing 發佈 `@willh/mgit`。
-- **視覺介面**：mgit 本身是終端機 CLI。1.0 時代的專案網頁（`archive/website/`）已封存、不再維護，因此本檔記錄的 `web` 平台指的是「產品網站／文件網站」這個視覺介面，而非既有產品的一部分；Impeccable 的設計工作以它為對象。
+- **視覺介面**：mgit 本身是終端機 CLI。1.0 時代的專案網頁（`archive/website/`）與 2.x 的第一版網站（`archive/website_v2/`）都已封存、不再維護，因此本檔記錄的 `web` 平台指的是「產品網站／文件網站」這個視覺介面，而非既有產品的一部分。目前上線的是 `website/`：zh-TW 為主、`en/` 為完整鏡像，並帶有一個在瀏覽器裡執行的沙箱試用場。
 
 ## Capabilities and Constraints
 
@@ -52,7 +52,7 @@ README 另外記錄了自動化會用到的行為（結束代碼彙總、摘要�
 - **相容承諾（binding）**：1.0.0 的預設指令與輸出格式為基準——80 個 `=` 的標題列、`📂 Folder: … │ Branch: …`、乾淨時無輸出；差異一律是修掉缺陷（找不到儲存庫要警告、結束代碼要彙總），行為變更以選項 opt-in。
 - **技術限制**：Rust 2024 edition、MSRV 1.85、MIT 授權、無執行期相依；`Cargo.toml`、`Cargo.lock`、`npm/package.json`、`CHANGELOG.md` 與 git 標籤的版本必須一致。
 - **發行必備**：每個版本都必須先在 `CHANGELOG.md` 建立 `## [X.Y.Z] - YYYY-MM-DD` 區段，GitHub Release 說明直接取自該區段（缺少會讓 Release workflow 在 prepare 階段失敗）。
-- **未決**：網站的形式與範圍（產品首頁／文件站／兩者）尚未決定；封存素材能否沿用見 Evidence on Hand。
+- **網站形式（已決定）**：產品首頁＋七章文件＋瀏覽器沙箱試用場，zh-TW 與 EN 各一份，由 `website/build/` 的產生器輸出靜態 HTML，部署在 GitHub Pages 的 `mgit.gh.miniasp.com`。試用場裡的參數解析、儲存庫搜尋、輸出格式與結束代碼是 Rust 原始碼的移植，並以對照測試與真正的執行檔逐字比對；git 本身是模擬的，頁面上明說這條界線。
 
 ## Brand Commitments
 
@@ -67,7 +67,8 @@ README 另外記錄了自動化會用到的行為（結束代碼彙總、摘要�
 - **測試資產**：`tests/` 10 個檔案（純函式、檔案系統走訪、假 GitRunner 的流程控制、真實 git 整合、直接執行編譯後二進位的 E2E、安裝腳本測試），`npm/test/` 3 個檔案（node --test）；CI 強制覆蓋率 ≥ 90%。
 - **安裝入口**：`install.sh`（POSIX sh）與 `install.ps1`（PowerShell），是真的在使用的入口，不是文件樣板。
 - **封存素材**：`archive/assets/banner.jpg`、`archive/assets/screenshot.jpg`、`archive/website/assets/og-image-v2.png`，以及 `archive/website/index.html`／`style.css`（1.0 網站原樣封存）。**使用者未確認這些素材可重用**；若要沿用，需先確認畫面與文案是否仍與 2.x 相符。
-- **網站材質**：`website/assets/plates/` 的三張圖是 **AI 生成的背景材質**（紙纖維、石墨漆面、方格紙），只做材質、不描繪物件，生成 prompt 以 JPEG 註解內嵌並附同名 `.prompt.txt`。網站上沒有任何偽裝成產品照片的影像，也不再使用敘事型配圖；示範資料仍是真实 session 錄下來的。
+- **網站材質**：`website/assets/img/textures/` 的五張圖是 **AI 生成的表面顆粒**（`website/build/make-textures.py` 把生成的顆粒重新鋪在設計系統自己的 token 色上），只做材質、不描繪物件；生成 prompt 以 JPEG 註解內嵌並附同名 `.prompt.txt`，生成原稿留在 `website/build/texture-sources/`。社群分享卡的底圖同樣是生成的抽象表面。網站上沒有任何偽裝成產品照片的影像，也沒有敘事型配圖。
+- **網站示範資料**：不再是事先錄好的畫面，而是由 `website/assets/js/engine/` 當場執行產生；該引擎與真正的執行檔之間有逐字對照測試（`website/tests/parity.test.mjs`：8 個工作目錄 × 37 條指令）。
 - **不存在、也不得捏造**：使用者見證、客戶案例、下載數或採用數字、效能 benchmark、付費方案、roadmap 承諾。
 
 ## Product Principles

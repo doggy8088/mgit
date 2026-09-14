@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How repositories are found — mgit docs</title>
+<meta name="description" content="The six rules behind mgit&#x27;s search: depth, .git files and directories, never descending into a repository, symbolic links, ordering, and what happens when nothing is found.">
+<meta name="robots" content="index, follow">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#fbfbfa" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0d1013" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://mgit.gh.miniasp.com/en/docs/discovery/">
+<link rel="alternate" hreflang="zh-Hant" href="https://mgit.gh.miniasp.com/docs/discovery/"><link rel="alternate" hreflang="en" href="https://mgit.gh.miniasp.com/en/docs/discovery/"><link rel="alternate" hreflang="x-default" href="https://mgit.gh.miniasp.com/docs/discovery/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="mgit">
+<meta property="og:title" content="How repositories are found — mgit docs">
+<meta property="og:description" content="The six rules behind mgit&#x27;s search: depth, .git files and directories, never descending into a repository, symbolic links, ordering, and what happens when nothing is found.">
+<meta property="og:url" content="https://mgit.gh.miniasp.com/en/docs/discovery/">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://mgit.gh.miniasp.com/assets/img/og-cover.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="mgit terminal output: one command sweeping six Git repositories, closing with a one line summary.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="How repositories are found — mgit docs">
+<meta name="twitter:description" content="The six rules behind mgit&#x27;s search: depth, .git files and directories, never descending into a repository, symbolic links, ordering, and what happens when nothing is found.">
+<meta name="twitter:image" content="https://mgit.gh.miniasp.com/assets/img/og-cover.png">
+<meta name="twitter:image:alt" content="mgit terminal output: one command sweeping six Git repositories, closing with a one line summary.">
+<script>(function(){var t=null;try{t=localStorage.getItem('mgit-theme')}catch(e){}if(t!=='light'&&t!=='dark'){t='light';try{if(matchMedia('(prefers-color-scheme: dark)').matches)t='dark'}catch(e){}}document.documentElement.setAttribute('data-theme',t)})()</script>
+<link rel="stylesheet" href="../../../assets/css/site.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../../../assets/favicon.ico" sizes="32x32">
+<link rel="icon" href="../../../assets/img/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="../../../assets/img/apple-touch-icon.png">
+<link rel="manifest" href="../../../site.webmanifest">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"How repositories are found — mgit docs","description":"The six rules behind mgit's search: depth, .git files and directories, never descending into a repository, symbolic links, ordering, and what happens when nothing is found.","url":"https://mgit.gh.miniasp.com/en/docs/discovery/","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"mgit","url":"https://mgit.gh.miniasp.com/en/"},"author":{"@type":"Person","name":"Will Huang","url":"https://github.com/doggy8088"}}</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="hdr">
+<div class="shell shell--wide hdr__inner">
+<a class="wordmark" href="../../../">mgit<span class="wordmark__version">2.0.2</span></a>
+<nav class="hdr__nav" aria-label="Main"><a href="../../../en/playground/">Playground</a><a href="../../../en/docs/" aria-current="page">Docs</a><a href="../../../en/docs/install/">Install</a><a href="https://github.com/doggy8088/mgit" rel="noopener">GitHub</a></nav>
+<div class="hdr__tools">
+<button type="button" class="btn btn--icon" data-theme-toggle aria-pressed="false" data-label-dark="Switch to the dark theme" data-label-light="Switch to the light theme" aria-label="Switch to the dark theme"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M13 9.5A5.5 5.5 0 0 1 6.5 3a5.5 5.5 0 1 0 6.5 6.5z"/></svg></button>
+<span class="langswitch" role="group" aria-label="Language"><a href="../../../docs/discovery/" hreflang="zh-Hant" lang="zh-Hant">中文</a><a href="../../../en/docs/discovery/" aria-current="true" hreflang="en" lang="en">EN</a></span>
+</div>
+</div>
+</header>
+<main id="main">
+<div class="shell shell--wide">
+<div class="docs">
+<nav class="docs__nav" aria-label="Documentation">
+<span class="docs__nav-title">Documentation</span>
+<ol><li><a href="../../../en/docs/install/"><span>Install and verify</span></a></li><li><a href="../../../en/docs/usage/"><span>Commands and options</span></a></li><li><a href="../../../en/docs/discovery/" aria-current="page"><span>How repositories are found</span></a></li><li><a href="../../../en/docs/output/"><span>Output, colour and glyphs</span></a></li><li><a href="../../../en/docs/exit-codes/"><span>Exit codes and automation</span></a></li><li><a href="../../../en/docs/environment/"><span>Environment and platforms</span></a></li><li><a href="../../../en/docs/recipes/"><span>Recipes</span></a></li></ol>
+</nav>
+<article class="prose">
+<div class="prose__head">
+<span class="eyebrow">03 / 07</span>
+<h1>How repositories are found</h1>
+<p class="lede">Six rules in total, and the result is identical on macOS, Linux and Windows.</p>
+</div>
+<h2 id="rules" data-anchor-label="Link to this section">The six rules</h2>
+<ol><li>The search starts at the <b>current directory</b> and goes down one level by default; <code>--depth</code> reaches further.</li><li>A directory counts as a repository when it holds a <code>.git</code> <b>directory</b> or a <code>.git</code> <b>file</b>, which is what makes <code>git worktree</code> and submodule checkouts work.</li><li>Once a repository is found, mgit does <b>not</b> descend into it, so a submodule or a vendored project is never counted twice.</li><li>Symbolic links are followed and reported under the name you can see: with <code>repo</code> and <code>link -&gt; repo</code> side by side, both names are run. Each real directory is only entered once, so a link loop cannot spin forever.</li><li>Results are sorted by name, case insensitively, with the exact spelling breaking ties, so the order is the same on all three operating systems.</li><li>When nothing is found, mgit warns and exits with <code>1</code>. But if the <b>current directory itself</b> is a repository, mgit runs git right there and behaves exactly like plain git.</li></ol>
+<p class="cmd__note"><a class="btn btn--small" href="../../../en/playground/?scenario=nested&amp;cmd=mgit%20--list"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 4.5 7 8l-3.5 3.5"/><path d="M8.5 11.5h4"/></svg> Try it on a directory with a second level<span class="visually-hidden">: mgit --list</span></a></p>
+<h2 id="depth" data-anchor-label="Link to this section">What --depth means</h2>
+<p>Levels are counted down from the current directory: <code>--depth 1</code>, the default, sees direct subdirectories, and <code>--depth 2</code> sees one more level. Because of rule 3, a larger depth never makes mgit walk into a repository it has already found.</p>
+<p class="cmd__note"><a class="btn btn--small" href="../../../en/playground/?scenario=nested&amp;cmd=mgit%20--depth%202%20--list"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 4.5 7 8l-3.5 3.5"/><path d="M8.5 11.5h4"/></svg> Compare depth 1 and 2<span class="visually-hidden">: mgit --depth 2 --list</span></a></p>
+<div class="callout"><b class="callout__title">Look before you touch</b>Before any command that changes state, <code>mgit --list</code> tells you exactly which directories are involved.</div>
+<h2 id="worktree" data-anchor-label="Link to this section">Worktrees and submodules</h2>
+<p>A directory created by <code>git worktree</code>, and the working directory of a submodule, keep their <code>.git</code> as a <b>file</b> rather than a directory. mgit accepts both, so both kinds of directory are found and run.</p>
+<p class="cmd__note"><a class="btn btn--small" href="../../../en/playground/?scenario=worktrees&amp;cmd=mgit%20--list"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 4.5 7 8l-3.5 3.5"/><path d="M8.5 11.5h4"/></svg> See a .git that is a file<span class="visually-hidden">: mgit --list</span></a></p>
+<h2 id="links" data-anchor-label="Link to this section">Symbolic links</h2>
+<p>A link is reported under the name you see, deliberately matching the <code>*/</code> glob behaviour of the 1.0 shell version. Each real directory is entered only once, so even a directory linked back to its own parent finishes the walk.</p>
+<p class="cmd__note"><a class="btn btn--small" href="../../../en/playground/?scenario=links&amp;cmd=mgit%20--depth%202%20--list"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 4.5 7 8l-3.5 3.5"/><path d="M8.5 11.5h4"/></svg> See what a link does<span class="visually-hidden">: mgit --depth 2 --list</span></a></p>
+<h2 id="unreadable" data-anchor-label="Link to this section">A directory that cannot be read</h2>
+<p>A directory without read permission does not fail the run: mgit writes one warning to <b>stderr</b> and finishes the rest of the walk.</p>
+<p class="cmd__note"><a class="btn btn--small" href="../../../en/playground/?scenario=locked&amp;cmd=mgit%20--depth%202%20--summary"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 4.5 7 8l-3.5 3.5"/><path d="M8.5 11.5h4"/></svg> See the warning, and the rest still running<span class="visually-hidden">: mgit --depth 2 --summary</span></a></p>
+<h2 id="none" data-anchor-label="Link to this section">Nothing found</h2>
+<p>When no repository is found, mgit prints a warning on stderr and exits with <code>1</code>. This is one of the defects 2.0 fixed on purpose: 1.0 was completely silent and returned <code>0</code>. <code>--allow-empty</code> brings the old exit code back.</p>
+<p class="cmd__note"><a class="btn btn--small" href="../../../en/playground/?scenario=empty&amp;cmd=mgit%20--allow-empty"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 4.5 7 8l-3.5 3.5"/><path d="M8.5 11.5h4"/></svg> Compare with and without --allow-empty<span class="visually-hidden">: mgit --allow-empty</span></a></p>
+<nav class="pager" aria-label="Documentation"><a href="../../../en/docs/usage/"><span>Previous</span>Commands and options</a><a href="../../../en/docs/output/"><span>Next</span>Output, colour and glyphs</a></nav>
+</article>
+<nav class="toc" data-toc aria-label="On this page">
+<p class="toc__title">On this page</p>
+<ul><li><a href="#rules">The six rules</a></li><li><a href="#depth">What --depth means</a></li><li><a href="#worktree">Worktrees and submodules</a></li><li><a href="#links">Symbolic links</a></li><li><a href="#unreadable">A directory that cannot be read</a></li><li><a href="#none">Nothing found</a></li></ul>
+</nav>
+</div>
+</div>
+
+</main>
+<footer class="foot">
+<div class="shell shell--wide">
+<div class="foot__grid"><div><h2>Start here</h2><ul><li><a href="../../../en/docs/install/">Install and verify</a></li><li><a href="../../../en/docs/usage/">Commands and options</a></li><li><a href="../../../en/playground/">Playground</a></li><li><a href="../../../en/docs/recipes/">Recipes</a></li></ul></div><div><h2>Behaviour</h2><ul><li><a href="../../../en/docs/discovery/">How repositories are found</a></li><li><a href="../../../en/docs/output/">Output, colour and glyphs</a></li><li><a href="../../../en/docs/exit-codes/">Exit codes and automation</a></li><li><a href="../../../en/docs/environment/">Environment and platforms</a></li></ul></div><div><h2>Source and releases</h2><ul><li><a href="https://github.com/doggy8088/mgit" rel="noopener">GitHub repository</a></li><li><a href="https://github.com/doggy8088/mgit/releases" rel="noopener">Releases and checksums</a></li><li><a href="https://github.com/doggy8088/mgit/blob/main/CHANGELOG.md" rel="noopener">Changelog</a></li><li><a href="https://www.npmjs.com/package/@willh/mgit" rel="noopener">npm: @willh/mgit</a></li></ul></div></div>
+<div class="foot__bottom">
+<span>MIT licensed © 2026 Will Huang. mgit is an independent project and is not affiliated with the Git project.</span>
+<span>No analytics, no cookies, no third party requests. The playground runs entirely in your browser tab.</span>
+</div>
+</div>
+</footer>
+<script type="application/json" id="site-config">{"labels": {"copy": "Copy", "copied": "Copied", "copy_failed": "Press Ctrl+C", "install_tablist": "Installation method", "anchor_label": "Link to this section", "input_label": "Type a command for the playground", "input_placeholder": "Try mgit --help, or press Tab to complete", "screen_label": "Playground terminal output", "stop": "Stop", "terminal_title": "Sandbox terminal — everything happens in this tab", "terminal_fallback": "This terminal needs JavaScript. Nothing else on the site does: the install commands, the option tables and every documentation page work without it.", "copy_transcript": "Copy all", "reset": "Reset", "share": "Copy link", "scenario": "Working directory", "target": "Where the output goes", "simulate": "Simulate", "no_git": "Remove git", "animate": "Play back", "workspace": "Working directory", "add_repo": "Add a repository", "add": "Add", "inspector": "What it did", "inspector_empty": "Run an mgit command and this panel lists every directory it opened, every git call it made, and how those results became one exit code.", "hint_run": "run", "hint_complete": "complete", "hint_history": "history", "hint_interrupt": "interrupt", "hint_clear": "clear", "exit": "exit", "welcome": "Type a command, or pick one below. Everything runs in this tab and nothing touches your files.", "scenario_loaded": "Loaded working directory: ", "target_changed": "Output target: ", "git_gone": "git has been taken off PATH. Every run now ends in 127.", "git_back": "git is back on PATH.", "reset_done": "The working directory is back the way it started.", "interrupt_note": "Ctrl+C reaches every git that mgit started, so the run stops at once and reports 130.", "name_rule": "Use letters, digits, dots, dashes or underscores.", "name_taken": "That name is already taken.", "here_is_repo": ". (this directory)", "unreadable": "unreadable", "dot_git_file": "file", "summary": "{repos} repositories at depth 1", "state_clean": "clean", "state_dirty": "changes", "state_behind": "behind", "state_ahead": "ahead", "state_blocked": "will fail", "action_dirty": "edit", "action_behind": "behind", "action_block": "block", "action_remove": "remove", "action_title_dirty": "Toggle an uncommitted change", "action_title_behind": "Toggle whether the remote has new commits", "action_title_block": "Toggle whether pull fails here", "action_title_remove": "Remove from the working directory", "command": "The command", "search_root": "Searched", "depth": "Depth", "git_args": "Handed to git", "colour": "Colour", "glyphs": "Glyphs", "mode": "Mode", "on": "on", "off": "off", "exit_code": "Exit code", "discovery": "The walk", "git_runs": "git, once per repository", "result": "How that became one exit code", "not_modelled": "not modelled in the sandbox", "total": "Repositories", "succeeded": "Succeeded", "failed": "Failed", "skipped": "Skipped", "summary_stream": "Summary went to", "summary_none": "nowhere: nothing failed and --summary was not given", "interrupted": "Interrupted", "interrupted_note": "Ctrl+C stops the whole run at once", "step_scan": "read", "step_repository": "repository", "step_descend": "descend", "step_depth-limit": "depth limit", "step_already-visited": "already visited", "step_skip-file": "not a directory", "step_unreadable": "unreadable", "exit_ok": "everything succeeded", "exit_failure": "something failed, or no repository was found", "exit_usage": "the command line could not be parsed", "exit_notFound": "git could not be started", "exit_git": "from the first failing git command", "exit_interrupted": "interrupted with Ctrl+C", "exit_brokenPipe": "the reader closed the pipe", "depth_title": "What --depth actually reaches", "depth_label": "Depth", "depth_found": "{n} repositories found", "depth_tree": "Working directory", "depth_output": "Output of mgit --list", "stream_title": "What lands in the file, and what stays on screen", "stream_file": "Inside the file:", "stream_screen": "Still on screen", "note_redirect": "{stream} went into {path} ({lines} lines). Read it back with `cat {path}`.", "note_sigpipe": "head closed the pipe after {count} lines. The real mgit restores the default SIGPIPE behaviour, so it stops quietly instead of printing a panic, and the exit code on this line belongs to head rather than to mgit.", "note_unmodelled": "The sandbox does not model the output of {command}. On a real run mgit still executes it in every repository and collects its exit code.", "note_unknown_command": "This sandbox knows mgit, plus {commands}. Type help for the full list.", "noscript": "This page needs JavaScript: the playground runs entirely in your browser. Every documentation chapter, option table and install command works without it.", "install_verify": "Check the install:"}, "scenarios": {"workbench": {"name": "An ordinary working directory (6 repositories)", "blurb": "Six repositories: one with an uncommitted change, one three commits behind its remote, one linked worktree, one on a hotfix branch."}, "nested": {"name": "A second level", "blurb": "vendor/ holds two more repositories, and web-console holds one too. mgit never walks into a repository, so that last one is never counted."}, "worktrees": {"name": "Worktrees and submodules", "blurb": "These directories keep their .git as a file rather than a directory. mgit accepts both, so worktrees and submodule checkouts are found."}, "links": {"name": "Symbolic links", "blurb": "gateway is a link to api-gateway. Both names are run, the real directory is only walked once, and a link loop cannot spin forever."}, "empty": {"name": "No repository at all", "blurb": "See what mgit says and returns when it finds nothing, and exactly what --allow-empty changes."}, "inside-repo": {"name": "You are standing inside a repository", "blurb": "When the current directory is itself a repository and holds no others, mgit behaves exactly like plain git."}, "locked": {"name": "One directory cannot be read", "blurb": "restricted/ denies permission. mgit warns on stderr and finishes the rest of the walk."}, "fleet": {"name": "Twelve repositories", "blurb": "The one to use for the play back, for --fail-fast, and for pressing Ctrl+C in the middle of a run."}}, "playgroundUrl": "../../../en/playground/"}</script>
+<script type="module" src="../../../assets/js/ui/main.js"></script>
+</body>
+</html>

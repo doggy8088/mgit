@@ -25,6 +25,10 @@ __pycache__/
 # Scratch space: image generation candidates and other local working files.
 /tmp/
 
+# Generated image candidates. The ones the site actually ships are committed
+# under website/assets/, together with the prompt that produced them.
+/output/
+
 # Impeccable review evidence: the captured viewports the finish review read. The
 # site itself ships no raster, so the captures stay local to the run.
 .impeccable/review/

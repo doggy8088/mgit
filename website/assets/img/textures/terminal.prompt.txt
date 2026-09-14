@@ -1,0 +1,16 @@
+mgit website texture 'terminal'. Generated grain from grain-dark.jpg (prompt in grain-dark.prompt.txt), re-laid on #0b0f14 at sigma 3.0. Generated with Azure OpenAI gpt-image-2.
+
+Model: Azure OpenAI gpt-image-2, quality medium, 1024x1024.
+
+Use case: stylized-concept
+Asset type: seamless background texture tiled under the dark theme page ground of a developer tool website
+Primary request: an extremely subtle abstract surface grain, like bead blasted graphite or anodised dark aluminium seen perfectly straight on
+Scene/backdrop: none; the frame is filled edge to edge by the surface itself
+Subject: surface micro texture only
+Style/medium: flat macro photograph of a material, no objects, no depth of field, no perspective
+Composition/framing: perfectly flat and uniform across the whole frame, no vignette, no hotspot, no gradient, no focal point, no centre of interest
+Lighting/mood: perfectly even diffuse light, calm and technical
+Color palette: very dark neutral charcoal greys only, extremely low contrast, no blue or brown cast
+Materials/textures: fine isotropic blasted grain, no visible repeating pattern, no scratches
+Constraints: no text, no logos, no objects, no shapes, no lines, no borders, no watermark, no vignette, no gradient
+Avoid: any recognisable object, any strong feature, any directional streak, any specular highlight, any composition

@@ -22,6 +22,14 @@ const CHROME = process.env.CHROME || [
 const BASE = process.env.BASE || 'http://localhost:8801';
 const PORT = 9333;
 
+if (typeof WebSocket === 'undefined') {
+  console.error(
+    'This needs a global WebSocket, which Node only exposes from version 22 on.\n' +
+    'Running Node ' + process.versions.node + '. Upgrade Node, or run it with --experimental-websocket.',
+  );
+  process.exit(2);
+}
+
 const PAGES = [
   '/', '/playground/', '/docs/', '/docs/install/', '/docs/usage/', '/docs/discovery/',
   '/docs/output/', '/docs/exit-codes/', '/docs/environment/', '/docs/recipes/', '/404.html',

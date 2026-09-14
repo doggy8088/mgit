@@ -21,6 +21,14 @@ const CHROME = process.env.CHROME || [
 const BASE = process.env.BASE || 'http://localhost:8801';
 const PORT = 9444;
 
+if (typeof WebSocket === 'undefined') {
+  console.error(
+    'This needs a global WebSocket, which Node only exposes from version 22 on.\n' +
+    'Running Node ' + process.versions.node + '. Upgrade Node, or run it with --experimental-websocket.',
+  );
+  process.exit(2);
+}
+
 const [widthArg, outDir, ...paths] = process.argv.slice(2);
 const width = Number.parseInt(widthArg || '1440', 10);
 const height = Number.parseInt(process.env.HEIGHT || '900', 10);

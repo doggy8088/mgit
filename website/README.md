@@ -59,6 +59,13 @@ node website/build/audit.mjs            # overflow, landmarks, labels, heading o
 python3 website/build/check-contrast.py # WCAG AA, including the worst pixel of every texture
 ```
 
+The generator and the tests need nothing but Python 3 and Node. `audit.mjs` and
+`screenshot.mjs` drive Chrome over the DevTools protocol, so they need **Node 22
+or newer** for its global `WebSocket`, and a Chrome or Chromium on the machine;
+both say so rather than failing with a `ReferenceError`. `check-contrast.py`
+needs Pillow and NumPy, and `make-assets.py` and `make-textures.py` need those
+plus Chrome. None of that is needed to view or host the site.
+
 The pages are generated, so **edit the content, not the HTML**. Both languages
 live in `build/content_zh.py` and `build/content_en.py` and carry the same
 structure; `build.py` refuses to build when the chapters, the heading ids, the

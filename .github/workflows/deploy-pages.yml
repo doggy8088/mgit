@@ -37,7 +37,9 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v6
         with:
-          node-version: '20'
+          # 22 or newer: the audit drives Chrome over the DevTools protocol and
+          # needs the global WebSocket that Node only exposes from 22 on.
+          node-version: '22'
 
       - name: Set up Python
         uses: actions/setup-python@v7

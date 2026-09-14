@@ -21,6 +21,8 @@ Outputs: ../assets/plates/<name>.jpg  (shipped; re-embed the provenance with
          keep the sidecar's post-process note in step with the recipes below)
 """
 
+import sys
+
 import numpy as np
 from pathlib import Path
 from PIL import Image, ImageFilter
@@ -33,12 +35,18 @@ OUT = HERE.parent / "assets" / "plates"
 RECIPES = {
     "paper-fibre": ((245, 246, 244), 3.2, 5),
     "graphite-plate": ((25, 26, 29), 4.0, 4),
+    "graphite-plate-2": ((34, 36, 42), 4.0, 4),
     "chart-paper": ((245, 246, 244), 4.4, 6),
 }
 
+# Plates re-laid from another plate's grain: the same photographed material at a
+# second tone (graphite-plate-2 is plate-2, the step the dark desk's objects
+# stand on, so the object and the desk are both lacquered but not the same tone).
+SOURCES = {"graphite-plate-2": "graphite-plate"}
+
 
 def rebuild(name, base, sigma, radius):
-    src = Image.open(SRC / f"{name}.jpg").convert("L")
+    src = Image.open(SRC / f"{SOURCES.get(name, name)}.jpg").convert("L")
     flat = np.asarray(src, dtype=np.float32)
     blurred = np.asarray(src.filter(ImageFilter.GaussianBlur(radius)), dtype=np.float32)
     detail = flat - blurred
@@ -57,5 +65,6 @@ def rebuild(name, base, sigma, radius):
 
 
 if __name__ == "__main__":
-    for name, (base, sigma, radius) in RECIPES.items():
+    for name in sys.argv[1:] or RECIPES:
+        base, sigma, radius = RECIPES[name]
         rebuild(name, base, sigma, radius)

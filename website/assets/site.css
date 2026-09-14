@@ -33,35 +33,61 @@
 }
 
 :root {
-  /* Paper -------------------------------------------------------------- */
-  --paper: #f5f6f4;
-  --paper-deep: #eceeea;
+  /* The sheet ----------------------------------------------------------
+     The paper objects are made of stock, not of a theme: the chart strip, the
+     printed run log and the official install window keep this ramp whichever
+     desk they stand on. In the light theme the desk is the same sheet; after
+     dark the desk is the plate and the sheet is still the sheet. */
+  --sheet: #f5f6f4;
+  --sheet-deep: #eceeea;
+  --sheet-window: #ffffff;
+  --sheet-rule: #d7dcda;
+  --sheet-rule-strong: #bcc4c2;
+  --sheet-ink: #15161a;
+  --sheet-ink-2: #4b4d53;
+  --sheet-ink-3: #616369;
+  --sheet-blue: #0f5c86;
+  --sheet-blue-deep: #0a3f5c;
+  --sheet-alarm: #b01b1b;
+  --sheet-select: #dce7ee;
+
+  /* Paper (the desk) ---------------------------------------------------- */
+  --paper: var(--sheet);
+  --paper-deep: var(--sheet-deep);
   --rule-hair: #e8ebe9;
-  --rule: #d7dcda;
-  --rule-strong: #bcc4c2;
-  --window: #ffffff;
+  --rule: var(--sheet-rule);
+  --rule-strong: var(--sheet-rule-strong);
+  --window: var(--sheet-window);
 
   /* Ink ---------------------------------------------------------------- */
-  --ink: #15161a;
-  --ink-2: #4b4d53;
+  --ink: var(--sheet-ink);
+  --ink-2: var(--sheet-ink-2);
   /* Held darker than the flat paper would need: the fibre is real and its tail
      is heavier than a Gaussian, so 12px chrome has to clear 4.5 against the
      darkest grain (226/255), not against the token. Measured: 4.64 there,
      5.51 on the token. */
-  --ink-3: #616369;
-  --blue: #0f5c86;
-  --blue-deep: #0a3f5c;
-  --alarm: #b01b1b;
+  --ink-3: var(--sheet-ink-3);
+  --blue: var(--sheet-blue);
+  --blue-deep: var(--sheet-blue-deep);
+  --alarm: var(--sheet-alarm);
 
   /* Instrument plate --------------------------------------------------- */
   --plate: #191a1d;
   --plate-2: #22242a;
   --plate-ink: #ededE8;
   --plate-dim: #a3a199;
+  /* The plate's two long-text steps: its definitions and footer lines, and the
+     spec table's cells. */
+  --plate-body: #cfcdc6;
+  --plate-cell: #d6d4cd;
   --plate-rule: rgba(237, 237, 232, 0.2);
   --plate-rule-soft: rgba(237, 237, 232, 0.1);
   --plate-blue: #7fb6d6;
+  --plate-blue-deep: #a5cfe6;
   --plate-alarm: #e58a86;
+
+  /* Browser surfaces ---------------------------------------------------- */
+  --select: var(--sheet-select);
 
   /* Type --------------------------------------------------------------- */
   --sans: "Archivo", -apple-system, BlinkMacSystemFont, "PingFang TC",
@@ -85,6 +111,54 @@
   --measure: 68ch;
   --shell: 1440px;
   --hair: 1px;
+
+  /* The UA canvas belongs to the theme, not to the system: the pages declare
+     `light dark` in their meta, and this is what decides which scheme the
+     browser paints the canvas, its scrollbars and its form controls with. */
+  color-scheme: light;
+}
+
+/* ============================================================================
+   Dark: the same instrument after dark
+   ----------------------------------------------------------------------------
+   The desk and the panel go graphite; the paper objects do not. Colour still
+   only ever means data, so the desk's links and failure ink move to the plate
+   family — --blue measures 2.4:1 on graphite — and every focus ring on the desk
+   turns plate blue with them, because the ring is drawn with --blue.
+   ========================================================================== */
+
+:root[data-theme="dark"] {
+  /* The desk: the plate's graphite, one step below the objects that stand on
+     it, under the plate's own grain (plates/graphite-plate.jpg). */
+  --paper: var(--plate);
+  --paper-deep: #101114;
+  --rule: var(--plate-rule-soft);
+  --rule-strong: var(--plate-rule);
+  --window: var(--plate-2);
+
+  /* The desk's ink prints light. Measured against the desk's lightest grain
+     (52/255, the tail of the graphite plate): --ink 10.43, --ink-2 7.24,
+     --ink-3 5.39 — the light theme's own habit of clearing 4.5 on the worst
+     grain, not on the token. */
+  --ink: var(--plate-ink);
+  --ink-2: #c9c7bf;
+  --ink-3: var(--plate-dim);
+  --blue: var(--plate-blue);
+  --blue-deep: var(--plate-blue-deep);
+  --alarm: var(--plate-alarm);
+
+  /* The panels stand one step off the desk (plate-2 is 1.12:1 over the desk,
+     the same separation the white window has over paper), so the plate family
+     steps up with them: dim and alarm measured 4.06 and 4.16 against plate-2's
+     lightest grain (62/255) and now measure 4.62 and 4.67. */
+  --plate-dim: #aeaca4;
+  --plate-alarm: #ea9793;
+
+  /* The light theme washes a selection with link blue on paper; the dark one
+     washes it with the same blue on graphite. */
+  --select: #14374c;
+
+  color-scheme: dark;
 }
 
 /* ============================================================================
@@ -121,7 +195,7 @@ body {
 
 /* Browser surfaces belong to the system too. */
 ::selection {
-  background: #dce7ee;
+  background: var(--select);
   color: var(--ink);
 }
 
@@ -426,6 +500,50 @@ button {
   box-shadow: inset 0 -2px 0 var(--ink);
 }
 
+/* The theme switch is the same chrome as the language group it stands beside:
+   one 16px mark in a square keycap of the group's own height (33px), carrying
+   the copy switch's bevel. Dark on inverts the keycap the way a copied switch
+   inverts, so the state is carried by ink and a mark, not by a word. */
+.themeswitch {
+  flex: none;
+  align-self: stretch;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  min-height: 34px;
+  padding: 0;
+  border: var(--hair) solid var(--ink);
+  background: var(--window);
+  color: var(--ink);
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85),
+    inset 0 -2px 0 rgba(21, 22, 26, 0.09);
+  transition: background 140ms ease-out, color 140ms ease-out,
+    transform 90ms ease-out;
+}
+
+.themeswitch:hover {
+  background: var(--paper-deep);
+}
+
+.themeswitch:active {
+  transform: translateY(1px);
+  box-shadow: inset 0 2px 0 rgba(21, 22, 26, 0.12);
+}
+
+.themeswitch__glyph {
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+
+.themeswitch[aria-pressed="true"] {
+  background: var(--ink);
+  color: var(--paper);
+  box-shadow: none;
+}
+
 /* ============================================================================
    Instrument: legend + strip + vocabulary
    ========================================================================== */
@@ -644,14 +762,17 @@ button {
 }
 
 /* The instrument's labels are printed on clean paper over the chart: the 40px
-   scale must not run through a line of 12px text (worst case against the fibre
-   is 4.74, against a rule line only 3.6). */
+   scale must not run through a line of 12px text. The stock is the sheet's own
+   fibre rather than the chart's, because these labels carry --ink-3: the chart
+   paper's tail grain reaches 221/255 on screen (209/255 at 1:1), which puts
+   12px text at 4.42:1, under the 4.5 the rest of the sheet clears. The fibre's
+   worst grain is 226/255 and the same text measures 4.63 there. */
 .strip__meta,
 .vocab,
 .strip__exit {
   background-color: var(--paper);
-  background-image: url("plates/chart-paper.jpg");
-  background-size: 1200px auto;
+  background-image: url("plates/paper-fibre.jpg");
+  background-size: 900px auto;
   padding: 0.1rem 0.3rem;
 }
 
@@ -1160,7 +1281,7 @@ button {
 }
 
 .plate a:hover {
-  color: #a5cfe6;
+  color: var(--plate-blue-deep);
 }
 
 .plate__rows {
@@ -1188,7 +1309,7 @@ button {
 
 .plate__def {
   font-size: 0.9375rem;
-  color: #cfcdc6;
+  color: var(--plate-body);
   max-width: 62ch;
 }
 
@@ -1297,7 +1418,7 @@ button {
 }
 
 .table--spec td {
-  color: #d6d4cd;
+  color: var(--plate-cell);
 }
 
 .plate .table--spec th:first-child,
@@ -1536,7 +1657,7 @@ button {
 .foot__group dd {
   margin: 0 0 0.4rem;
   font-size: 0.9375rem;
-  color: #cfcdc6;
+  color: var(--plate-body);
 }
 
 .foot__colophon {
@@ -1898,6 +2019,9 @@ button {
 
   .head__inner {
     align-items: flex-start;
+    /* The head band's chrome tightens a step before it has to wrap: at 32px the
+       switch pushed the language group onto a line of its own from 480px up. */
+    column-gap: var(--s2);
   }
 
   .paperhead .window .label {
@@ -1949,6 +2073,240 @@ button {
   .table th,
   .table td {
     padding-right: var(--s2);
+  }
+}
+
+/* Where the head band has to wrap, the switch and the language group are one
+   unit of chrome: broken apart, the language group sits alone on a line and
+   reads as a stray. Flexbox has no "keep these two together" of its own, so the
+   break is a zero-height flex item ordered between the links and the pair — the
+   pair always starts the new line together, and the break itself costs no
+   space because the row gap moves onto the pair. It starts at 561px because
+   that is where the four items stop fitting one row on the widest head band
+   (the EN one, measured at 542px); the tighter column gap above carries the
+   single row from there up to 620px. */
+@media (max-width: 560px) {
+  .head__inner {
+    row-gap: 0;
+  }
+
+  .wordmark {
+    order: 0;
+  }
+
+  .head__links {
+    order: 1;
+  }
+
+  .head__inner::after {
+    content: "";
+    order: 2;
+    flex: 0 1 100%;
+    min-width: 0;
+    height: 0;
+  }
+
+  .themeswitch {
+    order: 3;
+    margin-top: var(--s4);
+  }
+
+  .lang {
+    order: 4;
+    margin-top: var(--s4);
+  }
+}
+
+/* ============================================================================
+   Dark surfaces: what the desk's re-tone cannot reach
+   ----------------------------------------------------------------------------
+   The token re-tone above carries most of the theme, because every rule asks
+   for a token. Two things it cannot carry: the materials (which file each
+   surface is made of) and the paper objects, whose own ramp has to be put back
+   after the desk's has moved.
+   ========================================================================== */
+
+/* The desk after dark is the plate's own lacquer: same grain, one tone down
+   from the objects standing on it. Never a flat fill. */
+:root[data-theme="dark"] body {
+  background-image: url("plates/graphite-plate.jpg");
+  background-size: 900px auto;
+}
+
+/* The head band is a band of desk, not a lid on it: the grain runs through. */
+:root[data-theme="dark"] .head {
+  background-color: transparent;
+}
+
+/* The paper objects. Re-declaring the desk's tokens on them puts every paper
+   rule in the sheet back on the sheet's own ramp: the chart strip (and its
+   clean-paper labels and replay switch), the printed run log — frame, body and
+   hint — and the official install window. The colour goes with them, so an
+   element that inherits its ink (the replay switch's label) inherits the
+   sheet's, not the desk's. */
+:root[data-theme="dark"] .strip,
+:root[data-theme="dark"] .runlog,
+:root[data-theme="dark"] .window--plate {
+  color: var(--ink);
+  --paper: var(--sheet);
+  --paper-deep: var(--sheet-deep);
+  --rule: var(--sheet-rule);
+  --rule-strong: var(--sheet-rule-strong);
+  --window: var(--sheet-window);
+  --ink: var(--sheet-ink);
+  --ink-2: var(--sheet-ink-2);
+  --ink-3: var(--sheet-ink-3);
+  --blue: var(--sheet-blue);
+  --blue-deep: var(--sheet-blue-deep);
+  --alarm: var(--sheet-alarm);
+  --select: var(--sheet-select);
+}
+
+/* A recorded session is a printout: stock in the frame, the recorder's bar
+   along the top of it, and the printed frame left in the sheet's ink. */
+:root[data-theme="dark"] .runlog {
+  background-color: var(--sheet-window);
+  background-image: url("plates/paper-fibre.jpg");
+  background-size: 900px auto;
+}
+
+/* The page's one primary action is the one paper object on the desk: a punched
+   window of stock, its ink dark, its frame printed and its sheet lifted off the
+   dark ground by a shadow that still reads as a shadow. */
+:root[data-theme="dark"] .window--plate {
+  background-color: var(--sheet-window);
+  background-image: url("plates/paper-fibre.jpg");
+  background-size: 900px auto;
+  border-color: var(--sheet-ink);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -1px 0 rgba(21, 22, 26, 0.05),
+    0 22px 44px -36px rgba(0, 0, 0, 0.95);
+}
+
+:root[data-theme="dark"] .window--plate .window__cmd {
+  color: var(--sheet-ink);
+  scrollbar-color: var(--sheet-rule) transparent;
+}
+
+:root[data-theme="dark"] .window--plate .label {
+  color: var(--sheet-ink-3);
+}
+
+/* Inside the window the switch is the paper switch again, keycap and all. */
+:root[data-theme="dark"] .window--plate .switch {
+  border-color: var(--sheet-ink);
+  background: var(--sheet);
+  color: var(--sheet-ink);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85),
+    inset 0 -2px 0 rgba(21, 22, 26, 0.09);
+}
+
+:root[data-theme="dark"] .window--plate .switch:hover {
+  background: var(--sheet-deep);
+}
+
+:root[data-theme="dark"] .window--plate .switch:active {
+  background: var(--sheet-deep);
+  box-shadow: inset 0 2px 0 rgba(21, 22, 26, 0.12);
+}
+
+:root[data-theme="dark"] .window--plate .switch[data-copied="true"] {
+  background: var(--sheet-ink);
+  color: var(--sheet);
+  box-shadow: none;
+}
+
+/* The ring the light theme draws plate blue on graphite is wrong on stock: the
+   window's own controls take the sheet's link blue. */
+:root[data-theme="dark"] .window--plate .switch:focus-visible,
+:root[data-theme="dark"] .window--plate .window__cmd:focus-visible {
+  outline-color: var(--sheet-blue);
+}
+
+/* The panels were the dark objects on paper; on a dark desk they step up to
+   plate-2 — 1.12:1, the same separation the white window has over paper — and
+   keep the lacquer: the grain is visible on every one of them. */
+:root[data-theme="dark"] .legend,
+:root[data-theme="dark"] .plate,
+:root[data-theme="dark"] .foot,
+:root[data-theme="dark"] .runlog__bar {
+  background-color: var(--plate-2);
+  background-image: url("plates/graphite-plate-2.jpg");
+  background-size: 900px auto;
+}
+
+/* Their engravings: a hairline where the light theme relied on the tone step
+   alone, and the seated shadow re-cut for a ground that is already dark. */
+:root[data-theme="dark"] .plate {
+  border-color: var(--plate-rule-soft);
+  box-shadow: 0 24px 48px -40px rgba(0, 0, 0, 0.9);
+}
+
+:root[data-theme="dark"] .foot {
+  /* The hairline is drawn inside the box: a border-top would push the footer's
+     content down one pixel and make the dark page one pixel taller than the
+     light one. */
+  box-shadow: inset 0 var(--hair) 0 var(--plate-rule-soft);
+}
+
+/* The punched window is a hole in the desk. Its body takes the desk's step and
+   its bevels keep the light theme's reading — a lit lip above, a shadow below —
+   because a white inset on graphite reads as a glow and a black inset on paper
+   as nothing. The same goes for the keycap, and for the two lifts that used to
+   stand off paper (the instrument frame and the seated plate). The install
+   window is a paper object with its own bevel, so it is taken out here. */
+:root[data-theme="dark"] .window:not(.window--plate) {
+  box-shadow: inset 0 1px 0 rgba(237, 237, 232, 0.07),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.5);
+}
+
+:root[data-theme="dark"] .switch,
+:root[data-theme="dark"] .themeswitch {
+  box-shadow: inset 0 1px 0 rgba(237, 237, 232, 0.07),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.5);
+}
+
+:root[data-theme="dark"] .switch:active,
+:root[data-theme="dark"] .themeswitch:active {
+  box-shadow: inset 0 2px 0 rgba(0, 0, 0, 0.6);
+}
+
+:root[data-theme="dark"] .instrument__frame {
+  box-shadow: 0 26px 50px -44px rgba(0, 0, 0, 0.95);
+}
+
+/* At ≤620px the legend goes back to being the surface it stands on — paper in
+   the light theme, the bare desk here, grain and all. */
+@media (max-width: 620px) {
+  :root[data-theme="dark"] .legend {
+    background-color: transparent;
+    background-image: none;
+  }
+}
+
+/* Print is paper: whatever the screen is set to, the press prints the sheet the
+   world is built on. The plates keep their own inks, as they always have — the
+   backgrounds they sit on are not printed. */
+@media print {
+  :root[data-theme="dark"] {
+    /* Print is the sheet, so the UA paints paper here too. */
+    color-scheme: light;
+    --paper: var(--sheet);
+    --paper-deep: var(--sheet-deep);
+    --rule: var(--sheet-rule);
+    --rule-strong: var(--sheet-rule-strong);
+    --window: var(--sheet-window);
+    --ink: var(--sheet-ink);
+    --ink-2: var(--sheet-ink-2);
+    --ink-3: var(--sheet-ink-3);
+    --blue: var(--sheet-blue);
+    --blue-deep: var(--sheet-blue-deep);
+    --alarm: var(--sheet-alarm);
+    --select: var(--sheet-select);
+  }
+
+  :root[data-theme="dark"] body {
+    background-image: url("plates/paper-fibre.jpg");
   }
 }
 

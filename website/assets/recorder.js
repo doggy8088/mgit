@@ -98,7 +98,7 @@
   }
 
   function crossMark(cx, cy, size) {
-    var g = el("g", { class: "mark mark--cross" });
+    var g = el("g", { class: "mark mark--cross", "data-stamp-x": cx });
     g.appendChild(
       el("path", {
         d: "M " + (cx - size) + " " + (cy - size) + " L " + (cx + size) + " " + (cy + size) +
@@ -109,9 +109,19 @@
   }
 
   function flagMark(cx, cy, size) {
-    var g = el("g", { class: "mark mark--flag" });
+    var g = el("g", { class: "mark mark--flag", "data-stamp-x": cx });
     g.appendChild(el("path", { d: "M " + cx + " " + cy + " l " + size + " " + -size + " l 0 " + 2 * size + " z" }));
     return g;
+  }
+
+  /* A mark is stamped when the carriage reaches it, not swept away with the
+     trace: the pen's own timeline is eased, so invert the ease to get the
+     moment this x is passed, then keep the mark on the paper for good. */
+  function stampDelay(x, geom) {
+    var span = Math.max(1, geom.right - geom.left);
+    var fraction = Math.min(1, Math.max(0, (x - geom.left) / span));
+    var at = 1 - Math.pow(1 - fraction, 1 / 3);
+    return Math.round(at * SWEEP_MS * 0.94);
   }
 
   function drawStrip(strip, runs) {
@@ -174,11 +184,17 @@
         var tick = el("text", {
           x: t.end - 14,
           y: t.peak + 16,
-          class: "tick tick--alarm"
+          class: "tick tick--alarm",
+          "data-stamp-x": t.end - 14
         });
         tick.textContent = String(channel.code);
         svg.appendChild(tick);
       }
+    });
+
+    // Marks wait off the paper until the carriage passes them.
+    svg.querySelectorAll(".mark, .tick").forEach(function (node) {
+      node.style.opacity = "0";
     });
 
     var old = strip.querySelector("svg.strip__svg");
@@ -218,9 +234,10 @@
     });
 
     ctx.svg.querySelectorAll(".mark, .tick").forEach(function (node) {
-      node.style.opacity = "0";
+      var x = parseFloat(node.getAttribute("data-stamp-x"));
       node.style.transition = "opacity 260ms linear";
-      node.style.transitionDelay = SWEEP_MS * 0.82 + "ms";
+      node.style.transitionDelay = (isNaN(x) ? SWEEP_MS * 0.82 : stampDelay(x, ctx.geom)) + "ms";
+      node.style.opacity = "1";
     });
 
     var start = null;
@@ -404,11 +421,74 @@
     });
   }
 
+  /* The theme switch is a two-state control, so the page keeps one stored
+     choice and nothing else. The head script has already put the right value
+     on the root before the first paint; this keeps the root, the button's
+     pressed state and the stored value in step, and follows the system while
+     the reader has not chosen. */
+  var THEME_KEY = "mgit-theme";
+
+  function storedTheme() {
+    try {
+      var value = window.localStorage.getItem(THEME_KEY);
+      return value === "light" || value === "dark" ? value : null;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function systemTheme() {
+    return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+
+  function initTheme() {
+    var root = document.documentElement;
+    var button = document.querySelector("[data-theme-toggle]");
+    var chosen = false;
+
+    function currentTheme() {
+      return root.getAttribute("data-theme") === "dark" ? "dark" : "light";
+    }
+
+    function paint(theme) {
+      root.setAttribute("data-theme", theme);
+      if (button) button.setAttribute("aria-pressed", theme === "dark" ? "true" : "false");
+    }
+
+    paint(currentTheme());
+
+    if (button) {
+      button.addEventListener("click", function () {
+        var next = currentTheme() === "dark" ? "light" : "dark";
+        chosen = true;
+        paint(next);
+        try {
+          window.localStorage.setItem(THEME_KEY, next);
+        } catch (error) {
+          /* the choice holds for this page; it just cannot be kept */
+        }
+      });
+    }
+
+    var query = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
+    if (!query) return;
+
+    function followSystem() {
+      if (!chosen && storedTheme() === null) paint(systemTheme());
+    }
+    if (query.addEventListener) {
+      query.addEventListener("change", followSystem);
+    } else if (query.addListener) {
+      query.addListener(followSystem);
+    }
+  }
+
   function init() {
     initStrips();
     initLegendLinks();
     initSwitches();
     initScrollers();
+    initTheme();
   }
 
   if (document.readyState === "loading") {

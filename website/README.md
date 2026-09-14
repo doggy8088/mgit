@@ -32,7 +32,7 @@ en/index.html       EN 首頁
 docs/index.html     文件首頁（八章索引）
 docs/*.html         文件八章（use-cases／install／options／output／discovery／exit-codes／platforms／changes）
 en/docs/*.html      EN 版本
-assets/site.css     設計系統：紙與其纖維、石墨板、通道欄、打孔白窗、刻字規格板
+assets/site.css     設計系統：紙與其纖維、石墨板、通道欄、打孔白窗、刻字規格板、亮／暗兩個主題
 assets/recorder.js  由頁面自帶的 run record 畫筆跡（含筆的慣性、掃描馬車、重播）、複製鈕、溢出提示
 assets/favicon.svg  分頁圖示：紙＋一條石墨板＋一條藍筆跡，與頁面同一組材質
 assets/fonts/       三個自架 woff2（見下）
@@ -81,6 +81,7 @@ cd .. && ../.github/skills/impeccable/scripts/impeccable embed-prompt \
 | `paper-fibre.jpg` | 整頁底色（`900px auto`） | 3.44 |
 | `graphite-plate.jpg` | 規格板、footer、通道欄、石墨安裝窗、run log 的 bar（`900px auto`） | 3.9–4.7 |
 | `chart-paper.jpg` | 只用在條帶的紙窗裡（`1200px auto`，上面另加 40px 印刷格線） | 5.2（含格線） |
+| `graphite-plate-2.jpg` | **暗色主題的面板**（規格板、footer、通道欄、run log 的 bar；`900px auto`） | 3.6–4.4 |
 
 因為紙的纖維是真的，`--ink-3`（12px 標籤）必須對**紙最暗的那一角**仍達 4.5。紙的粒紋尾部比
 高斯重，用 ±2.2σ 估會高估，要用實測最暗值：目前值 `#616369` 對最暗粒紋（226/255）是 4.64、
@@ -103,11 +104,32 @@ CJK 標題走 `--display` 堆疊：`Archivo → "mgit Display"（Noto Sans TC �
 若標題新增了子集外的字，該字會退回系統字型；要補字就重新產生子集
 （Google Fonts `css2?family=Noto+Sans+TC:wght@700;900&text=<所有標題字元>`，取回傳的 woff2）。
 
+## 主題（亮／暗）
+
+兩個主題是**同一個世界的材質變體，不是色相反轉**。亮色＝亮桌上的儀器；暗色＝同一台儀器入夜：
+**桌與面板轉石墨，紙仍然是紙**。所以暗色的圖表紙條維持 `#f5f6f4`＋chart-paper，run log 的
+輸出紙與官方安裝窗改鋪 `paper-fibre`——安裝窗因此成為暗色頁面上最亮的物件，讓「全頁只有一個
+最重動作」的不變量在兩個主題都成立。打孔窗、語言／主題鍵帽與重播鍵**刻意維持平填**（鏡射亮色
+的平白打孔）：顆粒只給桌與面板，洞和鍵帽是平的。
+
+- 狀態放在 `document.documentElement.dataset.theme`（`light`／`dark`），CSS 的暗色 token 區塊
+  key 為 `:root[data-theme="dark"]`；`color-scheme` 由 CSS 跟著主題設，`@media print` 一律還原成紙。
+- 頁首有一支**在 stylesheet 之前**的 inline script，於首繪前決定主題：有 `localStorage["mgit-theme"]`
+  就用它，否則跟隨 `prefers-color-scheme`；`recorder.js` 的 `initTheme()` 負責點擊切換、寫入儲存，
+  並在「使用者還沒選過」時跟隨系統變更。儲存被鎖（隱私模式）時頁面照常，只是不持久。
+- 紙張物件共用 `--sheet-*` token 群（`--sheet`／`--sheet-ink`／`--sheet-blue`…）：亮色的
+  `--paper`／`--ink`／`--rule`／`--window` 是它們的**純別名**，所以紙物件在暗色可以就地重新宣告
+  同一組墨色，而不必把亮色 token 全域翻掉。
+- 動暗色時只准動暗色。亮色在這一輪的唯一變動是頁首多了切換鈕、以及條帶三個 12px chip 的紙紋
+  （`.strip__meta`／`.vocab`／`.strip__exit` 由 chart-paper 改 paper-fibre，讓 `--ink-3` 對最壞
+  粒紋由 4.415 升到 4.761）。
+
 ## 品質底線
 
-顏色永遠不是唯一承載狀態的方式（狀態另附文字與記號）、內文與標籤對比皆達 WCAG AA、
+顏色永遠不是唯一承載狀態的方式（狀態另附文字與記號）、內文與標籤對比皆達 WCAG AA（**對材質的
+最壞粒紋，不是對 token 的平均值**——紙的纖維尾部比高斯重，所以要量實測最暗像素）、
 全鍵盤可達、尊重 `prefers-reduced-motion`（掃描動畫直接給終態）、8px 間距節奏、
-380px 到 1600px 都不產生水平溢出。
+380px 到 1600px 都不產生水平溢出（兩個主題都要）。
 
 設計系統的規範層在專案根目錄的 [`DESIGN.md`](../DESIGN.md)（frontmatter 的 token 為準）
 與 [`.impeccable/design.json`](../.impeccable/design.json)；本頁面的策略與方向契約在

@@ -93,6 +93,7 @@ UI = {
         "npm": "npm",
         "lang_label": "語言",
         "nav_site": "網站",
+        "theme_toggle": "深色主題",
         "copy": "複製",
         "copied": "已複製",
         "copy_failed": "請手動複製",
@@ -109,6 +110,7 @@ UI = {
         "npm": "npm",
         "lang_label": "Language",
         "nav_site": "Site",
+        "theme_toggle": "Dark theme",
         "copy": "Copy",
         "copied": "Copied",
         "copy_failed": "Copy manually",
@@ -136,6 +138,36 @@ SVG_REPLAY = (
     '<path d="M2.5 8a5.5 5.5 0 1 1 1.7 4" fill="none" stroke="currentColor" stroke-width="1.5" '
     'stroke-linecap="round"/><path d="M2.5 8V4.4M2.5 8h3.6" fill="none" stroke="currentColor" '
     'stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+)
+
+# The theme switch's mark: the switch is drawn like the copy switch (sharp
+# corners, 1.4 stroke) and the left half of the field is inked, so the control
+# says "paper, or ink" at 16px without a second colour.
+SVG_THEME = (
+    '<svg class="themeswitch__glyph" viewBox="0 0 16 16" aria-hidden="true" focusable="false">'
+    '<rect x="2.5" y="2.5" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.4"/>'
+    '<path d="M2.5 2.5h5.5v11H2.5z" fill="currentColor"/></svg>'
+)
+
+# Decided in <head>, before the stylesheet, so the first paint is already the
+# right paper. A stored choice wins; without one the system decides. Nothing
+# here may throw: a blocked localStorage (private mode) must not break the page.
+THEME_SCRIPT = (
+    "<script>(function () {\n"
+    '  var stored = null;\n'
+    '  var system = "light";\n'
+    "  try {\n"
+    '    stored = window.localStorage.getItem("mgit-theme");\n'
+    "  } catch (error) {\n"
+    "    stored = null;\n"
+    "  }\n"
+    "  try {\n"
+    '    if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) system = "dark";\n'
+    "  } catch (error) {\n"
+    '    system = "light";\n'
+    "  }\n"
+    '  document.documentElement.setAttribute("data-theme", stored === "light" || stored === "dark" ? stored : system);\n'
+    "})();</script>"
 )
 
 
@@ -355,6 +387,11 @@ def head(lang, root, *, counterpart=None):
             '<a href="' + RELEASE + '">' + esc(t["releases"]) + "</a>",
             '<a href="' + NPM + '">' + esc(t["npm"]) + "</a>",
             "</nav>",
+            '<button class="themeswitch" type="button" data-theme-toggle aria-pressed="false" aria-label="'
+            + esc(t["theme_toggle"])
+            + '">'
+            + SVG_THEME
+            + "</button>",
             '<span class="lang" role="group" aria-label="' + esc(t["lang_label"]) + '">',
             '<a href="' + home + '" aria-current="true">' + current_label + "</a>",
             '<a href="' + (counterpart or home) + '">' + other_label + "</a>",
@@ -431,13 +468,15 @@ def page(*, lang, root, title, description, body, counterpart, canonical, body_c
         + esc(description)
         + '">\n'
         + head_extra
+        + THEME_SCRIPT
+        + "\n"
         + '<link rel="stylesheet" href="'
         + root
         + 'assets/site.css">\n'
         '<link rel="icon" href="'
         + root
         + 'assets/favicon.svg" type="image/svg+xml">\n'
-        '<meta name="color-scheme" content="light">\n'
+        '<meta name="color-scheme" content="light dark">\n'
         "</head>\n<body"
         + (' class="' + body_class + '"' if body_class else "")
         + ">\n"

@@ -3,11 +3,18 @@
 use std::fs;
 use std::path::Path;
 
-use mgit::discovery::{Discovery, discover, is_repository};
+use mgit::discovery::{Discovery, discover, is_bare_repository, is_repository};
 use tempfile::TempDir;
 
 fn make_repo(path: &Path) {
     fs::create_dir_all(path.join(".git")).expect("create .git");
+}
+
+fn make_bare_repo(path: &Path) {
+    fs::create_dir_all(path.join("objects")).expect("create objects");
+    fs::create_dir_all(path.join("refs")).expect("create refs");
+    fs::write(path.join("HEAD"), "ref: refs/heads/main\n").expect("write HEAD");
+    fs::write(path.join("config"), "[core]\n\tbare = true\n").expect("write config");
 }
 
 fn make_worktree_style_repo(path: &Path) {
@@ -45,6 +52,16 @@ fn a_directory_with_a_git_directory_is_a_repository() {
     make_repo(&temp.path().join("repo"));
     let discovery = discover(temp.path(), 1).expect("discover");
     assert_eq!(names(&discovery), vec!["repo"]);
+    assert!(!discovery.repositories[0].is_bare);
+}
+
+#[test]
+fn a_bare_repository_directory_is_a_repository() {
+    let temp = temp();
+    make_bare_repo(&temp.path().join("bare.git"));
+    let discovery = discover(temp.path(), 1).expect("discover");
+    assert_eq!(names(&discovery), vec!["bare.git"]);
+    assert!(discovery.repositories[0].is_bare);
 }
 
 #[test]
@@ -53,6 +70,7 @@ fn a_directory_with_a_git_file_is_a_repository() {
     make_worktree_style_repo(&temp.path().join("linked"));
     let discovery = discover(temp.path(), 1).expect("discover");
     assert_eq!(names(&discovery), vec!["linked"]);
+    assert!(!discovery.repositories[0].is_bare);
 }
 
 #[test]
@@ -160,8 +178,12 @@ fn a_file_as_root_is_an_error() {
 fn detection_is_available_on_its_own() {
     let temp = temp();
     make_repo(&temp.path().join("repo"));
+    make_bare_repo(&temp.path().join("bare.git"));
     make_plain_dir(&temp.path().join("other"));
     assert!(is_repository(&temp.path().join("repo")));
+    assert!(is_repository(&temp.path().join("bare.git")));
+    assert!(is_bare_repository(&temp.path().join("bare.git")));
+    assert!(!is_bare_repository(&temp.path().join("repo")));
     assert!(!is_repository(&temp.path().join("other")));
     assert!(!is_repository(&temp.path().join("missing")));
     // A file that is simply called `.git` is not enough for a directory entry.

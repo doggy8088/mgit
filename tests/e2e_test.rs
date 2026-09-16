@@ -250,6 +250,77 @@ fn a_git_file_worktree_is_recognised() {
     assert!(listed.out.contains("checkout"), "{}", listed.out);
 }
 
+/// Create a bare repository with an initial commit.
+fn bare_repository(root: &Path, name: &str) -> PathBuf {
+    let source = repository(root, &format!("{name}-src"));
+    let bare_path = root.join(name);
+    git_ok(
+        root,
+        &[
+            "clone",
+            "--bare",
+            source.to_str().unwrap(),
+            bare_path.to_str().unwrap(),
+        ],
+    );
+    fs::remove_dir_all(&source).expect("remove source checkout");
+    bare_path
+}
+
+#[test]
+fn a_bare_repository_is_recognised_and_listed() {
+    if skip_without_git().is_none() {
+        return;
+    }
+    let temp = temp();
+    bare_repository(temp.path(), "bare.git");
+
+    let listed = run(temp.path(), &["--list"]);
+    assert_eq!(listed.code, 0, "{}", listed.err);
+    assert!(listed.out.contains("bare.git"), "{}", listed.out);
+}
+
+#[test]
+fn bare_repository_supports_git_log() {
+    if skip_without_git().is_none() {
+        return;
+    }
+    let temp = temp();
+    bare_repository(temp.path(), "project.git");
+
+    let run = run(temp.path(), &["log", "--oneline", "-n", "1"]);
+    assert_eq!(run.code, 0, "{}", run.err);
+    assert!(
+        run.out.contains("Folder: project.git │ Branch: main"),
+        "{}",
+        run.out
+    );
+    assert!(run.out.contains("initial"), "{}", run.out);
+}
+
+#[test]
+fn bare_repository_is_skipped_on_default_status_command() {
+    if skip_without_git().is_none() {
+        return;
+    }
+    let temp = temp();
+    bare_repository(temp.path(), "bare.git");
+    let normal = repository(temp.path(), "normal");
+    fs::write(normal.join("file.txt"), "changed\n").expect("modify file");
+
+    let run = run(temp.path(), &[]);
+    assert_eq!(run.code, 0, "{}", run.err);
+    assert!(
+        run.out.contains("Folder: normal │ Branch: main"),
+        "{}",
+        run.out
+    );
+    assert!(run.out.contains(" M file.txt"), "{}", run.out);
+    // bare repo is silently skipped, so it shouldn't produce a header or failure
+    assert!(!run.out.contains("bare.git"), "{}", run.out);
+    assert!(!run.err.contains("fatal:"), "{}", run.err);
+}
+
 #[test]
 fn a_failing_repository_is_reported_with_its_exit_code() {
     if skip_without_git().is_none() {

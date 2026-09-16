@@ -72,6 +72,12 @@ pub struct Args {
 }
 
 impl Args {
+    /// Whether the user provided no git arguments and mgit will use the
+    /// default `git status -s`.
+    pub fn is_default_command(&self) -> bool {
+        self.git_args.is_empty()
+    }
+
     /// The arguments that are handed to `git`, or the built-in default
     /// (`git status -s`) when the user did not provide any.
     pub fn effective_git_args(&self) -> Vec<OsString> {

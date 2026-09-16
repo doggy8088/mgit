@@ -10,28 +10,24 @@ mgit 的版本變更記錄。格式參考 [Keep a Changelog](https://keepachange
 
 ## [Unreleased]
 
+## [2.0.3] - 2026-09-17
+
 ### 新增
 
-- 全新的產品與文件網站（`website/`）：首頁、七章文件、zh-TW 與 EN 兩份完整
-  內容，以及一個**在瀏覽器裡執行的沙箱試用場**。試用場的工作目錄可以編輯，
-  任何 mgit 指令都能真的執行，執行過程逐個儲存庫播放，Ctrl+C 會如實停在 `130`，
-  並且有一個面板說明這次走訪了哪些目錄、每次 git 的結束代碼，以及它們怎麼
-  變成一個結束代碼
-- `website/tests/parity.test.mjs`：把同一組工作目錄同時建成沙箱檔案系統與真正的
-  git 儲存庫，再把 8 個工作目錄 × 37 條指令分別交給編譯出來的執行檔與瀏覽器引擎，
-  逐字比對 stdout、stderr 與結束代碼
-- `website/build/` 的作者工具：頁面產生器（兩種語言的結構會互相檢查）、
-  對比度門檻（對材質最暗的一顆顆粒量測）、無頭瀏覽器的版面與無障礙稽核、
-  不快取的預覽伺服器
-- `Makefile` 新增 `site`、`site-serve`、`site-test`、`site-check`、`site-audit`、
-  `site-assets` 目標
-- `.github/workflows/deploy-pages.yml`：推送到 `main` 且動到 `website/` 時，
-  先跑對照測試、產生器一致性檢查、對比度門檻與稽核，通過才部署到 GitHub Pages
+- 支援 Bare Repository（純儲存庫）：探索儲存庫時除了辨識含 `.git` 目錄或 `.git` 指標檔的工作區外，亦支援直接包含 `HEAD`、`objects`、`refs` 與 `config` 的 Bare repository。可正常執行 `mgit log`、`mgit branch`、`mgit fetch` 等指令，並在 `mgit --list` 中列出
+- 全新的產品與文件網站（`website/`）：首頁、七章文件、zh-TW 與 EN 兩份完整內容，以及一個**在瀏覽器裡執行的沙箱試用場**。試用場的工作目錄可以編輯，任何 mgit 指令都能真的執行，執行過程逐個儲存庫播放，Ctrl+C 會如實停在 `130`，並且有一個面板說明這次走訪了哪些目錄、每次 git 的結束代碼，以及它們怎麼變成一個結束代碼
+- `website/tests/parity.test.mjs`：把同一組工作目錄同時建成沙箱檔案系統與真正的 git 儲存庫，再把 8 個工作目錄 × 37 條指令分別交給編譯出來的執行檔與瀏覽器引擎，逐字比對 stdout、stderr 與結束代碼
+- `website/build/` 的作者工具：頁面產生器（兩種語言的結構會互相檢查）、對比度門檻（對材質最暗的一顆顆粒量測）、無頭瀏覽器的版面與無障礙稽核、不快取的預覽伺服器
+- `Makefile` 新增 `site`、`site-serve`、`site-test`、`site-check`、`site-audit`、`site-assets` 目標
+- `.github/workflows/deploy-pages.yml`：推送到 `main` 且動到 `website/` 時，先跑對照測試、產生器一致性檢查、對比度門檻與稽核，通過才部署到 GitHub Pages
+
+### 改進
+
+- 執行預設指令（`git status -s`）時，因 Bare repository 沒有工作樹（working tree），`mgit` 會自動且無聲地跳過 Bare repository，避免出現 `fatal: this operation must be run in a work tree` 錯誤
 
 ### 變更
 
-- 2.x 的第一版網站移到 `archive/website_v2/`（含它自己的 `DESIGN.md` 與材質的
-  生成 prompt），不再維護
+- 2.x 的第一版網站移到 `archive/website_v2/`（含它自己的 `DESIGN.md` 與材質的生成 prompt），不再維護
 
 ## [2.0.2] - 2026-09-13
 

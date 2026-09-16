@@ -159,6 +159,14 @@ impl<'a> App<'a> {
         let mut first_failure: Option<i32> = None;
 
         for repository in repositories {
+            // Bare repositories do not have a working tree, so the default
+            // `git status -s` command fails with "fatal: this operation must
+            // be run in a work tree". Silently skip bare repositories when
+            // running the default command.
+            if repository.is_bare && self.args.is_default_command() {
+                continue;
+            }
+
             if !self.args.quiet {
                 let branch = self.runner.branch(&repository.path);
                 let header =

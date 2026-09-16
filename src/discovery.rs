@@ -7,12 +7,15 @@ use std::io;
 use std::path::{Path, PathBuf};
 
 /// One repository that was found.
+/// One repository that was found.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Repository {
     /// The name of the directory, as it appears on disk.
     pub name: OsString,
     /// The absolute path of the directory.
     pub path: PathBuf,
+    /// Whether this is a bare repository.
+    pub is_bare: bool,
 }
 
 /// The outcome of a search.
@@ -24,13 +27,61 @@ pub struct Discovery {
     pub warnings: Vec<String>,
 }
 
-/// Whether `path` itself is a repository, that is whether it holds a `.git`
-/// directory or a `.git` file (worktrees and submodules use the latter).
+/// Whether `path` is a bare git repository.
+///
+/// A bare repository has no working directory; instead, the repository directory
+/// directly contains `HEAD` (file), `objects` (directory), `refs` (directory),
+/// and `config` (file).
+pub fn is_bare_repository(path: &Path) -> bool {
+    // A `.git` directory itself contains HEAD, objects, refs, and config,
+    // but it is the internal git directory of a non-bare repository, not a
+    // bare repository.
+    if path.file_name() == Some(std::ffi::OsStr::new(".git")) {
+        return false;
+    }
+
+    let head_is_file = fs::metadata(path.join("HEAD"))
+        .map(|m| m.is_file())
+        .unwrap_or(false);
+    if !head_is_file {
+        return false;
+    }
+
+    let objects_is_dir = fs::metadata(path.join("objects"))
+        .map(|m| m.is_dir())
+        .unwrap_or(false);
+    if !objects_is_dir {
+        return false;
+    }
+
+    let refs_is_dir = fs::metadata(path.join("refs"))
+        .map(|m| m.is_dir())
+        .unwrap_or(false);
+    if !refs_is_dir {
+        return false;
+    }
+
+    let config_is_file = fs::metadata(path.join("config"))
+        .map(|m| m.is_file())
+        .unwrap_or(false);
+    if !config_is_file {
+        return false;
+    }
+
+    true
+}
+
+/// Whether `path` itself is a repository.
+///
+/// It can be a non-bare repository holding a `.git` directory or a `.git` file
+/// (worktrees and submodules use the latter), or a bare repository directly
+/// holding git internal structures (`HEAD`, `objects`, `refs`, `config`).
 pub fn is_repository(path: &Path) -> bool {
-    match fs::metadata(path.join(".git")) {
+    let has_dot_git = match fs::metadata(path.join(".git")) {
         Ok(metadata) => metadata.is_dir() || metadata.is_file(),
         Err(_) => false,
-    }
+    };
+    has_dot_git || is_bare_repository(path)
 }
 
 /// Search `root` for repositories, up to `max_depth` levels below it.
@@ -73,10 +124,24 @@ pub fn discover(root: &Path, max_depth: usize) -> io::Result<Discovery> {
                 continue;
             }
 
-            if is_repository(&path) {
+            let has_dot_git = match fs::metadata(path.join(".git")) {
+                Ok(metadata) => metadata.is_dir() || metadata.is_file(),
+                Err(_) => false,
+            };
+            if has_dot_git {
                 discovery.repositories.push(Repository {
                     name: file_name(&path),
                     path,
+                    is_bare: false,
+                });
+                continue;
+            }
+
+            if is_bare_repository(&path) {
+                discovery.repositories.push(Repository {
+                    name: file_name(&path),
+                    path,
+                    is_bare: true,
                 });
                 continue;
             }

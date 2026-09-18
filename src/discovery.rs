@@ -7,7 +7,6 @@ use std::io;
 use std::path::{Path, PathBuf};
 
 /// One repository that was found.
-/// One repository that was found.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Repository {
     /// The name of the directory, as it appears on disk.

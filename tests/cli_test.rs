@@ -24,6 +24,7 @@ fn empty_command_line_uses_defaults() {
     assert!(!args.fail_fast);
     assert!(!args.summary);
     assert!(!args.allow_empty);
+    assert!(args.pattern.is_none());
     assert!(args.git_args.is_empty());
     assert_eq!(
         args.effective_git_args(),
@@ -414,4 +415,48 @@ fn every_documented_short_option_is_recognised() {
     assert!(args.quiet);
     let args = parse_strs(&["-k"]).expect("parse");
     assert!(!args.fail_fast);
+    let args = parse_strs(&["-p", "pattern"]).expect("parse");
+    assert_eq!(args.pattern.as_ref().map(|p| p.as_str()), Some("pattern"));
+}
+
+#[test]
+fn pattern_accepts_all_documented_spellings() {
+    for argv in [
+        vec!["--pattern", "coolrare-*", "status"],
+        vec!["--pattern=coolrare-*", "status"],
+        vec!["-p", "coolrare-*", "status"],
+        vec!["-pcoolrare-*", "status"],
+    ] {
+        let args = parse_strs(&argv).expect("parse");
+        assert_eq!(
+            args.pattern.as_ref().map(|p| p.as_str()),
+            Some("coolrare-*"),
+            "{argv:?} must set the pattern"
+        );
+        assert_eq!(args.git_args, vec![os("status")]);
+    }
+}
+
+#[test]
+fn pattern_requires_a_value() {
+    let err = parse_strs(&["--pattern"]).expect_err("missing value");
+    assert!(err.message().contains("pattern"));
+    let err = parse_strs(&["-p"]).expect_err("missing value");
+    assert!(err.message().contains("pattern"));
+}
+
+#[test]
+fn pattern_rejects_invalid_glob_syntax() {
+    let err = parse_strs(&["--pattern=["]).expect_err("invalid pattern");
+    assert!(
+        err.message().contains("pattern"),
+        "error message must mention pattern, got: {}",
+        err.message()
+    );
+    let err = parse_strs(&["-p", "["]).expect_err("invalid pattern");
+    assert!(
+        err.message().contains("pattern"),
+        "error message must mention pattern, got: {}",
+        err.message()
+    );
 }

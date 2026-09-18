@@ -67,6 +67,8 @@ pub struct Args {
     pub summary: bool,
     /// Exit successfully when no repository was found.
     pub allow_empty: bool,
+    /// Pattern to filter repository directory names.
+    pub pattern: Option<glob::Pattern>,
     /// Arguments handed over to `git` verbatim.
     pub git_args: Vec<OsString>,
 }
@@ -138,6 +140,7 @@ where
         fail_fast: false,
         summary: false,
         allow_empty: false,
+        pattern: None,
         git_args: Vec::new(),
     };
 
@@ -183,6 +186,10 @@ where
                     let value = take_value("-d`/`--depth", inline, &mut iter)?;
                     parsed.depth = parse_depth(&value)?;
                 }
+                "pattern" => {
+                    let value = take_value("-p`/`--pattern", inline, &mut iter)?;
+                    parsed.pattern = Some(parse_pattern(&value)?);
+                }
                 _ => {
                     // Not one of our options: hand it (and everything that
                     // follows) over to git, exactly like the shell version did.
@@ -202,18 +209,21 @@ where
                 "l" => parsed.mode = Mode::List,
                 "q" => parsed.quiet = true,
                 "k" => parsed.fail_fast = false,
-                short => match short.strip_prefix('d') {
-                    Some(value) => {
+                short => {
+                    if let Some(value) = short.strip_prefix('d') {
                         let inline = (!value.is_empty()).then(|| value.to_owned());
                         let value = take_value("-d`/`--depth", inline, &mut iter)?;
                         parsed.depth = parse_depth(&value)?;
-                    }
-                    None => {
+                    } else if let Some(value) = short.strip_prefix('p') {
+                        let inline = (!value.is_empty()).then(|| value.to_owned());
+                        let value = take_value("-p`/`--pattern", inline, &mut iter)?;
+                        parsed.pattern = Some(parse_pattern(&value)?);
+                    } else {
                         parsed.git_args.push(arg);
                         parsed.git_args.extend(iter);
                         break;
                     }
-                },
+                }
             }
             continue;
         }
@@ -273,6 +283,14 @@ fn parse_color(value: &str) -> Result<ColorChoice, CliError> {
     }
 }
 
+fn parse_pattern(value: &str) -> Result<glob::Pattern, CliError> {
+    glob::Pattern::new(value).map_err(|error| {
+        CliError::new(format!(
+            "mgit: invalid pattern `{value}` for option `--pattern`: {error}\n"
+        ))
+    })
+}
+
 /// The `--help` text.
 pub fn help_text() -> String {
     format!(
@@ -294,6 +312,8 @@ OPTIONS:
     -l, --list            List the repositories that were found, one absolute
                           path per line, and exit
     -d, --depth <N>       Search up to N directory levels deep (default: 1)
+    -p, --pattern <GLOB>  Only operate on repositories whose directory name
+                          matches the given glob pattern
     -q, --quiet           Suppress the per repository header
         --color <WHEN>    `auto` (default), `always` or `never`
         --no-color        The same as `--color=never`
@@ -308,6 +328,7 @@ EXAMPLES:
     {PROGRAM}                        git status -s in every repository
     {PROGRAM} pull                   git pull in every repository
     {PROGRAM} --depth 2 fetch        search two directory levels deep
+    {PROGRAM} -p 'coolrare-*' status filter repositories matching pattern
     {PROGRAM} -q log --oneline -n 1  quiet, one line of history per repository
     {PROGRAM} -- --version           hand --version over to git, not to {PROGRAM}
 

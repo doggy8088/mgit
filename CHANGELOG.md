@@ -10,6 +10,12 @@ mgit 的版本變更記錄。格式參考 [Keep a Changelog](https://keepachange
 
 ## [Unreleased]
 
+## [2.0.4] - 2026-09-18
+
+### 新增
+
+- 新增 `-p`、`--pattern <GLOB>` 選項：允許指定 glob pattern（例如 `mgit -p 'coolrare-*' status`）限制探索範圍，只針對目錄名稱符合特徵的儲存庫執行操作，也支援搭配 `--list` 列出符合的儲存庫
+
 ## [2.0.3] - 2026-09-17
 
 ### 新增

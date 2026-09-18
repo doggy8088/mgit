@@ -649,3 +649,30 @@ fn a_closed_pipe_does_not_panic() {
     let err = String::from_utf8_lossy(&output.stderr);
     assert!(!err.contains("panicked"), "{err}");
 }
+
+#[test]
+fn pattern_restricts_execution_and_listing_to_matching_repositories() {
+    if skip_without_git().is_none() {
+        return;
+    }
+    let temp = temp();
+    repository(temp.path(), "coolrare-frontend");
+    repository(temp.path(), "coolrare-backend");
+    repository(temp.path(), "other-project");
+
+    let list_run = run(temp.path(), &["--list", "-p", "coolrare-*"]);
+    assert_eq!(list_run.code, 0, "{}", list_run.err);
+    assert!(list_run.out.contains("coolrare-frontend"));
+    assert!(list_run.out.contains("coolrare-backend"));
+    assert!(!list_run.out.contains("other-project"));
+
+    let status_run = run(temp.path(), &["-p", "coolrare-*"]);
+    assert_eq!(status_run.code, 0, "{}", status_run.err);
+    assert!(status_run.out.contains("Folder: coolrare-frontend"));
+    assert!(status_run.out.contains("Folder: coolrare-backend"));
+    assert!(!status_run.out.contains("Folder: other-project"));
+
+    let no_match_run = run(temp.path(), &["-p", "nonexistent-*"]);
+    assert_eq!(no_match_run.code, 1);
+    assert!(no_match_run.err.contains("no Git repository found"));
+}

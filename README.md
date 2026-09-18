@@ -123,6 +123,7 @@ mgit -- --version               # `--` 之後即使和 mgit 選項同名也會�
 | `-V`, `--version` | 顯示版本並結束 |
 | `-l`, `--list` | 只列出找到的儲存庫（每行一個絕對路徑），不執行 git |
 | `-d`, `--depth <N>` | 向下搜尋的目錄層數，預設 `1`（只找第一層子目錄） |
+| `-p`, `--pattern <GLOB>` | 只對目錄名稱符合 glob pattern 的儲存庫進行操作 |
 | `-q`, `--quiet` | 不輸出每個儲存庫的標題，只留下 git 自己的輸出 |
 | `--color <WHEN>` | `auto`（預設）、`always`、`never` |
 | `--no-color` | 等同 `--color=never` |
@@ -137,6 +138,7 @@ mgit -- --version               # `--` 之後即使和 mgit 選項同名也會�
 
 ```sh
 mgit --depth 2 fetch                  # 連第二層目錄的儲存庫一起更新
+mgit -p 'coolrare-*'                  # 只對符合名稱特徵的專案執行 status
 mgit --list                           # 確認到底會被操作哪些目錄
 mgit -q log --oneline -n 1            # 安靜模式，只看每個儲存庫的最新一筆
 mgit --fail-fast pull                 # 一有衝突就停下來處理

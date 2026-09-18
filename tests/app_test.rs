@@ -576,3 +576,53 @@ fn an_unwritable_stderr_is_not_fatal() {
 
     assert_ne!(code, 0, "an empty directory still fails");
 }
+
+#[test]
+fn pattern_filters_matching_repositories() {
+    let temp = temp();
+    make_repo(&temp.path().join("coolrare-frontend"));
+    make_repo(&temp.path().join("coolrare-backend"));
+    make_repo(&temp.path().join("other-repo"));
+    let fake = FakeGit::default();
+
+    let run = run(temp.path(), &["--pattern", "coolrare-*"], &fake);
+
+    assert_eq!(run.code, 0, "{}", run.err);
+    assert_eq!(fake.calls(), vec!["coolrare-backend", "coolrare-frontend"]);
+    assert!(run.out.contains("Folder: coolrare-frontend"));
+    assert!(run.out.contains("Folder: coolrare-backend"));
+    assert!(!run.out.contains("Folder: other-repo"));
+    assert!(run.err.is_empty());
+}
+
+#[test]
+fn pattern_filtering_to_no_matches_triggers_without_repositories() {
+    let temp = temp();
+    make_repo(&temp.path().join("other-repo"));
+    let fake = FakeGit::default();
+
+    let first_run = run(temp.path(), &["-p", "coolrare-*"], &fake);
+
+    assert_eq!(first_run.code, 1);
+    assert!(fake.calls().is_empty());
+    assert!(first_run.err.contains("no Git repository found"));
+
+    // With --allow-empty it should succeed with code 0
+    let second_run = run(temp.path(), &["-p", "coolrare-*", "--allow-empty"], &fake);
+    assert_eq!(second_run.code, 0);
+    assert!(fake.calls().is_empty());
+}
+
+#[test]
+fn pattern_with_list_mode_lists_only_matching_repositories() {
+    let temp = temp();
+    make_repo(&temp.path().join("coolrare-frontend"));
+    make_repo(&temp.path().join("other-repo"));
+    let fake = FakeGit::default();
+
+    let run = run(temp.path(), &["--list", "-p", "coolrare-*"], &fake);
+
+    assert_eq!(run.code, 0);
+    assert!(run.out.contains("coolrare-frontend"));
+    assert!(!run.out.contains("other-repo"));
+}

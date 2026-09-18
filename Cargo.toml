@@ -1,6 +1,6 @@
 [package]
 name = "mgit"
-version = "2.0.3"
+version = "2.0.4"
 edition = "2024"
 rust-version = "1.85"
 description = "Run the same git command in every Git repository under the current directory"
@@ -24,6 +24,9 @@ path = "src/main.rs"
 lto = "fat"
 codegen-units = 1
 strip = true
+
+[dependencies]
+glob = "0.3.4"
 
 [dev-dependencies]
 tempfile = "3"

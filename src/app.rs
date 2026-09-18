@@ -90,9 +90,15 @@ impl<'a> App<'a> {
             Mode::List | Mode::Run => {}
         }
 
-        let found = discovery::discover(&self.root, self.args.depth)?;
+        let mut found = discovery::discover(&self.root, self.args.depth)?;
         for warning in &found.warnings {
             self.eprint(warning)?;
+        }
+
+        if let Some(pattern) = &self.args.pattern {
+            found
+                .repositories
+                .retain(|repo| pattern.matches(&repo.name.to_string_lossy()));
         }
 
         if found.repositories.is_empty() {
@@ -111,7 +117,18 @@ impl<'a> App<'a> {
 
     /// Handle a directory that holds no repository of its own.
     fn without_repositories(&mut self) -> io::Result<i32> {
-        let root_is_repository = discovery::is_repository(&self.root);
+        let root_is_repository = discovery::is_repository(&self.root)
+            && match &self.args.pattern {
+                Some(pattern) => {
+                    let root_name = self
+                        .root
+                        .file_name()
+                        .map(|name| name.to_string_lossy())
+                        .unwrap_or_default();
+                    pattern.matches(&root_name)
+                }
+                None => true,
+            };
 
         if self.args.mode == Mode::List {
             if root_is_repository {

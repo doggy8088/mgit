@@ -20,15 +20,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4
 
       - name: Set Tag Name
         id: vars
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          INPUT_TAG_NAME: ${{ inputs.tag_name }}
+          REF_NAME: ${{ github.ref_name }}
         run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "tag_name=${{ inputs.tag_name }}" >> $GITHUB_OUTPUT
+          if [ "$EVENT_NAME" = "workflow_dispatch" ]; then
+            echo "tag_name=$INPUT_TAG_NAME" >> $GITHUB_OUTPUT
           else
-            echo "tag_name=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+            echo "tag_name=$REF_NAME" >> $GITHUB_OUTPUT
           fi
 
       - name: Create Git Tag (if manual)
@@ -45,7 +49,7 @@ jobs:
 
       - name: Create GitHub Release
         id: create_release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@c95fe1489396fe8a9a4aa8985111238e79bfe947 # v2
         with:
           tag_name: ${{ steps.vars.outputs.tag_name }}
           name: ${{ steps.vars.outputs.tag_name }}

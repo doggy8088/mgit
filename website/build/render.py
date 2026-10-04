@@ -114,7 +114,13 @@ def ordered(items: list[str]) -> str:
     return f"<ol>{rows}</ol>"
 
 
-def command(text: str, copy_label: str, note: str | None = None, large: bool = False) -> str:
+def command(
+    text: str,
+    copy_label: str,
+    note: str | None = None,
+    large: bool = False,
+    label_before: bool = False,
+) -> str:
     classes = "cmd cmd--lg" if large else "cmd"
     block = (
         f'<div class="{classes}" data-copy-source>'
@@ -124,7 +130,9 @@ def command(text: str, copy_label: str, note: str | None = None, large: bool = F
         f"</div>"
     )
     if note:
-        block += f'<p class="cmd__note">{inline(note)}</p>'
+        note_class = "cmd__label" if label_before else "cmd__note"
+        note_html = f'<p class="{note_class}">{inline(note)}</p>'
+        block = note_html + block if label_before else block + note_html
     return block
 
 
@@ -177,7 +185,14 @@ def render_blocks(blocks, ctx) -> str:
         elif kind == "ol":
             out.append(ordered(block[1]))
         elif kind == "cmd":
-            out.append(command(block[1], ctx["copy"], block[2] if len(block) > 2 else None))
+            out.append(
+                command(
+                    block[1],
+                    ctx["copy"],
+                    block[2] if len(block) > 2 else None,
+                    label_before=len(block) > 3 and block[3] == "before",
+                )
+            )
         elif kind == "pre":
             out.append(pre(block[1]))
         elif kind == "table":

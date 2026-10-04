@@ -273,8 +273,8 @@ CHAPTERS = [
         "blocks": [
             ("h2", "one-line", "一行指令"),
             ("p", "官方安裝腳本會偵測作業系統與 CPU 架構、下載對應的發行檔，**先用 SHA-256 驗證、再安裝**，並在安裝目錄不在 `PATH` 時提醒你。"),
-            ("cmd", "curl -fsSL https://raw.githubusercontent.com/doggy8088/mgit/main/install.sh | sh", "macOS 與 Linux（POSIX sh）。"),
-            ("cmd", "irm https://raw.githubusercontent.com/doggy8088/mgit/main/install.ps1 | iex", "Windows PowerShell 5.1 與 PowerShell 7+（在 macOS、Linux 的 PowerShell 7 上也可以用）。"),
+            ("cmd", "curl -fsSL https://raw.githubusercontent.com/doggy8088/mgit/main/install.sh | sh", "macOS 與 Linux（POSIX sh）。", "before"),
+            ("cmd", "irm https://raw.githubusercontent.com/doggy8088/mgit/main/install.ps1 | iex", "Windows PowerShell 5.1 與 PowerShell 7+（在 macOS、Linux 的 PowerShell 7 上也可以用）。", "before"),
             ("note", "想先看腳本再執行？", "把網址直接開起來或先存成檔案即可：這兩個腳本就是倉庫裡的 `install.sh` 與 `install.ps1`，沒有另一份。"),
             ("h2", "verify", "驗證安裝"),
             ("p", "安裝完之後確認版本，順便確認 `PATH` 找到的是你剛裝的那一個："),

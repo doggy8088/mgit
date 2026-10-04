@@ -355,8 +355,8 @@ CHAPTERS = [
         "blocks": [
             ("h2", "one-line", "One line"),
             ("p", "The official installers detect the operating system and CPU architecture, download the matching archive, **verify its SHA-256 before installing**, and tell you when the install directory is missing from your `PATH`."),
-            ("cmd", "curl -fsSL https://raw.githubusercontent.com/doggy8088/mgit/main/install.sh | sh", "macOS and Linux (POSIX sh)."),
-            ("cmd", "irm https://raw.githubusercontent.com/doggy8088/mgit/main/install.ps1 | iex", "Windows PowerShell 5.1 and PowerShell 7+ (which also works on macOS and Linux)."),
+            ("cmd", "curl -fsSL https://raw.githubusercontent.com/doggy8088/mgit/main/install.sh | sh", "macOS and Linux (POSIX sh).", "before"),
+            ("cmd", "irm https://raw.githubusercontent.com/doggy8088/mgit/main/install.ps1 | iex", "Windows PowerShell 5.1 and PowerShell 7+ (which also works on macOS and Linux).", "before"),
             ("note", "Want to read the script first?", "Open the URL in a browser or save it to a file. Those two URLs are `install.sh` and `install.ps1` from the repository; there is no second copy."),
             ("h2", "verify", "Verify the install"),
             ("p", "Check the version, and check that `PATH` really points at the binary you just installed:"),
